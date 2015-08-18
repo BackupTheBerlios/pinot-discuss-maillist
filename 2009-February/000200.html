@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] high memory usage while indexing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090225042435.3a50f66c%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000199.html">
+   <LINK REL="Next"  HREF="000201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] high memory usage while indexing</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090225042435.3a50f66c%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] high memory usage while indexing">jwerden at hotpop.com
+       </A><BR>
+    <I>Wed Feb 25 04:24:35 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000199.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+        <LI>Next message: <A HREF="000201.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 24 Feb 2009 23:29:53 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> I have uploaded a beta 2 tarball at <A HREF="http://www.chez.com/colinf/pinot/">http://www.chez.com/colinf/pinot/</A>
+</I>&gt;<i> It's got a new, experimental HTML parser based on Xapian Omega's that
+</I>&gt;<i> should rid us of the leaks seen in pinot-mem.6.log.bz2. These changes
+</I>&gt;<i> have not been checked in SVN yet, I would like your opinion first.
+</I>&gt;<i> 
+</I>&gt;<i> Fabrice
+</I>
+Thank you, gave it a test. The result is that both pinot and
+pinot-dbus-daemon crash. Pinot if I close the window, pinot-dbus-daemon
+if I send send it the kill signal. GDB results attached.
+
+Can you check please if the bugs are important? I don't want to run an
+distorted memcheck.
+
+John
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: crash_pinot.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090225/cc773f04/attachment.txt">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090225/cc773f04/attachment.txt</A>&gt;
+-------------- next part --------------
+An embedded and charset-unspecified text was scrubbed...
+Name: crash_pinot-dbus-daemon.txt
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090225/cc773f04/attachment-0001.txt">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090225/cc773f04/attachment-0001.txt</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000199.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+	<LI>Next message: <A HREF="000201.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

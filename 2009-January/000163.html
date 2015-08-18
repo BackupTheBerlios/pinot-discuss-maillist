@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090124135028.7a9cc40a%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000162.html">
+   <LINK REL="Next"  HREF="000164.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090124135028.7a9cc40a%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Jan 24 13:50:28 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000162.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000164.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 24 Jan 2009 16:03:41 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> H John,
+</I>&gt;<i> 
+</I>&gt;<i> On Sat, Jan 24, 2009 at 3:47 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; There are several problems with finding out which files are missing:
+</I>&gt;<i> &gt; - I don't know which files got dropped if I interrupted, because the
+</I>&gt;<i> &gt;  logfile does only show a subset of all encountered files.
+</I>&gt;<i> &gt; - I don't know at which point the demon resumes and which files it
+</I>&gt;<i> &gt;  skips because it already indexed them.
+</I>&gt;<i> &gt; - Because the logfile has sometimes garbled output I can't do
+</I>&gt;<i> &gt;  any automated tests.
+</I>&gt;<i> &gt; - The logfile shows only an error if it fails to scan a file
+</I>&gt;<i> &gt; instead of the filename and the error.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So I don't know if the daemon loses files if it terminates or if it
+</I>&gt;<i> &gt; resumes or at both points.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Let's focus on whether it actually loses anything for the time being.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Looks like I have to check the source and do some log output fixing
+</I>&gt;<i> &gt; for the first point :D
+</I>&gt;<i> &gt;
+</I>&gt;<i> No need to do any of this. After you have interrupted one instance
+</I>&gt;<i> mid-way, start another one (without -r/--reindex) and let it finish
+</I>&gt;<i> indexing. Once the log shows it's not indexing any more, send it a
+</I>&gt;<i> SIGINT to get it to close and flush all changes to the disk. Then run
+</I>&gt;<i> something like :
+</I>&gt;<i> $ find -L /path/to/indexable/location -exec pinot-check-file.sh {} \;
+</I>&gt;<i> 
+</I>&gt;<i> The output will list each file from /path/to/indexable/location that's
+</I>&gt;<i> not in My Documents. Of course, that will include black-listed files
+</I>&gt;<i> and files skipped symlinks may have lead to.
+</I>
+Did that and it lost data. Tested with svn 1509.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000162.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000164.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#163">[ date ]</a>
+              <a href="thread.html#163">[ thread ]</a>
+              <a href="subject.html#163">[ subject ]</a>
+              <a href="author.html#163">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

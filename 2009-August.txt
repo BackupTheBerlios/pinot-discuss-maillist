@@ -1,0 +1,53 @@
+From fabrice.colin at gmail.com  Thu Aug 20 04:45:41 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 20 Aug 2009 10:45:41 +0800
+Subject: [Pinot-discuss] OpenBSD port
+Message-ID: <6538c8c80908191945ibacea83wcda363f45b6d0249@mail.gmail.com>
+
+Antoine Jacoutot successfully ported Pinot to OpenBSD. The package is
+available on OpenPorts.se at http://openports.se/x11/pinot
+
+I will merge the related patches into the (much delayed) next release.
+
+Thanks Antoine !
+
+Fabrice
+
+
+From rglujing at 126.com  Fri Aug 21 08:37:37 2009
+From: rglujing at 126.com (rglujing)
+Date: Fri, 21 Aug 2009 14:37:37 +0800 (CST)
+Subject: [Pinot-discuss] port pinot
+Message-ID: <28317681.203071250836657862.JavaMail.coremail@bj126app55.126.com>
+
+Hi,all
+   Now i am porting pinot to a new environment based on Linux. And may be the  system would run on movable devices. 
+   I'm  rewriting its' UI using clutter.  But some function would be ignored.
+
+
+regards,
+omego
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090821/20498ca7/attachment.html>
+
+From fabrice.colin at gmail.com  Fri Aug 21 09:24:02 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 21 Aug 2009 15:24:02 +0800
+Subject: [Pinot-discuss] port pinot
+In-Reply-To: <28317681.203071250836657862.JavaMail.coremail@bj126app55.126.com>
+References: <28317681.203071250836657862.JavaMail.coremail@bj126app55.126.com>
+Message-ID: <6538c8c80908210024j6e428074kddf1542855d25131@mail.gmail.com>
+
+2009/8/21 rglujing <rglujing at 126.com>:
+> ?? Now i am porting pinot to a new environment based on Linux. And may be
+> the? system would run on movable devices.
+> ?? I'm? rewriting its' UI using clutter.? But some function would be
+> ignored.
+>
+That's great !
+Let us know if you need any help.
+
+Fabrice
+
+

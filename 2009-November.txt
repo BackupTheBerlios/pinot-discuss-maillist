@@ -1,0 +1,16 @@
+From fabrice.colin at gmail.com  Sat Nov 14 05:50:54 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 14 Nov 2009 12:50:54 +0800
+Subject: [Pinot-discuss] Pinot 0.95
+Message-ID: <6538c8c80911132050x6d681439gbed071adfb4b1cae@mail.gmail.com>
+
+Dear all,
+
+A new release is out :
+http://pinotdev.blogspot.com/2009/11/pinot-095.html
+
+Best regards,
+
+Fabrice
+
+

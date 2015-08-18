@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> No subject
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2012-March/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.0.1331737245.9060.pinot-discuss%40lists.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>No subject</H1>
+    <B></B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20No%20subject&In-Reply-To=%3Cmailman.0.1331737245.9060.pinot-discuss%40lists.berlios.de%3E"
+       TITLE="No subject">
+       </A><BR>
+    <I>Wed Mar 14 16:00:45 CET 2012</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#109">[ date ]</a>
+              <a href="thread.html#109">[ thread ]</a>
+              <a href="subject.html#109">[ subject ]</a>
+              <a href="author.html#109">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> The problems:
+</I>&gt;<i>
+</I>&gt;<i> At first I used pinot with dictionary enabled, before i rebuilt my
+</I>&gt;<i> index with a disabled dictionary. What I found out before I disabled it
+</I>&gt;<i> thought, was that the frontend had a liking to annoy the user anytime
+</I>&gt;<i> with its corrections about the search term and 'popped up' the prepared
+</I>&gt;<i> query list showing a corrected search term (I closed it, because I
+</I>&gt;<i> don't need it and it wastes space on my screen).
+</I>&gt;<i>
+</I>&gt;<i> I think it would be better to remove that annoyance, it's like what
+</I>&gt;<i> google does, when you enter an unusual search term and it wants to tell
+</I>&gt;<i> you that it knows everything better. Maybe using a query option to
+</I>&gt;<i> search for similar terms in the dictionary and/or list similar queries
+</I>&gt;<i> at request would be less intrusive.
+</I>&gt;<i>
+</I>Okay. I realize the current mechanism is far from ideal and can be
+disruptive. Would it be less disruptive if the spelling suggestion was
+displayed inline, in the results list. A click on it would then create
+a corrected stored query.
+
+Did you find indexing was much slower with spelling enabled ? How much
+bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+
+&gt;<i> The second problem I got, is that pinot always seems to show only 10
+</I>&gt;<i> results even thought there are a lot more. I want to harvest through a
+</I>&gt;<i> lot of files and getting only 10 and not several thousand i need (and
+</I>&gt;<i> want to scroll through at one time and not flip pages) does not help
+</I>&gt;<i> me. I checked out the configuration dialog for stored queries which
+</I>&gt;<i> only allows up to 100 results, but I don't use it, so I don't care
+</I>&gt;<i> about that.
+</I>&gt;<i>
+</I>As you noticed, the &quot;Live query&quot; is limited to 10 results and there's
+no way to increase the value. It sounds like I need to let users
+remove the limit on the number of results, for both &quot;Live query&quot; and
+stored queries.
+Did you try using stored queries to filter the index list while
+browsing. If you choose the &quot;Index, List Contents Of My Documents&quot;
+menu, this will list all your documents. This list can be filtered
+with a stored query, using the combo box next to the Previous and Next
+buttons. In this case, the query's maximum number of results doesn't
+apply. This should allow you to get the complete list of documents
+matching the query.
+
+&gt;<i> The third is related to the status window. If I open the status window,
+</I>&gt;<i> the pinot frontend freezes everytime it fetches the new status from the
+</I>&gt;<i> daemon for several seconds or longer (no redraw, no scrolling possible),
+</I>&gt;<i> which makes it hard to follow the status change of the daemon or use
+</I>&gt;<i> the main window at the same time.
+</I>&gt;<i>
+</I>That's true, especially if the daemon is busy. I will look into fixing this.
+
+&gt;<i> What I think where pinot should improve (heavily influenced by prior
+</I>&gt;<i> tracker usage):
+</I>&gt;<i>
+</I>&gt;<i> - the configuration dialog should be standalone.
+</I>&gt;<i>
+</I>Standalone, as in a separate program ? This can be done.
+
+&gt;<i> - the configuration file should be more human readable (like tracker
+</I>&gt;<i>  with ini-style/helpful comments).
+</I>&gt;<i>
+</I>Did you find you had to edit the configuration file manually ? For
+what setting ? Ideally, users shouldn't have to. If you let me know
+what setting should be made editable, I can add it to the preferences
+dialog.
+
+&gt;<i> - the user should be able to see what the daemon does right now
+</I>&gt;<i>  (indexing, handling queries and which queries).
+</I>&gt;<i>
+</I>Okay, that's fair enough. Only queries coming though the D-Bus
+interface are handled by the daemon; queries run through the Pinot UI
+are handled there.
+
+&gt;<i> - for large requests, pinot should send partial answers as it fetches
+</I>&gt;<i>  the results, instead of letting the user wait for maybe several
+</I>&gt;<i>  minutes.
+</I>&gt;<i>
+</I>In what case did you have to wait for several minutes ?
+I'd be interested to know what kind of query takes that long, and how
+many results out of your 400k this query brought back. Do you have
+that information ?
+I think what you suggest may be possible, I'll have to look into it.
+
+&gt;<i> - the user should be able to abort the execution of queries.
+</I>&gt;<i>
+</I>Sure. I was planning to work on this in the near future.
+
+&gt;<i> - pinot should work with LARGE results. I want to walk through possible
+</I>&gt;<i>  thousands of files per query and i don't want to set an upper limit of
+</I>&gt;<i>  results (in other words: worst case with all indexed files as result).
+</I>&gt;<i>
+</I>The browse+filter method described above was actually designed to help
+with this. Let me know what you think of it.
+
+&gt;<i> - the system is too techy. I don't even know which search engine is
+</I>&gt;<i>  used for &quot;my documents&quot; if I want to use pinot-search. (Yes, it is in
+</I>&gt;<i>  the documentation and i read it, but if i have to reread the
+</I>&gt;<i>  documentation everytime i want to use the console tools instead of
+</I>&gt;<i>  the gtk frontend, it becomes a hassle). Remembering the syntax for
+</I>&gt;<i>  search queries was not a problem.
+</I>&gt;<i>
+</I>Okay, I will look into simplifying those.
+
+&gt;<i> - there are no small command line tools like tracker-status/stats which
+</I>&gt;<i>  print out the status of the daemon or allow to interact with him
+</I>&gt;<i>  beyond search and index.
+</I>&gt;<i>
+</I>The stats shown in the status window can be had on the command-line,
+using dbus-send. The 2nd screencast at
+<A HREF="http://pinot.berlios.de/screenshots.html">http://pinot.berlios.de/screenshots.html</A> shows how this is done, even
+though the version the screencast was generated with only returned the
+number of crawled documents and the number of documents in the index.
+See how the GetStatistics method is used at
+<A HREF="http://pinot.berlios.de/documentation.html">http://pinot.berlios.de/documentation.html</A>
+I agree this could definitely be improved. What other interaction did
+you have in mind ?
+
+&gt;<i> - The option for disabling the dictionary should be made visible the
+</I>&gt;<i>  first time the user starts the configuration dialog and sets the
+</I>&gt;<i>  initial configuration for pinot.
+</I>&gt;<i>
+</I>Okay, that's fair enough.
+
+Thanks for taking the time to email us with these suggestions. This
+kind of feedback is exactly what I am after. Let me know if the above
+makes sense or if I have missed anything.
+
+Cheers.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#109">[ date ]</a>
+              <a href="thread.html#109">[ thread ]</a>
+              <a href="subject.html#109">[ subject ]</a>
+              <a href="author.html#109">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Problem with custom engine
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Problem%20with%20custom%20engine&In-Reply-To=%3C6538c8c80712190039t1f05f093t224c63823e2ecb5f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000083.html">
+   <LINK REL="Next"  HREF="000085.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Problem with custom engine</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Problem%20with%20custom%20engine&In-Reply-To=%3C6538c8c80712190039t1f05f093t224c63823e2ecb5f%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Problem with custom engine">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Wed Dec 19 09:39:40 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000083.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+        <LI>Next message: <A HREF="000085.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Claudio,
+
+Sorry for the late reply, I was travelling.
+
+On Dec 15, 2007 8:04 AM, Claudio Bustos Navarrete &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">clbustos at surnet.cl</A>&gt; wrote:
+&gt;<i> I'm doing some research and Pinot is a great tool to search in many academic places.
+</I>&gt;<i> I have a problem with ERIC (<A HREF="http://www.eric.ed.gov">http://www.eric.ed.gov</A>). They use capitalized params on
+</I>&gt;<i> the query URL, and the Sherlock parser doesn't work well with they.
+</I>&gt;<i> ...
+</I>&gt;<i> As you can see, &quot;ERICExtSearch_SearchValue_0&quot; was used twice, first time
+</I>&gt;<i> capitalized and second time on lowercase.
+</I>&gt;<i>
+</I>You're right. The user input item is used twice.
+
+What OS/distro are you using ? Are you comfortable with compiling from source
+and applying patches ?
+I have attached a patch for SherlockParser.cpp that should fix this problem.
+
+Let me know if this works for you. Thanks.
+
+Fabrice
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sherlockparser_lowercase_user_input.diff
+Type: application/octet-stream
+Size: 1238 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20071219/792affe8/attachment.obj">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20071219/792affe8/attachment.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000083.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+	<LI>Next message: <A HREF="000085.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#84">[ date ]</a>
+              <a href="thread.html#84">[ thread ]</a>
+              <a href="subject.html#84">[ subject ]</a>
+              <a href="author.html#84">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

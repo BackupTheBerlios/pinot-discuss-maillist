@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071104091412.GB14451%40hermes.commontology.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000060.html">
+   <LINK REL="Next"  HREF="000065.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Andreas Wagner</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071104091412.GB14451%40hermes.commontology.de%3E"
+       TITLE="[Pinot-discuss] Index huuuge">A.Wagner at stud.uni-frankfurt.de
+       </A><BR>
+    <I>Sun Nov  4 10:14:12 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000060.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+        <LI>Next message: <A HREF="000065.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#64">[ date ]</a>
+              <a href="thread.html#64">[ thread ]</a>
+              <a href="subject.html#64">[ subject ]</a>
+              <a href="author.html#64">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Salut,
+
+The patch applies and compiles.
+I had to work around some complaint by archlinux's install routine:
+
+/bin/install -c -m 644 UI/icons/48x48/pinot.png 
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/48x48/apps/pinot.png
+/bin/install -c -m 644 UI/icons/32x32/pinot.png 
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/32x32/apps/pinot.png
+/bin/install -c -m 644 UI/icons/24x24/pinot.png 
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/24x24/apps/pinot.png
+/bin/install -c -m 644 UI/icons/22x22/pinot.png 
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/22x22/apps/pinot.png
+/bin/install -c -m 644 UI/icons/16x16/pinot.png 
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/16x16/apps/pinot.png
+/home/wagner/Temp/abs-local/pinot/pkg/usr/share/applications/pinot.desktop: error: value &quot;pinot.png&quot; for key &quot;Icon&quot; in 
+group &quot;Desktop Entry&quot; is an icon name with an extension, but there should be no extension as described in the Icon 
+Theme Specification if the value is not an absolute path
+Error on file &quot;pinot.desktop&quot;: Failed to validate the created desktop file
+make[2]: *** [install-data-local] Error 1
+
+(the same goes for pinot-dbus-daemon.desktop.)
+
+Other than that, pinot is running fine and just indexing my documents right now...
+Well, to be honest, pinot-dbus-daemon is indexing while the UI has just crashed. :(
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> .pinot]$ pinot
+
+glibmm-ERROR **:
+unhandled exception (type unknown) in signal handler
+
+aborting...
+Abgebrochen
+
+What I did was: launching it ('pinot' on cmdline), going to preferences, looking at the directories, 'OK', looking at 
+the stats (no dbus-daemon running yet), re-opening prefs, removing the to-be-indexed-directory, 'OK', re-open 
+preferences, add the directory again, 'OK', open stats - which didn't happen. instead the gui disappeared altogether 
+because of the crash.
+Re-launching pinot/gui seems to work tho. Status bar says can't open index /home/wagner/.pinot/index, but the status 
+window shows no errors and is updated periodically.
+
+
+To be verbose, here are my version numbers again:
+
+glibc: 2.7
+gcc: 4.2.2
+xapian-core: 1.0.4
+libsigc++: 2.1.1
+glibmm: 2.14.1
+gtkmm: 2.12.1
+
+* On 01 Nov 2007, Fabrice Colin wrote:
+&gt;&gt;<i> I let it run for almost 2 and 1/2 hours, it had 2421 documents indexed and now my home partition is stuffed, I had 
+</I>&gt;&gt;<i> to kill pinot-dbus-daemon.
+</I>&gt;&gt;<i>
+</I>&gt;<i> Okay. This seems slow, but I admit there's a lot of room for optimizations 
+</I>&gt;<i> in first time indexing. What's your system like in terms of CPU and RAM ?
+</I>
+I have an athlon64 3000 with one Gig RAM. I noticed on indexing that RAM does fill up (even a bit into swapspace) and 
+periodically (not so often, tho, returns to ~50%, but I suppose that's normal. (I've seen in Recoll that they offer a 
+config option to specify after how many MB data gets flushed to disk -- or just leave that up to xapian (I suppose 
+that's what pinot is doint as well).)
+
+
+&gt;<i> It looks like I'll have to come up with a patch that disables building the spelling database. Would you be able to 
+</I>&gt;<i> test it out ? In the meantime, can you try v0.80 in DEBUG mode (run configure with &quot;--enable-debug=yes&quot;) ? I don't 
+</I>&gt;<i> think you will see any difference, but any patch I create will be based on the 0.80 source.
+</I>
+All of the above is for --enable-debug=yes. RAM/Swap usage is much better now, however! While Swap is being used (I 
+have a kernel with low swappiness), this is half a gig and Ram is only ever at most about half filled.
+
+Oops. Right now I have several errors in the status window, all of which like this:
+Couldn't retrieve document - <A HREF="file:///path/to/some_doc?ment_with_qu?stionmarks.html">file:///path/to/some_doc?ment_with_qu?stionmarks.html</A>
+(the names are with umlauts or apostrophes and I can't figure out the filename encoding. Normally I have utf-8, but 
+then 'ls' wouldn't throw these questionmarks at me. mvconv doesn't want to change a thing about those filename...)
+
+It has finished indexing after some 20 minutes (forgot to time it and had to leave before it had finished) now 
+and here's the du:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> ~]$ du -hsc ~/.pinot/*
+4,0K    /home/wagner/.pinot/config.xml
+464M    /home/wagner/.pinot/daemon
+20K     /home/wagner/.pinot/history
+3,3M    /home/wagner/.pinot/history-daemon
+28K     /home/wagner/.pinot/index
+21M     /home/wagner/.pinot/pinot-dbus-daemon.log
+4,0K    /home/wagner/.pinot/pinot-dbus-daemon.pid
+476K    /home/wagner/.pinot/pinot.log
+488M    insgesamt
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> ~]$ du -hsc ~/.pinot/daemon/*
+4,0K    /home/wagner/.pinot/daemon/CACHEDIR.TAG
+0       /home/wagner/.pinot/daemon/flintlock
+4,0K    /home/wagner/.pinot/daemon/iamflint
+117M    /home/wagner/.pinot/daemon/position.DB
+4,0K    /home/wagner/.pinot/daemon/position.baseA
+4,0K    /home/wagner/.pinot/daemon/position.baseB
+155M    /home/wagner/.pinot/daemon/postlist.DB
+4,0K    /home/wagner/.pinot/daemon/postlist.baseA
+4,0K    /home/wagner/.pinot/daemon/postlist.baseB
+588K    /home/wagner/.pinot/daemon/record.DB
+4,0K    /home/wagner/.pinot/daemon/record.baseA
+4,0K    /home/wagner/.pinot/daemon/record.baseB
+168M    /home/wagner/.pinot/daemon/spelling.DB
+4,0K    /home/wagner/.pinot/daemon/spelling.baseA
+4,0K    /home/wagner/.pinot/daemon/spelling.baseB
+25M     /home/wagner/.pinot/daemon/termlist.DB
+4,0K    /home/wagner/.pinot/daemon/termlist.baseA
+4,0K    /home/wagner/.pinot/daemon/termlist.baseB
+340K    /home/wagner/.pinot/daemon/value.DB
+4,0K    /home/wagner/.pinot/daemon/value.baseA
+4,0K    /home/wagner/.pinot/daemon/value.baseB
+464M    insgesamt
+
+Looks better now, innit?
+
+Cheers,
+Andreas
+
+-- 
+&#187;&#191;&#647;&#305;&#803; &#601;snq&#592; &#647;,u&#592;&#596; no&#654; &#607;&#305;&#803; &#595;u&#305;&#803;&#613;&#647;&#654;u&#592; s&#305;&#803; poo&#595; &#647;&#592;&#613;&#653;&#171;
+
+-- 
+My Public PGP Keys:
+1024 Bit DH/DSS: 0x869F81BA
+768 Bit RSA:     0x1AD97BA5
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000060.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+	<LI>Next message: <A HREF="000065.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#64">[ date ]</a>
+              <a href="thread.html#64">[ thread ]</a>
+              <a href="subject.html#64">[ subject ]</a>
+              <a href="author.html#64">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

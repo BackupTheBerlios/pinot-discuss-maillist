@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C6538c8c80901220644p45e3d865jb3b81e62c8feeb79%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000156.html">
+   <LINK REL="Next"  HREF="000158.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C6538c8c80901220644p45e3d865jb3b81e62c8feeb79%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Thu Jan 22 15:44:38 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000156.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000158.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#157">[ date ]</a>
+              <a href="thread.html#157">[ thread ]</a>
+              <a href="subject.html#157">[ subject ]</a>
+              <a href="author.html#157">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello John,
+
+On Thu, Jan 22, 2009 at 1:34 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> On Thu, 22 Jan 2009 09:53:12 +0800
+</I>&gt;<i> Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> I thought the tests you ran with pinot-enum-index/find showed that
+</I>&gt;&gt;<i> everything was in the index ? Sorry for the confusion. Did you find
+</I>&gt;&gt;<i> out what files are not there ?
+</I>&gt;<i>
+</I>&gt;<i> Where did I mention that? Now I'm confused :D
+</I>&gt;<i>
+</I>&gt;<i> I know I used the script one time, but only to find out if there was a
+</I>&gt;<i> problem with a full uninterrupted scan, because the log shows only
+</I>&gt;<i> 'Retrieved' for around a third of the files in the directory tree. My
+</I>&gt;<i> Documents shows all files and the script proved that all files got
+</I>&gt;<i> indexed.
+</I>&gt;<i>
+</I>OK. What's the issue with &quot;lost data&quot; that you came across when
+interrupting the daemon ?
+
+&gt;&gt;<i> You get this if you open the UI after having terminated the daemon,
+</I>&gt;&gt;<i> right ? The UI opens the daemon's index in read-only mode and cannot
+</I>&gt;&gt;<i> fix it if a stale lock file exists. That said, I was hoping the index
+</I>&gt;&gt;<i> is now always closed properly and no stale lock file would be left
+</I>&gt;&gt;<i> around...
+</I>&gt;<i>
+</I>&gt;<i> No, this error appears at the end of the logfile used by the daemon if
+</I>&gt;<i> I terminate it while indexing.
+</I>&gt;<i>
+</I>Ah I see. Can you post the log messages between &quot;Quitting...&quot; and the
+end of file when this error is logged ?
+
+&gt;&gt;<i> Yes, I think that's safer. Could you drop an email to the package's
+</I>&gt;&gt;<i> maintainer to recommend he uses these flags ?
+</I>&gt;<i>
+</I>&gt;<i> I will send the maintainer a note. Recompiled it myself with the flag
+</I>&gt;<i> set, but made no difference. (But I don't have a multicore system.)
+</I>&gt;<i>
+</I>That's good because I can only test on multicore systems these days :-)
+
+I think I have fixed the problem with preferences not taking effect on
+a first run (4th item in your list). Can you give beta 8 a try ?
+
+Thanks !
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000156.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000158.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#157">[ date ]</a>
+              <a href="thread.html#157">[ thread ]</a>
+              <a href="subject.html#157">[ subject ]</a>
+              <a href="author.html#157">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

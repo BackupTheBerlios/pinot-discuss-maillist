@@ -1,0 +1,455 @@
+From fabrice.colin at gmail.com  Tue Jul  3 14:44:43 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 3 Jul 2007 20:44:43 +0800
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <200705291125.52881.cms0009@gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705290951.54758.cms0009@gmail.com>
+	<6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>
+	<200705291125.52881.cms0009@gmail.com>
+Message-ID: <6538c8c80707030544ob09b5c4q34bb3b1ac34d372a@mail.gmail.com>
+
+On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+> Thanks, but it would appear the distro, is version 0.65 and not the latest..
+>
+It has come to my attention that getdeb has up-to-date packages for
+Ubuntu Feisty 32 bits and 64 bits.
+More information at http://www.getdeb.net/app.php?name=Pinot
+
+Fabrice
+
+
+From cms009 at gmail.com  Thu Jul 26 06:56:52 2007
+From: cms009 at gmail.com (Rick)
+Date: Thu, 26 Jul 2007 00:56:52 -0400
+Subject: [Pinot-discuss] mp3 ?
+Message-ID: <200707260056.52596.cms0009@gmail.com>
+
+just install pinot .74, and wonder why its not index,
+my all of my usb drive, which contains allot folder, of .pdf files, 
+mp3's, .flac files...ogg files... movie files.. & .xls files....etc
+
+is there something that must be added or turn on, in order for pinot to index 
+properly ?
+
+Richard
+
+
+From fabrice.colin at gmail.com  Thu Jul 26 09:14:08 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 26 Jul 2007 15:14:08 +0800
+Subject: [Pinot-discuss] mp3 ?
+In-Reply-To: <200707260056.52596.cms0009@gmail.com>
+References: <200707260056.52596.cms0009@gmail.com>
+Message-ID: <6538c8c80707260014q2351e9f4l7f11787561f4c1d@mail.gmail.com>
+
+Hi Rick,
+
+On 7/26/07, Rick <cms009 at gmail.com> wrote:
+> just install pinot .74, and wonder why its not index,
+> my all of my usb drive, which contains allot folder, of .pdf files,
+> mp3's, .flac files...ogg files... movie files.. & .xls files....etc
+>
+> is there something that must be added or turn on, in order for
+> pinot to index properly ?
+>
+Pinot only indexes directories that are configured in Preferences,
+under the Indexing tab. You will have to add your USB drive's
+mountpoint to the list, close Preferences and restart the daemon
+for the change to take effect.
+
+There are several ways to restart the daemon :
+- kill the daemon's PID and relaunch it from the terminal
+- or, send the Stop and GetStatistics messages with dbus-send, as
+described in section 12 of the README
+
+I hope this makes sense.
+
+Fabrice
+
+
+From cms009 at gmail.com  Thu Jul 26 15:31:02 2007
+From: cms009 at gmail.com (Rick)
+Date: Thu, 26 Jul 2007 09:31:02 -0400
+Subject: [Pinot-discuss] mp3 ?
+In-Reply-To: <6538c8c80707260014q2351e9f4l7f11787561f4c1d@mail.gmail.com>
+References: <200707260056.52596.cms0009@gmail.com>
+	<6538c8c80707260014q2351e9f4l7f11787561f4c1d@mail.gmail.com>
+Message-ID: <200707260931.02882.cms0009@gmail.com>
+
+On Thursday 26 July 2007 3:14:08 am Fabrice Colin wrote:
+> Hi Rick,
+>
+> On 7/26/07, Rick <cms009 at gmail.com> wrote:
+> > just install pinot .74, and wonder why its not index,
+> > my all of my usb drive, which contains allot folder, of .pdf files,
+> > mp3's, .flac files...ogg files... movie files.. & .xls files....etc
+> >
+> > is there something that must be added or turn on, in order for
+> > pinot to index properly ?
+>
+> Pinot only indexes directories that are configured in Preferences,
+> under the Indexing tab. You will have to add your USB drive's
+> mountpoint to the list, close Preferences and restart the daemon
+> for the change to take effect.
+>
+> There are several ways to restart the daemon :
+> - kill the daemon's PID and relaunch it from the terminal
+> - or, send the Stop and GetStatistics messages with dbus-send, as
+> described in section 12 of the README
+>
+> I hope this makes sense.
+>
+> Fabrice
+
+
+hmmm, well I did use /media/disk (which is the usb drive)
+in the preferences..... however its not full index the drive.
+
+Richard
+
+
+
+
+From fabrice.colin at gmail.com  Thu Jul 26 16:13:14 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 26 Jul 2007 22:13:14 +0800
+Subject: [Pinot-discuss] mp3 ?
+In-Reply-To: <200707260931.02882.cms0009@gmail.com>
+References: <200707260056.52596.cms0009@gmail.com>
+	<6538c8c80707260014q2351e9f4l7f11787561f4c1d@mail.gmail.com>
+	<200707260931.02882.cms0009@gmail.com>
+Message-ID: <6538c8c80707260713p69f4ac8bp8924aabf354b6265@mail.gmail.com>
+
+On 7/26/07, Rick <cms009 at gmail.com> wrote:
+> hmmm, well I did use /media/disk (which is the usb drive)
+> in the preferences..... however its not full index the drive.
+>
+I'll need more information from you.
+
+In Pinot, if you go to Session, Status, does the Status window show any error
+under "Daemon" ?
+
+Was the drive already mounted when the daemon started ? What happens
+if you restart the daemon while the drive is mounted ?
+
+Has it been partially indexed, or not at all ? The best way to find out is
+to create a Stored Query with Query Text set to "dir:/media/disk". List your
+documents by going to the Index, List Contents Of, My Documents menu.
+In the My Documents tab, select the query you have just created in the combo
+box : does this list any of the files on your USB drive ?
+
+If some are missing, what type(s) (e.g. pdf, mp3...) are they ?
+
+Fabrice
+
+
+From cms009 at gmail.com  Thu Jul 26 20:07:56 2007
+From: cms009 at gmail.com (Rick)
+Date: Thu, 26 Jul 2007 14:07:56 -0400
+Subject: [Pinot-discuss] mp3 ?
+In-Reply-To: <6538c8c80707260713p69f4ac8bp8924aabf354b6265@mail.gmail.com>
+References: <200707260056.52596.cms0009@gmail.com>
+	<200707260931.02882.cms0009@gmail.com>
+	<6538c8c80707260713p69f4ac8bp8924aabf354b6265@mail.gmail.com>
+Message-ID: <200707261407.56255.cms0009@gmail.com>
+
+Thanks for the quick reply here is the info below...
+
+On Thursday 26 July 2007 10:13:14 am Fabrice Colin wrote:
+> On 7/26/07, Rick <cms009 at gmail.com> wrote:
+> > hmmm, well I did use /media/disk (which is the usb drive)
+> > in the preferences..... however its not full index the drive.
+>
+> I'll need more information from you.
+>
+> In Pinot, if you go to Session, Status, does the Status window show any
+> error under "Daemon" ?
+>
+
+Daemon is not showing any errors.
+
+
+
+> Was the drive already mounted when the daemon started ? What happens
+> if you restart the daemon while the drive is mounted ?
+
+The drive was mount before starting the index...
+did stop the daemon and restart it..
+
+
+>
+> Has it been partially indexed, or not at all ? The best way to find out is
+> to create a Stored Query with Query Text set to "dir:/media/disk". List
+> your documents by going to the Index, List Contents Of, My Documents menu.
+> In the My Documents tab, select the query you have just created in the
+> combo box : does this list any of the files on your USB drive ?
+>
+> If some are missing, what type(s) (e.g. pdf, mp3...) are they ?
+
+
+I can see some items, under documents, however its not index anything.
+its show 8125 doc index... does not display any mp3 whatsoever,
+which are in different folders..
+
+Richard
+
+
+
+
+From fabrice.colin at gmail.com  Fri Jul 27 06:22:35 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 27 Jul 2007 12:22:35 +0800
+Subject: [Pinot-discuss] mp3 ?
+In-Reply-To: <200707261407.56255.cms0009@gmail.com>
+References: <200707260056.52596.cms0009@gmail.com>
+	<200707260931.02882.cms0009@gmail.com>
+	<6538c8c80707260713p69f4ac8bp8924aabf354b6265@mail.gmail.com>
+	<200707261407.56255.cms0009@gmail.com>
+Message-ID: <6538c8c80707262122r482ab4b1ibfd273ebdefaa85d@mail.gmail.com>
+
+Hi Rick,
+
+On 7/27/07, Rick <cms009 at gmail.com> wrote:
+> On Thursday 26 July 2007 10:13:14 am Fabrice Colin wrote:
+> > Was the drive already mounted when the daemon started ? What happens
+> > if you restart the daemon while the drive is mounted ?
+>
+> The drive was mount before starting the index...
+> did stop the daemon and restart it..
+>
+And the daemon didn't add any file to My Documents ?
+
+> > Has it been partially indexed, or not at all ? The best way to find out is
+> > to create a Stored Query with Query Text set to "dir:/media/disk". List
+> > your documents by going to the Index, List Contents Of, My Documents menu.
+> > In the My Documents tab, select the query you have just created in the
+> > combo box : does this list any of the files on your USB drive ?
+> >
+> > If some are missing, what type(s) (e.g. pdf, mp3...) are they ?
+>
+> I can see some items, under documents, however its not index anything.
+>
+What "items" do you see ? Can you see any document from that USB drive
+or none at all ?
+I need to know whether any document from /media/disk is in the list.
+
+> its show 8125 doc index... does not display any mp3 whatsoever,
+> which are in different folders..
+>
+The folders that contain those MP3s are under /media/disk, right ?
+If you search for "ext:mp3" against My Documents, what results do you get ?
+
+By the way, I am guessing you are using the GetDeb packages for Feisty
+32bits. Am I right ?
+Can you double-check you have the necessary libraries, i.e.
+/usr/lib/pinot/filters/libtaglibfilter.so and /usr/lib/libtag.so ?
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sat Jul 28 07:08:53 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 28 Jul 2007 13:08:53 +0800
+Subject: [Pinot-discuss] Pinot 0.75
+Message-ID: <6538c8c80707272208x3a5353d3g76937eb5a49dc222@mail.gmail.com>
+
+Pinot 0.75 is available. It brings some bug fixes and minor feature
+enhancements.
+The NEWS file has the details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_5/NEWS?op=file&rev=0&sc=0
+
+This is likely to be the last release in the 0.7 series. The next
+release should be
+0.80, and that will require Xapian 1.0.2.
+
+Fabrice
+
+
+From ana_cata_hylo at yahoo.com  Sun Jul 29 12:25:20 2007
+From: ana_cata_hylo at yahoo.com (lee marks)
+Date: Sun, 29 Jul 2007 03:25:20 -0700 (PDT)
+Subject: [Pinot-discuss] Configuring viewer applications
+Message-ID: <180036.22750.qm@web57609.mail.re1.yahoo.com>
+
+I've just started using pinot and it looks nice so far. The only thing I couldn't figure out as yet is how to specify the associated viewer for each file type. For example, for a .ps (postscript) file I would like it to start gv but currently it starts abiword instead. Sorry of this is considered a really newbie question.
+
+
+
+
+
+
+      ____________________________________________________________________________________
+Luggage? GPS? Comic books? 
+Check out fitting gifts for grads at Yahoo! Search
+http://search.yahoo.com/search?fr=oni_on_mail&p=graduation+gifts&cs=bz
+
+
+From fabrice.colin at gmail.com  Sun Jul 29 14:21:14 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 29 Jul 2007 20:21:14 +0800
+Subject: [Pinot-discuss] Configuring viewer applications
+In-Reply-To: <180036.22750.qm@web57609.mail.re1.yahoo.com>
+References: <180036.22750.qm@web57609.mail.re1.yahoo.com>
+Message-ID: <6538c8c80707290521k1088060uc38814b7d2aba04a@mail.gmail.com>
+
+Hi Lee,
+
+On 7/29/07, lee marks <ana_cata_hylo at yahoo.com> wrote:
+> I've just started using pinot and it looks nice so far. The only thing I couldn't figure
+> out as yet is how to specify the associated viewer for each file type. For example, for
+> a .ps (postscript) file I would like it to start gv but currently it starts abiword instead.
+> Sorry of this is considered a really newbie question.
+>
+Pinot relies on shared-mime-info to determine which application can handle
+which MIME type.
+In practice, this means that the first .desktop file specified for a
+given file type
+in /usr/share/applications/mimeinfo.cache is used. For instance, on my system
+mimeinfo.cache has this entry :
+
+application/msword=openoffice.org-1.9-writer.desktop;fedora-abiword.desktop;
+
+Pinot will use the application defined in openoffice.org-1.9-writer.desktop,
+located in /usr/share/applications, to open all documents of type
+"application/msword".
+
+What entry does your mimeinfo.cache have for "application/postscript" ?
+By the way, what distro do you use ?
+
+Fabrice
+
+
+From ana_cata_hylo at yahoo.com  Mon Jul 30 00:16:04 2007
+From: ana_cata_hylo at yahoo.com (lee marks)
+Date: Sun, 29 Jul 2007 15:16:04 -0700 (PDT)
+Subject: [Pinot-discuss] Configuring viewer applications
+Message-ID: <789822.85412.qm@web57614.mail.re1.yahoo.com>
+
+Hi Fabrice,
+
+Thanks for your help on this!
+
+> Pinot relies on shared-mime-info to determine which application can
+> handle which MIME type. In practice, this means that the
+> first .desktop file specified for a given file type
+> in /usr/share/applications/mimeinfo.cache is used. For instance, on my
+> system mimeinfo.cache has this entry :
+> 
+> application/msword=openoffice.org-1.9-writer.desktop;fedora-abiword.desktop;
+> 
+> Pinot will use the application defined in
+> openoffice.org-1.9-writer.desktop, located in /usr/share/applications,
+> to open all documents of type "application/msword".
+> 
+> What entry does your mimeinfo.cache have for
+> "application/postscript" ? 
+
+Yes I have a mimeinfo.cache in /usr/share/applications but it does not contain an entry for 'application/postscript'. I have setup such
+associations using Thunar but I noticed that it stores them in ~/.local/share/applications rather than in the system-wide directory.
+
+So what I did is to integrate these local settings into the system wide mime-info.cache and then restart XFCE. This fixes the problem and pinot
+now brings up the applications I want.  Still it would be nice to have pinot check the users' local settings before looking in the global cache, perhaps that could be added in a future release.
+
+> By the way, what distro do you use ?
+
+I'm using ArchLinux (the latest release 2007.05 aka "Duke").
+
+Thanks again
+Lee
+
+
+
+
+
+       
+____________________________________________________________________________________
+Sick sense of humor? Visit Yahoo! TV's 
+Comedy with an Edge to see what's on, when. 
+http://tv.yahoo.com/collections/222
+
+
+From fabrice.colin at gmail.com  Mon Jul 30 03:25:33 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 30 Jul 2007 09:25:33 +0800
+Subject: [Pinot-discuss] Configuring viewer applications
+In-Reply-To: <789822.85412.qm@web57614.mail.re1.yahoo.com>
+References: <789822.85412.qm@web57614.mail.re1.yahoo.com>
+Message-ID: <6538c8c80707291825l5bd6abffvdbb9e251998e5b71@mail.gmail.com>
+
+Hi Lee,
+
+On 7/30/07, lee marks <ana_cata_hylo at yahoo.com> wrote:
+> Thanks for your help on this!
+>
+No problem.
+
+> > What entry does your mimeinfo.cache have for
+> > "application/postscript" ?
+>
+> Yes I have a mimeinfo.cache in /usr/share/applications but it does not contain
+> an entry for 'application/postscript'. I have setup such associations using Thunar
+> but I noticed that it stores them in ~/.local/share/applications rather than in the
+> system-wide directory.
+>
+> So what I did is to integrate these local settings into the system wide
+> mime-info.cache and then restart XFCE. This fixes the problem and pinot
+> now brings up the applications I want.  Still it would be nice to have pinot
+> check the users' local settings before looking in the global cache, perhaps
+> that could be added in a future release.
+>
+That's a good point, I will add this to my TODO list for the next release.
+Thanks for spotting this.
+
+Fabrice
+
+
+From cms009 at gmail.com  Mon Jul 30 04:18:19 2007
+From: cms009 at gmail.com (Rick)
+Date: Sun, 29 Jul 2007 22:18:19 -0400
+Subject: [Pinot-discuss] Pinot 0.75
+In-Reply-To: <6538c8c80707272208x3a5353d3g76937eb5a49dc222@mail.gmail.com>
+References: <6538c8c80707272208x3a5353d3g76937eb5a49dc222@mail.gmail.com>
+Message-ID: <200707292218.19804.cms0009@gmail.com>
+
+On Saturday 28 July 2007 1:08:53 am Fabrice Colin wrote:
+> Pinot 0.75 is available. It brings some bug fixes and minor feature
+> enhancements.
+> The NEWS file has the details :
+> http://svn.berlios.de/wsvn/pinot/tags/version_0_7_5/NEWS?op=file&rev=0&sc=0
+>
+> This is likely to be the last release in the 0.7 series. The next
+> release should be
+> 0.80, and that will require Xapian 1.0.2.
+>
+> Fabrice
+> _______________________________________________
+
+
+Is there a .deb file for this newer version........
+Richard
+
+
+
+From fabrice.colin at gmail.com  Mon Jul 30 05:41:25 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 30 Jul 2007 11:41:25 +0800
+Subject: [Pinot-discuss] Pinot 0.75
+In-Reply-To: <200707292218.19804.cms0009@gmail.com>
+References: <6538c8c80707272208x3a5353d3g76937eb5a49dc222@mail.gmail.com>
+	<200707292218.19804.cms0009@gmail.com>
+Message-ID: <6538c8c80707292041v3e72c68fp69cfedbd8061ed1f@mail.gmail.com>
+
+Hi Rick,
+
+On 7/30/07, Rick <cms009 at gmail.com> wrote:
+> Is there a .deb file for this newer version........
+>
+Not yet.
+When 0.74 was released, GetDeb had packages available pretty quickly
+so hopefully they will update them soon.
+http://www.getdeb.net/app.php?name=Pinot
+
+Fabrice
+
+

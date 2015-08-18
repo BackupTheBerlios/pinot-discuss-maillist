@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090126185302.43efa13a%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000167.html">
+   <LINK REL="Next"  HREF="000169.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090126185302.43efa13a%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Mon Jan 26 18:53:02 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000167.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000169.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 26 Jan 2009 22:39:51 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> Happy Lunar New Year !
+</I>&gt;<i> 
+</I>&gt;<i> On Sun, Jan 25, 2009 at 11:36 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; I could do a lot more testing, but I need your opinion first because
+</I>&gt;<i> &gt; the tests take _time_ and you know much better what to test and what
+</I>&gt;<i> &gt; not.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; If you want to get more information about the MIME types of the
+</I>&gt;<i> &gt; fetched files I need to know what you exactly want and how to
+</I>&gt;<i> &gt; retrieve the information. Best is a fast script which takes a file
+</I>&gt;<i> &gt; as input which contains a list of files which should get checked
+</I>&gt;<i> &gt; for the MIME type.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have the complete backups of the first 4 tests if you want me to
+</I>&gt;<i> &gt; retrieve more information from them.
+</I>&gt;<i> &gt;
+</I>&gt;<i> After the interrupt at step 4, could you run these commands :
+</I>&gt;<i> $ sqlite3 ~/.pinot/history-daemon &quot;select Url from ActionQueue;&quot;
+</I>&gt;<i> $ sqlite3 ~/.pinot/history-daemon &quot;select Url, Status from
+</I>&gt;<i> CrawlHistory where Status!='CRAWLED';&quot;
+</I>&gt;<i> Are your missing files in the generated output ?
+</I>
+Yes all of them are. Only 5-10 files in every test case are missing at
+the end and not in the action queue. One of them is always 
+/home/jwerden/test and the others are in the same subdirectory tree (for
+example /home/jwerden/test/a). The subdirectory is in this case
+missing from the index, too (/home/jwerden/test/a).
+
+&gt;<i> I thought about this for a while yesterday and realized that the
+</I>&gt;<i> daemon suffers from two issues :
+</I>&gt;<i> - actions queued by a previous instance of the daemon are cleared and
+</I>&gt;<i> the corresponding files would never get indexed
+</I>&gt;<i> - nothing is done about files the interrupted instance had no time to
+</I>&gt;<i> index before exit
+</I>&gt;<i> I have checked in changes in revisions 1511 and 1512 that should fix
+</I>&gt;<i> these two issues.
+</I>&gt;<i> 
+</I>&gt;<i> If you find most, and hopefully all, missing files in the output
+</I>&gt;<i> obtained by running the commands above, could you try the latest trunk
+</I>&gt;<i> code ?
+</I>
+Made a single test with r1513 and except 5 files everything got
+indexed. Symptoms are as above.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000167.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000169.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

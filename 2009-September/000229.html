@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] High Memory consume in pinot 0.94
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20High%20Memory%20consume%20in%20pinot%200.94&In-Reply-To=%3C6538c8c80909050425w391fd8e8j5e04ec9f444c751f%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000227.html">
+   <LINK REL="Next"  HREF="000230.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] High Memory consume in pinot 0.94</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20High%20Memory%20consume%20in%20pinot%200.94&In-Reply-To=%3C6538c8c80909050425w391fd8e8j5e04ec9f444c751f%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] High Memory consume in pinot 0.94">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Sat Sep  5 13:25:45 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000227.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+        <LI>Next message: <A HREF="000230.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#229">[ date ]</a>
+              <a href="thread.html#229">[ thread ]</a>
+              <a href="subject.html#229">[ subject ]</a>
+              <a href="author.html#229">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Javier,
+
+On Thu, Sep 3, 2009 at 11:10 PM, Javier Barroso&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">javibarroso at gmail.com</A>&gt; wrote:
+&gt;<i> This morning I activate pinot in my box (debian sid)
+</I>&gt;<i>
+</I>&gt;<i> Now it was eating my memory,. and I couldn't work:
+</I>&gt;<i>
+</I>&gt;<i> Mem:&#160;&#160; 1554880k total,&#160; 1520516k used,&#160;&#160;&#160; 34364k free,&#160;&#160;&#160;&#160; 2152k buffers
+</I>&gt;<i> Swap:&#160; 1572856k total,&#160;&#160; 887856k used,&#160;&#160; 685000k free,&#160;&#160;&#160; 36572k cached
+</I>&gt;<i>
+</I>&gt;<i> &#160; PID USER&#160;&#160;&#160;&#160;&#160; PR&#160; NI&#160; VIRT&#160; RES&#160; SHR S %CPU %MEM&#160;&#160;&#160; TIME+&#160; COMMAND
+</I>&gt;<i> &#160; 194 root&#160;&#160;&#160;&#160;&#160; 15&#160; -5&#160;&#160;&#160;&#160; 0&#160;&#160;&#160; 0&#160;&#160;&#160; 0 S&#160;&#160;&#160; 7&#160; 0.0&#160;&#160; 0:06.61
+</I>&gt;<i> kswapd0
+</I>&gt;<i> &#160;8549 javi&#160;&#160;&#160;&#160;&#160; 35&#160; 15 2411m 1.2g 2360 S&#160;&#160;&#160; 3 81.8&#160; 87:04.05 pinot-dbus-daem
+</I>&gt;<i>
+</I>&gt;<i> $ du -sh .pinot
+</I>&gt;<i> 134M    .pinot
+</I>&gt;<i>
+</I>&gt;<i> Sorry, I wanted to say du -sh directory indexed == 14 G
+</I>&gt;<i>
+</I>&gt;<i> I'm trying pinot again because a post where I read about better memory
+</I>&gt;<i> consume [1]
+</I>&gt;<i>
+</I>Yes, that's right. Memory usage is lower than it used to be. I don't
+claim it's perfect though. It could certainly be enhanced.
+
+As LuJing suggested, reducing the number of background threads helps.
+This is set with the environment variable PINOT_MAXIMUM_INDEX_THREADS
+and defaults to 4.
+You may also want to increase the frequency with which memory is
+returned to the OS by setting MALLOC_TRIM_THRESHOLD_ to a value lower
+than 128kb.
+The last tunable is the size of the document buffer in Xapian, set
+with XAPIAN_FLUSH_THRESHOLD. This defaults to 10000.
+
+For instance, on my laptop, indexing 7Gb of documents with
+$ export MALLOC_TRIM_THRESHOLD_=65536
+$ export PINOT_MAXIMUM_INDEX_THREADS=1
+$ export XAPIAN_FLUSH_THRESHOLD=1000
+$ pinot-dbus-daemon --reindex
+keeps pinot-dbus-daemon's %MEM around 3%. Admittedly, I have 4Gb of
+RAM, but for comparison, Firefox with just a few tabs open is at 5%.
+Your mileage may of course vary, especially if you have large
+documents in that 14Gb corpus.
+
+I hope this helps.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000227.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+	<LI>Next message: <A HREF="000230.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#229">[ date ]</a>
+              <a href="thread.html#229">[ thread ]</a>
+              <a href="subject.html#229">[ subject ]</a>
+              <a href="author.html#229">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

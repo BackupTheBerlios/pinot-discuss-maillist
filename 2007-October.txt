@@ -1,0 +1,71 @@
+From A.Wagner at stud.uni-frankfurt.de  Mon Oct 29 00:19:15 2007
+From: A.Wagner at stud.uni-frankfurt.de (Andreas Wagner)
+Date: Mon, 29 Oct 2007 00:19:15 +0100
+Subject: [Pinot-discuss] Index huuuge
+Message-ID: <20071028231915.GB6862@hermes.commontology.de>
+
+Hi list,
+today I wanted to try pinot, have added my documents folder to be indexed and let pinot do its thing. The folder has 
+some 3100 files, most of them pdf files. It is 1.5Gb.
+But after some time of heavy indexing, I had to kill pinot-daemon because my home dir was short of being full. The 
+index occupied 1.6Gb at that time and the gui said it had some 2.600 files indexed.
+
+Is that space usage normal?
+
+Andreas
+
+PS. Please CC me personally, as I am not subscribed to the list. Ty
+
+-- 
+Real programmers don't document. 
+If it was hard to write, it should be hard to understand.
+
+-- 
+My Public PGP Keys:
+1024 Bit DH/DSS: 0x869F81BA
+768 Bit RSA:     0x1AD97BA5
+
+
+From fabrice.colin at gmail.com  Mon Oct 29 12:38:03 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 29 Oct 2007 19:38:03 +0800
+Subject: [Pinot-discuss] Index huuuge
+In-Reply-To: <20071028231915.GB6862@hermes.commontology.de>
+References: <20071028231915.GB6862@hermes.commontology.de>
+Message-ID: <6538c8c80710290438u58067786q7e07e4bcf965e8cc@mail.gmail.com>
+
+Hi Andreas,
+
+On 10/29/07, Andreas Wagner <A.Wagner at stud.uni-frankfurt.de> wrote:
+> today I wanted to try pinot, have added my documents folder to be
+> indexed and let pinot do its thing. The folder has some 3100 files,
+> most of them pdf files. It is 1.5Gb. But after some time of heavy
+> indexing, I had to kill pinot-daemon because my home dir was short
+> of being full. The index occupied 1.6Gb at that time and the gui
+> said it had some 2.600 files indexed.
+>
+> Is that space usage normal?
+>
+Are you using Pinot 0.76 with Xapian 1.0.3 ? On Arch Linux ? ;-)
+
+Can you email the output of "du -hsc ~/.pinot/daemon/*" ?
+
+First off, you may want to have a look at the indexing scheme used in v0.76.
+It's documented at http://www.xapian.org/docs/termgenerator.html
+Note that stemming applies only to documents for which Pinot was able to
+detect the language. Pinot also builds a spelling database, which can add up
+quite a bit to the size of the index.
+
+The size of the index depends on the nature of the documents corpus. Say,
+if all documents cover the same topic and are in the same language, they will
+share a lot of terms and that should result in a smaller index.
+
+With taking all these into consideration, I am surprised that your
+index is bigger
+than the source documents. That's not something I have seen so far... To give
+you an idea, I have a 700Mb index based on 40k documents, totaling 9Gb
+of data. 250Mb is taken by the spelling database.
+
+Fabrice
+
+

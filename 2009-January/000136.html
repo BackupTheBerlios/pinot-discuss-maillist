@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090111164148.1323f56f%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000135.html">
+   <LINK REL="Next"  HREF="000137.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090111164148.1323f56f%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">jwerden at hotpop.com
+       </A><BR>
+    <I>Sun Jan 11 16:41:48 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000135.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+        <LI>Next message: <A HREF="000137.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#136">[ date ]</a>
+              <a href="thread.html#136">[ thread ]</a>
+              <a href="subject.html#136">[ subject ]</a>
+              <a href="author.html#136">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 11 Jan 2009 18:59:46 +0800
+&quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Sun, Jan 11, 2009 at 5:46 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; what failed:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - make install (beta4/svn 1478) if I use it to overwrite an existing
+</I>&gt;<i> &gt;  installation:
+</I>&gt;<i> &gt;
+</I>&gt;<i> Thanks ! Fixed in SVN r1480.
+</I>
+Yes, works now.
+
+&gt;<i> &gt; - Logfile problems:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (did exist in .88(!)/.89(?), but did not spot in beta3)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (1) Garbage in logfile:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset
+</I>&gt;<i> &gt; indows-1252HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt; HTML parser doesn't support charset windows-1252
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (2) Rotated output:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Quitting...
+</I>&gt;<i> &gt; Exiting...
+</I>&gt;<i> &gt; Scanned /jwerden/bin in 57539 ms
+</I>&gt;<i> &gt;
+</I>&gt;<i> I wouldn't worry about those two. Threads are left to write to the log
+</I>&gt;<i> file without any synchronization on purpose, and as a result messages
+</I>&gt;<i> might get mixed up.
+</I>
+Ok
+ 
+&gt;<i> &gt; - Number of files indexed in &quot;My Documents&quot; sometimes to small
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; After I tested several times if the daemon can handle kill/start
+</I>&gt;<i> &gt; while indexing, I found out that the number of indexed files
+</I>&gt;<i> &gt; reported and listed by pinot was sometimes less than the number of
+</I>&gt;<i> &gt; files which needs to get indexed after indexing was done. This
+</I>&gt;<i> &gt; varied from test to test, where a test was a complete reindex from
+</I>&gt;<i> &gt; blank state with several interruptions.
+</I>&gt;<i> &gt;
+</I>
+&gt;<i> For this last issue, did you get the figure from the number of indexed
+</I>&gt;<i> documents shown in the UI, when browsing an index, or as displayed by
+</I>&gt;<i> the status window ?
+</I>
+I used Options -&gt; List Contents of -&gt; My Documents.
+
+&gt;<i> If you are looking at it right after the daemon finishes the initial
+</I>&gt;<i> indexing run, it may be a bit off if the daemon hasn't yet flushed
+</I>&gt;<i> everything to disk.
+</I>
+I checked it after I killed the daemon.
+
+&gt;<i> The latest README mentions a 'pinot-stats' alias. The second figure
+</I>
+The latest README is only in the beta4.tar.gz, not in the repository.
+
+Are there othere differences between the repo and the tar.gz? Sometimes
+I built from the repo, sometimes from the beta. Don't want to see any
+strange effects because of this.
+
+&gt;<i> this command returns should be the exact number of documents in your
+</I>&gt;<i> My Documents index.
+</I>
+Same numbers as with pinot client.
+
+&gt;<i> If that doesn't show the number you expect, you could generate a list
+</I>&gt;<i> of all indexed files and see if anything obvious is missing. There are
+</I>&gt;<i> two ways :
+</I>&gt;<i> - browse the index and export each page using the Options, Export
+</I>&gt;<i> List menu
+</I>&gt;<i> - run the pinot-enum-index.sh script to get the whole list of files in
+</I>&gt;<i> ~/.pinot/daemon/urls.txt :
+</I>&gt;<i>    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+</I>&gt;<i>   Get this script from SVN r1479, it's got a minor fix.
+</I>
+Did it using the shell script, number is the same - around a third of
+all files got not indexed. The missing files seems to be from random
+folders after I made some random checks and glimpsed over the whole
+thing (But some folders weren't indexed at all).
+
+A better check would force me to write a script with some string
+operations which I'm not really hot for right now. I will write it
+later if you really need it.
+
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000135.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+	<LI>Next message: <A HREF="000137.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#136">[ date ]</a>
+              <a href="thread.html#136">[ thread ]</a>
+              <a href="subject.html#136">[ subject ]</a>
+              <a href="author.html#136">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

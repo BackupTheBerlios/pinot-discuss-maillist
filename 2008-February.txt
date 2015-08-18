@@ -1,0 +1,167 @@
+From javibarroso at gmail.com  Wed Feb 27 11:11:28 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Wed, 27 Feb 2008 11:11:28 +0100
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+Message-ID: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+
+Hi,
+
+I installed pinot yesterday on my debian sid box.
+
+Today I can see at my top sorter by memory pinot-dbus-daemon the first:
+ PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+
+COMMAND
+ 9723 javi      35  15  476m 323m 3624 S    0 32.2  38:28.18 pinot-dbus-daem
+
+
+The directories I'm indexing have 37 GB my home and 420 M my /usr/share/doc
+
+How much memory for pinot-dbus-daemon is expected (I think 320m is too big)
+?
+
+How much disk space ? (5 %)?
+
+Thank you
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080227/77328f93/attachment.html>
+
+From fabrice.colin at gmail.com  Wed Feb 27 16:54:13 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 27 Feb 2008 23:54:13 +0800
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+Message-ID: <6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+
+Hi Javier,
+
+On Wed, Feb 27, 2008 at 6:11 PM, Javier Barroso <javibarroso at gmail.com> wrote:
+> I installed pinot yesterday on my debian sid box.
+>
+> Today I can see at my top sorter by memory pinot-dbus-daemon the first:
+>  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+>   9723 javi      35  15  476m 323m 3624 S    0 32.2  38:28.18
+> pinot-dbus-daem
+>
+> The directories I'm indexing have 37 GB my home and 420 M my
+> /usr/share/doc
+>
+> How much memory for pinot-dbus-daemon is expected (I think 320m is
+> too big) ?
+> How much disk space ? (5 %)?
+>
+It's hard to say. How many documents does Pinot say you have in your
+"My Documents" ? Can you also run "du -hsc ~/.pinot/daemon/*" and
+report the output ?
+
+I admit I haven't spent much time looking into memory usage. Andreas
+Wagner asked a similar question back in November and I wasn't of
+much help at the time ;-) Apologies to Andreas by the way.
+Take a look at the "Index huuuge" thread here :
+https://lists.berlios.de/pipermail/pinot-discuss/2007-November/thread.html
+
+I haven't seen the daemon use as much memory so would agree with
+you it's too much. Here, for instance, I use it to index documents that take
+18Gb of disk space. Not all of them are text documents. After indexing
+them all, the daemon uses 120Mb of memory.
+Anyway, the good news is that once your documents have been indexed,
+subsequent runs will consume much less memory. If you restart the
+daemon (see the README for details), it should only use a reasonable
+amount.
+
+By the way, 0.82 has a bug that prevents the daemon from indexing
+all documents in one swoop. 0.83 should be out in a few days time.
+Once the Debian package has been updated to 0.83, would you be
+able to try this again and reindex from scratch ?
+
+Fabrice
+
+
+From javibarroso at gmail.com  Wed Feb 27 23:24:54 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Wed, 27 Feb 2008 23:24:54 +0100
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+Message-ID: <81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+
+On Wed, Feb 27, 2008 at 4:54 PM, Fabrice Colin <fabrice.colin at gmail.com>
+wrote:
+
+> Hi Javier,
+>
+> It's hard to say. How many documents does Pinot say you have in your
+> "My Documents" ? Can you also run "du -hsc ~/.pinot/daemon/*" and
+> report the output ?
+
+
+Currently my .pinot/daemon directory has 1.5 G (~ 5% of my home). I will
+count how many documents are on "My documents" on Monday (when I'll return
+from my hollidays)
+
+
+> By the way, 0.82 has a bug that prevents the daemon from indexing
+> all documents in one swoop. 0.83 should be out in a few days time.
+> Once the Debian package has been updated to 0.83, would you be
+> able to try this again and reindex from scratch ?
+
+
+I'll try reindex with 0.83 when it hits sid and I'll post the result in this
+thread
+
+Thank you
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080227/12c2f2a8/attachment.html>
+
+From fabrice.colin at gmail.com  Thu Feb 28 02:06:57 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 28 Feb 2008 09:06:57 +0800
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+Message-ID: <6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+
+On Thu, Feb 28, 2008 at 6:24 AM, Javier Barroso <javibarroso at gmail.com> wrote:
+> On Wed, Feb 27, 2008 at 4:54 PM, Fabrice Colin <fabrice.colin at gmail.com>
+> wrote:
+>  Currently my .pinot/daemon directory has 1.5 G (~ 5% of my home). I will
+> count how many documents are on "My documents" on Monday (when I'll return
+> from my hollidays)
+>
+Ok. If you open pinot, and either go to the Session, Status menu or
+use Index, List Contents Of, My Documents, you will see immediately
+how many documents there are in the Status window, or in the status
+bar at the bottom.
+
+> > By the way, 0.82 has a bug that prevents the daemon from indexing
+> > all documents in one swoop. 0.83 should be out in a few days time.
+> > Once the Debian package has been updated to 0.83, would you be
+> > able to try this again and reindex from scratch ?
+>
+>  I'll try reindex with 0.83 when it hits sid and I'll post the result in
+> this thread
+>
+Thanks for that.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Thu Feb 28 13:38:52 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 28 Feb 2008 20:38:52 +0800
+Subject: [Pinot-discuss] Pinot 0.83
+Message-ID: <6538c8c80802280438i6b7cbec2l1e3124cbb873dacf@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.83 is available :
+http://developer.berlios.de/blog/archives/164-Pinot-0.83-is-out..html
+
+Fabrice
+
+

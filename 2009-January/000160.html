@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C6538c8c80901231831k21486199hc9859c2c90037d3d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000159.html">
+   <LINK REL="Next"  HREF="000161.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C6538c8c80901231831k21486199hc9859c2c90037d3d%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Sat Jan 24 03:31:45 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000159.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000161.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#160">[ date ]</a>
+              <a href="thread.html#160">[ thread ]</a>
+              <a href="subject.html#160">[ subject ]</a>
+              <a href="author.html#160">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Fri, Jan 23, 2009 at 9:26 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> On Thu, 22 Jan 2009 22:44:38 +0800
+</I>&gt;<i> Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> OK. What's the issue with &quot;lost data&quot; that you came across when
+</I>&gt;&gt;<i> interrupting the daemon ?
+</I>&gt;<i>
+</I>&gt;<i> There are 2 issues:
+</I>&gt;<i>
+</I>&gt;<i> The first issue is that the database won't be complete after a full
+</I>&gt;<i> scan if I interrupted the scan and continued it later.
+</I>&gt;<i>
+</I>You need to find out what files are missing. Then we can start digging deeper.
+
+&gt;&gt;<i> Ah I see. Can you post the log messages between &quot;Quitting...&quot; and the
+</I>&gt;&gt;<i> end of file when this error is logged ?
+</I>&gt;<i>
+</I>&gt;<i> Looks everytime different and sometimes there are no other messages
+</I>&gt;<i> after Quitting except:
+</I>&gt;<i>
+</I>&gt;<i> Exiting...
+</I>&gt;<i> Bad index /home/jwerden/.pinot/daemon
+</I>&gt;<i>
+</I>&gt;<i> (error one or several times)
+</I>&gt;<i>
+</I>&gt;<i> And there are other times when there are messages between and after
+</I>&gt;<i> Quitting/Exiting and the error does not appear.
+</I>&gt;<i>
+</I>Actually this message could have been better phrased. It makes it
+sound like the index is corrupted, whereas in fact it just means it
+couldn't be open, eg because the application is exiting and indexes
+were closed by the main thread.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000159.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000161.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#160">[ date ]</a>
+              <a href="thread.html#160">[ thread ]</a>
+              <a href="subject.html#160">[ subject ]</a>
+              <a href="author.html#160">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

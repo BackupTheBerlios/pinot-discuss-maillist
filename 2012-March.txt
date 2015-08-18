@@ -1,0 +1,138 @@
+From bogus@does.not.exist.com  Wed Mar 14 16:00:45 2012
+From: bogus@does.not.exist.com ()
+Date: Wed, 14 Mar 2012 15:00:45 -0000
+Subject: No subject
+Message-ID: <mailman.0.1331737245.9060.pinot-discuss@lists.berlios.de>
+
+> The problems:
+>
+> At first I used pinot with dictionary enabled, before i rebuilt my
+> index with a disabled dictionary. What I found out before I disabled it
+> thought, was that the frontend had a liking to annoy the user anytime
+> with its corrections about the search term and 'popped up' the prepared
+> query list showing a corrected search term (I closed it, because I
+> don't need it and it wastes space on my screen).
+>
+> I think it would be better to remove that annoyance, it's like what
+> google does, when you enter an unusual search term and it wants to tell
+> you that it knows everything better. Maybe using a query option to
+> search for similar terms in the dictionary and/or list similar queries
+> at request would be less intrusive.
+>
+Okay. I realize the current mechanism is far from ideal and can be
+disruptive. Would it be less disruptive if the spelling suggestion was
+displayed inline, in the results list. A click on it would then create
+a corrected stored query.
+
+Did you find indexing was much slower with spelling enabled ? How much
+bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+
+> The second problem I got, is that pinot always seems to show only 10
+> results even thought there are a lot more. I want to harvest through a
+> lot of files and getting only 10 and not several thousand i need (and
+> want to scroll through at one time and not flip pages) does not help
+> me. I checked out the configuration dialog for stored queries which
+> only allows up to 100 results, but I don't use it, so I don't care
+> about that.
+>
+As you noticed, the "Live query" is limited to 10 results and there's
+no way to increase the value. It sounds like I need to let users
+remove the limit on the number of results, for both "Live query" and
+stored queries.
+Did you try using stored queries to filter the index list while
+browsing. If you choose the "Index, List Contents Of My Documents"
+menu, this will list all your documents. This list can be filtered
+with a stored query, using the combo box next to the Previous and Next
+buttons. In this case, the query's maximum number of results doesn't
+apply. This should allow you to get the complete list of documents
+matching the query.
+
+> The third is related to the status window. If I open the status window,
+> the pinot frontend freezes everytime it fetches the new status from the
+> daemon for several seconds or longer (no redraw, no scrolling possible),
+> which makes it hard to follow the status change of the daemon or use
+> the main window at the same time.
+>
+That's true, especially if the daemon is busy. I will look into fixing this.
+
+> What I think where pinot should improve (heavily influenced by prior
+> tracker usage):
+>
+> - the configuration dialog should be standalone.
+>
+Standalone, as in a separate program ? This can be done.
+
+> - the configuration file should be more human readable (like tracker
+>  with ini-style/helpful comments).
+>
+Did you find you had to edit the configuration file manually ? For
+what setting ? Ideally, users shouldn't have to. If you let me know
+what setting should be made editable, I can add it to the preferences
+dialog.
+
+> - the user should be able to see what the daemon does right now
+>  (indexing, handling queries and which queries).
+>
+Okay, that's fair enough. Only queries coming though the D-Bus
+interface are handled by the daemon; queries run through the Pinot UI
+are handled there.
+
+> - for large requests, pinot should send partial answers as it fetches
+>  the results, instead of letting the user wait for maybe several
+>  minutes.
+>
+In what case did you have to wait for several minutes ?
+I'd be interested to know what kind of query takes that long, and how
+many results out of your 400k this query brought back. Do you have
+that information ?
+I think what you suggest may be possible, I'll have to look into it.
+
+> - the user should be able to abort the execution of queries.
+>
+Sure. I was planning to work on this in the near future.
+
+> - pinot should work with LARGE results. I want to walk through possible
+>  thousands of files per query and i don't want to set an upper limit of
+>  results (in other words: worst case with all indexed files as result).
+>
+The browse+filter method described above was actually designed to help
+with this. Let me know what you think of it.
+
+> - the system is too techy. I don't even know which search engine is
+>  used for "my documents" if I want to use pinot-search. (Yes, it is in
+>  the documentation and i read it, but if i have to reread the
+>  documentation everytime i want to use the console tools instead of
+>  the gtk frontend, it becomes a hassle). Remembering the syntax for
+>  search queries was not a problem.
+>
+Okay, I will look into simplifying those.
+
+> - there are no small command line tools like tracker-status/stats which
+>  print out the status of the daemon or allow to interact with him
+>  beyond search and index.
+>
+The stats shown in the status window can be had on the command-line,
+using dbus-send. The 2nd screencast at
+http://pinot.berlios.de/screenshots.html shows how this is done, even
+though the version the screencast was generated with only returned the
+number of crawled documents and the number of documents in the index.
+See how the GetStatistics method is used at
+http://pinot.berlios.de/documentation.html
+I agree this could definitely be improved. What other interaction did
+you have in mind ?
+
+> - The option for disabling the dictionary should be made visible the
+>  first time the user starts the configuration dialog and sets the
+>  initial configuration for pinot.
+>
+Okay, that's fair enough.
+
+Thanks for taking the time to email us with these suggestions. This
+kind of feedback is exactly what I am after. Let me know if the above
+makes sense or if I have missed anything.
+
+Cheers.
+
+Fabrice
+
+

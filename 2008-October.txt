@@ -1,0 +1,1026 @@
+From fabrice.colin at gmail.com  Wed Oct  1 09:22:10 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 1 Oct 2008 15:22:10 +0800
+Subject: [Pinot-discuss] New screencasts
+Message-ID: <6538c8c80810010022h8ae6718r1c7b5069c176932c@mail.gmail.com>
+
+I have taken a few hours to do some new screencasts that show-case
+Pinot's features. Head to the screenshots page at
+http://pinot.berlios.de/screenshots.html to see them.
+Happy Eid, happy Hari Raya Aidilfitri !
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Wed Oct  8 14:06:58 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 8 Oct 2008 20:06:58 +0800
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <6538c8c80810080506y326d8ce5q3ae9328696ffea52@mail.gmail.com>
+
+Hi John,
+
+On Wed, Oct 8, 2008 at 12:12 PM, John Werden <johnny666 at email.com> wrote:
+> I use pinot to index over 400,000 files which range from documents over
+> images to source code, archives and music. Documents and filenames are
+> in different languages and i use pinot to search for names and words
+> not in any dictionary so i disabled that option. Pinot already indexed
+> half of the files in a day, which is much faster than tracker i tried
+> before (but i used tracker to create thumbnails at the same time).
+> I don't use pinot to search the internet at the moment. The reason why i
+> choose pinot over tracker was that it had far superior search options
+> and its speed.
+>
+
+From johnny666 at email.com  Wed Oct  8 20:21:47 2008
+From: johnny666 at email.com (John Werden)
+Date: Wed, 8 Oct 2008 13:21:47 -0500
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <20081008182147.4F95F32675A@ws1-8.us4.outblaze.com>
+
+
+> ----- Original Message -----
+> From: "Fabrice Colin" <fabrice.colin at gmail.com>
+> To: "John Werden" <johnny666 at email.com>
+> Subject: Re: pinot 0.88 problems and suggestions
+> Date: Wed, 8 Oct 2008 20:06:58 +0800
+
+>  From your experience, how much faster is it ? What OS and box is this on ?
+
+I use pinot 0.88 on archlinux (rolling release distribution). 
+Machine is a 1.6 GHz amd64 running in 64bit mode and 1GiByte RAM 
+and 5 GByte swap space. Xfce runs as window manager.
+
+Pinot needed ~2 days to index all my files, tracker needed 3 days, 
+but it would have taken another 10 days WITHOUT turning the machine 
+off or stopping tracker (worst case, I don't know) to built the 
+final index.
+
+Both don't use much memory. I did not change the inotify 
+configuration, which makes it highly possible, that pinot does not 
+watch all files.
+
+I can't compare the search speed, because tracker doesn't seem to 
+be able to show all search results while the final index is built 
+and I had to drop it because of this problem, before I could test 
+all its capabilities.
+
+> Okay. I realize the current mechanism is far from ideal and can be
+> disruptive. Would it be less disruptive if the spelling suggestion was
+> displayed inline, in the results list. A click on it would then create
+> a corrected stored query.
+
+I think the idea of stored queries themselves is bad implemented, 
+because to use all the advanced options you have first to built one 
+instead of just using the Live Query. (I found out how you can 
+display all the results in 'My Documents' and you NEED to use 
+stored queries for this feature, which disrupts my workflow).
+
+For me, it would be enough if I could check some box 'search for 
+similar words' or use a button [list similar] and choose from a 
+displayed list of similar queries. But this is more about taste, 
+because it annoys me to death if a search engine tells me what to 
+search for (worse, if the corrections are WRONG or plain stupid 
+which makes me facepalm).
+
+The idea with clicking on a possible alternative (not correction!) 
+isn't bad, if it adds something for the user like enhanced queries. 
+At least it's much better than how it works right now.
+
+But the idea to correct/educate the user itself (except he wants 
+it) is bad, because it says implicitly 'you are stupid'. Enhancing 
+his _possibilities_ on the other side is a good idea.
+
+> Did you find indexing was much slower with spelling enabled ? How much
+> bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+
+No, it wasn't much slower for me. I can only give highly subjective 
+answers, but I think it would have taken maybe 4 days at worst case 
+for building the index instead of 2. Maybe it would have taken the 
+same amount of time as without the dictionary.
+
+As far as I remember the dictionary had the size ratio as told in 
+the documentation. Right now the complete dictionary 
+~/.pinot/daemon is 780 MiByte large. But I have a lot of free 
+GiBytes free, I would not care if it uses several of them.
+
+> As you noticed, the "Live query" is limited to 10 results and there's
+> no way to increase the value. It sounds like I need to let users
+> remove the limit on the number of results, for both "Live query" and
+> stored queries.
+
+I think this is a good idea.
+
+> Did you try using stored queries to filter the index list while
+> browsing. If you choose the "Index, List Contents Of My Documents"
+> menu, this will list all your documents. This list can be filtered
+> with a stored query, using the combo box next to the Previous and Next
+> buttons. In this case, the query's maximum number of results doesn't
+> apply. This should allow you to get the complete list of documents
+> matching the query.
+
+Yes, I just found out how to use the stored query feature with 'My 
+Documents'. It seems inconsistent, because first I tried it with 
+opening 'My Documents' and running the stored query out of the 'v 
+Stored Queries' Subwindow. Only later did I see that you have to 
+use select the stored query from a drop down menu, instead of just 
+running it.
+
+(I know you described how to do it in complete here, but I came to 
+the first line and was already all over pinot instead of reading 
+the whole paragraph, but it still shows that the GUI is too 
+complex).
+
+> Standalone, as in a separate program ? This can be done.
+
+Yes, in a separate program. If that happens other programs which 
+use pinot as a backend don't need to implement their own 
+configurator, but can instead run the program.
+
+> Did you find you had to edit the configuration file manually ? For
+> what setting ? Ideally, users shouldn't have to. If you let me know
+> what setting should be made editable, I can add it to the preferences
+> dialog.
+
+No, I had not, but I opened it, because I wanted to see all options 
+in case I had not made the best out of the configuration or the gui 
+did not show everything. As said, I'm heavy influenced after using 
+tracker. (But I don't think tracker had a command to reread the 
+configuration file and you had to use the configurator for the 
+daemon to recognize the changed options at runtime.)
+
+> Okay, that's fair enough. Only queries coming though the D-Bus
+> interface are handled by the daemon; queries run through the Pinot UI
+> are handled there.
+
+Thank you for that information, it helps me to understand how pinot 
+works much better.
+
+> In what case did you have to wait for several minutes ?
+
+I used catfish to request everything in my "dir:/docs" (42k indexed 
+files) and the connection timed out with the following message on 
+the console after some seconds:
+
+"Debug: org.freedesktop.DBus.Error.NoReply: Did not receive a 
+reply. Possible causes include: the remote application did not send 
+a reply, the message bus security policy blocked the reply, the 
+reply timeout expired, or the network connection was broken."
+
+after the message was displayed, the cpu was still busy for some seconds.
+
+For a more thorough test of search times, see below.
+
+> I'd be interested to know what kind of query takes that long, and how
+> many results out of your 400k this query brought back. Do you have
+> that information ?
+> I think what you suggest may be possible, I'll have to look into it.
+
+As I now watched the gif animation, I made some tests with the 
+following command:
+
+time pinot-search --max <x> xapian ~/.pinot/daemon "dir:/docs" > /dev/zero
+
+The machine was more or less idle and had enough free ram. As said 
+above, /docs has around 42k indexed files.
+
+I have to note, that times can vary greatly and can double or half 
+for the small result numbers. I didn't made a complete test with 
+several iterations and computing the average, but the numbers 
+should still give some hints:
+
+max 10 results:
+
+real	0m0.210s
+user	0m0.130s
+sys	0m0.010s
+
+max 100 results:
+
+real	0m0.274s
+user	0m0.210s
+sys	0m0.007s
+
+max 1k results:
+
+real	0m1.288s
+user	0m0.953s
+sys	0m0.050s
+
+max 10k results:
+
+real	0m10.241s
+user	0m7.380s
+sys	0m0.297s
+
+max 100k results:
+
+real	1m17.522s
+user	1m6.226s
+sys	0m1.557s
+
+I made a second test and piped the result of the 100k result and it 
+returned everything as wanted.
+
+As you can see, waiting for all results takes over a minute. Giving 
+some faster intermediate response (except the busy lights) can help 
+a lot. Intermediate results could be for example partial results 
+(good) or numbers of results still to fetch (bad, because the user 
+has still to wait a minute before he can proceed and maybe the 
+first results had already what he wanted or he changed his mind, 
+because the query was stupid).
+
+> The browse+filter method described above was actually designed to help
+> with this. Let me know what you think of it.
+
+As I said above, I think it's to complex and hidden. The user has 
+to use nonintuitive and long ways to make such queries and to walk 
+through them (the 100 results per page limit).
+
+As the user already needs to select the searchengine/location in 
+the 'Search Engines' Tab, before he can really use the Live Query 
+or stored queries, He should not need to discern betwen stored 
+queries in the list and the drop down list, just because the second 
+removes the limit.
+
+There should also be a way to use the ['add filter or range'] 
+[+add] in the Live Query to build more complex queries on the fly, 
+which could then be stored as stored queries.
+
+Sidenote: Choosing the searchengine itself should be visible all 
+the time, but it takes too much spaces if i want too, maybe a 
+dropdown list (but that would possibly disable multiselection, so I 
+don't know)? Right now I have to open/close the list of 
+searchengines some times, because the used search engine changes, 
+which is not visible, if it is not open. But if I don't close it, 
+it wastes a lot of space the time I don't need it.
+
+> Okay, I will look into simplifying those.
+
+A more descriptive help dialog for pinot-search with the complete 
+syntax would already help a lot instead of only examples. It would 
+lessen the barrier for developers/scripters/users to write their 
+own backends or test if everything works right.
+
+> The stats shown in the status window can be had on the command-line,
+> using dbus-send. The 2nd screencast at
+> http://pinot.berlios.de/screenshots.html shows how this is done, even
+> though the version the screencast was generated with only returned the
+> number of crawled documents and the number of documents in the index.
+> See how the GetStatistics method is used at
+> http://pinot.berlios.de/documentation.html
+> I agree this could definitely be improved. What other interaction did
+> you have in mind ?
+
+Right now, I don't have other interactions in my mind.
+
+Maybe showing the configuration on the fly, incase the user wants 
+to make sure, he configured everything right (helps if you are 
+already on the console and don't want to switch). Because the 
+console program can just dump the formatted configuration file, it 
+takes less time to read through everything instead of opening the 
+configurator and walking through the tabs.
+
+> Thanks for taking the time to email us with these suggestions. This
+> kind of feedback is exactly what I am after. Let me know if the above
+> makes sense or if I have missed anything.
+
+Your program is great, so I enjoyed the time working the stuff out. 
+My mail is already long enough and I don't know what to write 
+anymore. If there is something else I will send another mail.
+
+John
+
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From johnny666 at email.com  Thu Oct  9 04:40:11 2008
+From: johnny666 at email.com (John Werden)
+Date: Wed, 8 Oct 2008 21:40:11 -0500
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <20081009024011.E02B111581F@ws1-7.us4.outblaze.com>
+
+
+> ----- Original Message -----
+> From: "John Werden" <johnny666 at email.com>
+> To: "Fabrice Colin" <fabrice.colin at gmail.com>
+> Subject: Re: [Pinot-discuss] pinot 0.88 problems and suggestions
+> Date: Wed, 8 Oct 2008 13:21:47 -0500
+
+> Maybe showing the configuration on the fly, incase the user wants
+> to make sure, he configured everything right (helps if you are
+> already on the console and don't want to switch). Because the
+> console program can just dump the formatted configuration file, it
+> takes less time to read through everything instead of opening the
+> configurator and walking through the tabs.
+
+Please forget what I said above, was stupid talk.
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From fabrice.colin at gmail.com  Thu Oct  9 14:17:06 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 9 Oct 2008 20:17:06 +0800
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+In-Reply-To: <20081008182147.4F95F32675A@ws1-8.us4.outblaze.com>
+References: <20081008182147.4F95F32675A@ws1-8.us4.outblaze.com>
+Message-ID: <6538c8c80810090517j4f8c8c49lccd74d1b5e4b05d8@mail.gmail.com>
+
+Hi John,
+
+On Thu, Oct 9, 2008 at 2:21 AM, John Werden <johnny666 at email.com> wrote:
+>> From: "Fabrice Colin" <fabrice.colin at gmail.com>
+> Pinot needed ~2 days to index all my files, tracker needed 3 days,
+> but it would have taken another 10 days WITHOUT turning the machine
+> off or stopping tracker (worst case, I don't know) to built the
+> final index.
+>
+> Both don't use much memory. I did not change the inotify
+> configuration, which makes it highly possible, that pinot does not
+> watch all files.
+>
+In the list of directories to index, if the Monitor checkbox is
+activated for your docs directory, Pinot will attempt to monitor all
+files in that directory. There's a limit on the number of files a
+process can watch with inotify, so most probably not all your 400k
+files will be watched. The Status window won't show any error for this
+though.
+
+> I can't compare the search speed, because tracker doesn't seem to
+> be able to show all search results while the final index is built
+> and I had to drop it because of this problem, before I could test
+> all its capabilities.
+>
+Okay. Being able to search while indexing is a big plus that Xapian gives us.
+
+> For me, it would be enough if I could check some box 'search for
+> similar words' or use a button [list similar] and choose from a
+> displayed list of similar queries. But this is more about taste,
+> because it annoys me to death if a search engine tells me what to
+> search for (worse, if the corrections are WRONG or plain stupid
+> which makes me facepalm).
+>
+> The idea with clicking on a possible alternative (not correction!)
+> isn't bad, if it adds something for the user like enhanced queries.
+> At least it's much better than how it works right now.
+>
+> But the idea to correct/educate the user itself (except he wants
+> it) is bad, because it says implicitly 'you are stupid'. Enhancing
+> his _possibilities_ on the other side is a good idea.
+>
+I agree, and will look into changing how alternative spellings are suggested.
+
+>> Did you find indexing was much slower with spelling enabled ? How much
+>> bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+>
+> No, it wasn't much slower for me. I can only give highly subjective
+> answers, but I think it would have taken maybe 4 days at worst case
+> for building the index instead of 2. Maybe it would have taken the
+> same amount of time as without the dictionary.
+>
+> As far as I remember the dictionary had the size ratio as told in
+> the documentation. Right now the complete dictionary
+> ~/.pinot/daemon is 780 MiByte large. But I have a lot of free
+> GiBytes free, I would not care if it uses several of them.
+>
+Is that the size of the spelling database at
+~/.pinot/daemon/spelling.DB ? What about the whole index ?
+How much space do your documents take on the disk, altogether ?
+If your documents collection is static, you could try compacting the
+index at ~/.pinot/daemon with xapian-compact. See the FAQ
+(http://svn.berlios.de/wsvn/pinot/trunk/FAQ). It will take a long a
+while to compact such a big index though.
+
+>> Did you try using stored queries to filter the index list while
+>> browsing. If you choose the "Index, List Contents Of My Documents"
+>> menu, this will list all your documents. This list can be filtered
+>> with a stored query, using the combo box next to the Previous and Next
+>> buttons. In this case, the query's maximum number of results doesn't
+>> apply. This should allow you to get the complete list of documents
+>> matching the query.
+>
+> Yes, I just found out how to use the stored query feature with 'My
+> Documents'. It seems inconsistent, because first I tried it with
+> opening 'My Documents' and running the stored query out of the 'v
+> Stored Queries' Subwindow. Only later did I see that you have to
+> use select the stored query from a drop down menu, instead of just
+> running it.
+>
+> (I know you described how to do it in complete here, but I came to
+> the first line and was already all over pinot instead of reading
+> the whole paragraph, but it still shows that the GUI is too
+> complex).
+>
+There's several reasons for the limit on the number of results, and
+the existence of search and browse modes :
+- it's not practical to show thousands of results in the results
+tree/list. The GUI would become sluggish and unresponsive.
+- for full text searches, usually the desired documents are in the top
+10 or 20 results.
+- search mode is designed for viewing results, comparing results
+between engines, digging deeper with More Like or Search This For, and
+indexing results locally
+- browse mode is designed for exploring the corpus, viewing documents
+and editing their properties (labels, metadata...)
+Anyway, I am not saying it's perfect. As you point out, there's a lot
+of room for improvement.
+
+>> Did you find you had to edit the configuration file manually ? For
+>> what setting ? Ideally, users shouldn't have to. If you let me know
+>> what setting should be made editable, I can add it to the preferences
+>> dialog.
+>
+> No, I had not, but I opened it, because I wanted to see all options
+> in case I had not made the best out of the configuration or the gui
+> did not show everything. As said, I'm heavy influenced after using
+> tracker. (But I don't think tracker had a command to reread the
+> configuration file and you had to use the configurator for the
+> daemon to recognize the changed options at runtime.)
+>
+Yes, in recent versions of Pinot, configuration changes are picked up
+by the daemon right away.
+
+>> In what case did you have to wait for several minutes ?
+>
+> I used catfish to request everything in my "dir:/docs" (42k indexed
+> files) and the connection timed out with the following message on
+> the console after some seconds:
+>
+> "Debug: org.freedesktop.DBus.Error.NoReply: Did not receive a
+> reply. Possible causes include: the remote application did not send
+> a reply, the message bus security policy blocked the reply, the
+> reply timeout expired, or the network connection was broken."
+>
+> after the message was displayed, the cpu was still busy for some seconds.
+>
+I see. The D-Bus search method is quite basic at the moment and
+returns all results in one go. If there's a large number of results,
+the reply timeout will kick in while the daemon is still looking for
+matches. This won't cancel the query however, and the daemon will keep
+searching, which explains why your system was still busy.
+
+> As I now watched the gif animation, I made some tests with the
+> following command:
+>
+> time pinot-search --max <x> xapian ~/.pinot/daemon "dir:/docs" > /dev/zero
+>
+> The machine was more or less idle and had enough free ram. As said
+> above, /docs has around 42k indexed files.
+>
+> I have to note, that times can vary greatly and can double or half
+> for the small result numbers. I didn't made a complete test with
+> several iterations and computing the average, but the numbers
+> should still give some hints:
+> ...
+> I made a second test and piped the result of the 100k result and it
+> returned everything as wanted.
+>
+> As you can see, waiting for all results takes over a minute. Giving
+> some faster intermediate response (except the busy lights) can help
+> a lot. Intermediate results could be for example partial results
+> (good) or numbers of results still to fetch (bad, because the user
+> has still to wait a minute before he can proceed and maybe the
+> first results had already what he wanted or he changed his mind,
+> because the query was stupid).
+>
+I have some idea as to how to fix this.
+
+>> The browse+filter method described above was actually designed to help
+>> with this. Let me know what you think of it.
+>
+> As I said above, I think it's to complex and hidden. The user has
+> to use nonintuitive and long ways to make such queries and to walk
+> through them (the 100 results per page limit).
+>
+> As the user already needs to select the searchengine/location in
+> the 'Search Engines' Tab, before he can really use the Live Query
+> or stored queries, He should not need to discern betwen stored
+> queries in the list and the drop down list, just because the second
+> removes the limit.
+>
+Okay.
+
+> Sidenote: Choosing the searchengine itself should be visible all
+> the time, but it takes too much spaces if i want too, maybe a
+> dropdown list (but that would possibly disable multiselection, so I
+> don't know)? Right now I have to open/close the list of
+> searchengines some times, because the used search engine changes,
+> which is not visible, if it is not open. But if I don't close it,
+> it wastes a lot of space the time I don't need it.
+>
+Yes, the engines tree can take quite a bit of room. You can resize the
+pane to be as wide as you want it to be though.
+
+> Your program is great, so I enjoyed the time working the stuff out.
+> My mail is already long enough and I don't know what to write
+> anymore. If there is something else I will send another mail.
+>
+Thanks for that.
+The next step for me will be to come up with a list of changes and see
+which I can fit in my next scrum.
+
+By the way, there's a bug in 0.88 that may have prevented all your
+plain text and XML files from being fully indexed. 0.89 fixes that but
+the daemon will automatically rebuild the index. For you that would
+mean another 2 days... If this is not desirable, you could stop the
+daemon, upgrade to 0.89 and then, say, touch all those files to update
+their timestamps. Finally, start the 0.89 daemon manually with the
+"-i, --ignore-version" parameter. This should ensure only those files
+are reindexed.
+
+Cheers.
+
+Fabrice
+
+
+From johnny666 at email.com  Thu Oct  9 17:51:09 2008
+From: johnny666 at email.com (John Werden)
+Date: Thu, 9 Oct 2008 10:51:09 -0500
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <20081009155109.40F971059C@ws1-3.us4.outblaze.com>
+
+> In the list of directories to index, if the Monitor checkbox is
+> activated for your docs directory, Pinot will attempt to monitor all
+> files in that directory. There's a limit on the number of files a
+> process can watch with inotify, so most probably not all your 400k
+> files will be watched. The Status window won't show any error for this
+> though.
+
+That is ok for me, as I can assume that in the next 1-2 years the kernel will see some improvements in that area. monitoring large quantities of files is still in its infancy under linux.
+
+If I want to change the setting for max watched files, do I need it large enough for pinot to watch all directories or every single file?
+
+A real problem is that the file check on startup takes around 2.5 hours to finish. I know it has to check a lot of files for updates, but I think there is a lot of room for improvements. It may not compare, but a du -a on all the directory trees in question takes only 5 minutes.
+
+> I agree, and will look into changing how alternative spellings are suggested.
+
+Thanks.
+
+> Is that the size of the spelling database at
+> ~/.pinot/daemon/spelling.DB ? What about the whole index ?
+> How much space do your documents take on the disk, altogether ?
+> If your documents collection is static, you could try compacting the
+> index at ~/.pinot/daemon with xapian-compact. See the FAQ
+> (http://svn.berlios.de/wsvn/pinot/trunk/FAQ). It will take a long a
+> while to compact such a big index though.
+
+It's the size of the whole index:
+
+213M position.DB
+3.4K position.baseA
+3.4K position.baseB
+331M postlist.DB
+5.1K postlist.baseA
+5.1K postlist.baseB
+ 64M record.DB
+1005 record.baseA
+1005 record.baseB
+141M termlist.DB
+2.2K termlist.baseA
+2.2K termlist.baseB
+ 23M value.DB
+ 365 value.baseA
+ 365 value.baseB
+
+=> 770M
+
+testet xapian-compact on a copy (took maybe 10 minutes):
+
+$ xapian-compact -m daemon2 daemon3
+
+postlist: Reduced by 45.621% 154520K (338704K -> 184184K)
+record: Reduced by 6.62472% 4296K (64848K -> 60552K)
+termlist: Reduced by 7.33255% 10536K (143688K -> 133152K)
+position: Reduced by 2.55269% 5552K (217496K -> 211944K)
+value: Reduced by 7.11268% 1616K (22720K -> 21104K)
+spelling: Size unchanged (0K)
+synonym: Size unchanged (0K)
+
+
+207M position.DB
+  13 position.baseA
+3.3K position.baseB
+180M postlist.DB
+  13 postlist.baseA
+2.9K postlist.baseB
+ 60M record.DB
+  13 record.baseA
+ 965 record.baseB
+131M termlist.DB
+  13 termlist.baseA
+2.1K termlist.baseB
+ 21M value.DB
+  13 value.baseA
+ 348 value.baseB
+
+=> 598M
+
+> - it's not practical to show thousands of results in the results
+> tree/list. The GUI would become sluggish and unresponsive.
+
+I don't think that holds true. I use another program written in gtk2 which shows a log in a table and the log can be several thousand lines long without any problem. The only slowdown which occurs is while the program loads a log, because it first loads the COMPLETE log into the table before it displays anything. If the log in question is 100k lines long, building the table will take a few seconds.
+
+> - for full text searches, usually the desired documents are in the top
+> 10 or 20 results.
+> - search mode is designed for viewing results, comparing results
+> between engines, digging deeper with More Like or Search This For, and
+> indexing results locally
+> - browse mode is designed for exploring the corpus, viewing documents
+> and editing their properties (labels, metadata...)
+
+Ultimately different users have different workstyles. For example, I do broad searches most times and refine my queries with the results to get a better list. For fun I do several searches at the same time in different directions. Most times I have unique searches or just expect (like if you enter something into a form on the interwebs) that the textbox displays all the previous search terms, which I will just select incase I entered that term once before. As I don't know which search queries I will use in the future, I don't store them beforehand.
+
+Sidenote: What the frontend needs is a 'Open Directory' Option, not only the 'Open File' Option (Right Click Menu). I needed it already and its painful to live without it.
+
+> By the way, there's a bug in 0.88 that may have prevented all your
+> plain text and XML files from being fully indexed. 0.89 fixes that but
+> the daemon will automatically rebuild the index. For you that would
+> mean another 2 days... If this is not desirable, you could stop the
+> daemon, upgrade to 0.89 and then, say, touch all those files to update
+> their timestamps. Finally, start the 0.89 daemon manually with the
+> "-i, --ignore-version" parameter. This should ensure only those files
+> are reindexed.
+
+I think the change from 0.88 to 0.89 is too small for me to consider a reindex. If pinot supports more file types, I will do it. Indexing for every little new supported filetype (except pinot automates the process and does it itself) sounds like a waste of time. As pinot allows reindexing of files in query results, I could query all files with for example the same file extension and force a reindex of them in the frontend without a problem if I feel the need.
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From johnny666 at email.com  Thu Oct  9 18:14:19 2008
+From: johnny666 at email.com (John Werden)
+Date: Thu, 9 Oct 2008 11:14:19 -0500
+Subject: [Pinot-discuss] Fw: Re: pinot 0.88 problems and suggestions
+Message-ID: <20081009161419.67F081BF28D@ws1-10.us4.outblaze.com>
+
+Sorry, the mail service sucks. - John
+
+----- Original Message -----
+
+From: "John Werden" <johnny666 at email.com>
+To: "Fabrice Colin" <fabrice.colin at gmail.com>
+Cc: pinot-discuss at lists.berlios.de
+Subject: Re: pinot 0.88 problems and suggestions
+Date: Thu, 9 Oct 2008 10:51:09 -0500
+
+
+> In the list of directories to index, if the Monitor checkbox is
+> activated for your docs directory, Pinot will attempt to monitor all
+> files in that directory. There's a limit on the number of files a
+> process can watch with inotify, so most probably not all your 400k
+> files will be watched. The Status window won't show any error for this
+> though.
+
+That is ok for me, as I can assume that in the next 1-2 years the 
+kernel will see some improvements in that area. monitoring large 
+quantities of files is still in its infancy under linux.
+
+If I want to change the setting for max watched files, do I need it 
+large enough for pinot to watch all directories or every single 
+file?
+
+A real problem is that the file check on startup takes around 2.5 
+hours to finish. I know it has to check a lot of files for updates, 
+but I think there is a lot of room for improvements. It may not 
+compare, but a du -a on all the directory trees in question takes 
+only 5 minutes.
+
+> I agree, and will look into changing how alternative spellings are suggested.
+
+Thanks.
+
+> Is that the size of the spelling database at
+> ~/.pinot/daemon/spelling.DB ? What about the whole index ?
+> How much space do your documents take on the disk, altogether ?
+> If your documents collection is static, you could try compacting the
+> index at ~/.pinot/daemon with xapian-compact. See the FAQ
+> (http://svn.berlios.de/wsvn/pinot/trunk/FAQ). It will take a long a
+> while to compact such a big index though.
+
+It's the size of the whole index:
+
+213M position.DB
+3.4K position.baseA
+3.4K position.baseB
+331M postlist.DB
+5.1K postlist.baseA
+5.1K postlist.baseB
+  64M record.DB
+1005 record.baseA
+1005 record.baseB
+141M termlist.DB
+2.2K termlist.baseA
+2.2K termlist.baseB
+  23M value.DB
+  365 value.baseA
+  365 value.baseB
+
+=> 770M
+
+testet xapian-compact on a copy (took maybe 10 minutes):
+
+$ xapian-compact -m daemon2 daemon3
+
+postlist: Reduced by 45.621% 154520K (338704K -> 184184K)
+record: Reduced by 6.62472% 4296K (64848K -> 60552K)
+termlist: Reduced by 7.33255% 10536K (143688K -> 133152K)
+position: Reduced by 2.55269% 5552K (217496K -> 211944K)
+value: Reduced by 7.11268% 1616K (22720K -> 21104K)
+spelling: Size unchanged (0K)
+synonym: Size unchanged (0K)
+
+
+207M position.DB
+   13 position.baseA
+3.3K position.baseB
+180M postlist.DB
+   13 postlist.baseA
+2.9K postlist.baseB
+  60M record.DB
+   13 record.baseA
+  965 record.baseB
+131M termlist.DB
+   13 termlist.baseA
+2.1K termlist.baseB
+  21M value.DB
+   13 value.baseA
+  348 value.baseB
+
+=> 598M
+
+> - it's not practical to show thousands of results in the results
+> tree/list. The GUI would become sluggish and unresponsive.
+
+I don't think that holds true. I use another program written in 
+gtk2 which shows a log in a table and the log can be several 
+thousand lines long without any problem. The only slowdown which 
+occurs is while the program loads a log, because it first loads the 
+COMPLETE log into the table before it displays anything. If the log 
+in question is 100k lines long, building the table will take a few 
+seconds.
+
+> - for full text searches, usually the desired documents are in the top
+> 10 or 20 results.
+> - search mode is designed for viewing results, comparing results
+> between engines, digging deeper with More Like or Search This For, and
+> indexing results locally
+> - browse mode is designed for exploring the corpus, viewing documents
+> and editing their properties (labels, metadata...)
+
+Ultimately different users have different workstyles. For example, 
+I do broad searches most times and refine my queries with the 
+results to get a better list. For fun I do several searches at the 
+same time in different directions. Most times I have unique 
+searches or just expect (like if you enter something into a form on 
+the interwebs) that the textbox displays all the previous search 
+terms, which I will just select incase I entered that term once 
+before. As I don't know which search queries I will use in the 
+future, I don't store them beforehand.
+
+Sidenote: What the frontend needs is a 'Open Directory' Option, not 
+only the 'Open File' Option (Right Click Menu). I needed it already 
+and its painful to live without it.
+
+> By the way, there's a bug in 0.88 that may have prevented all your
+> plain text and XML files from being fully indexed. 0.89 fixes that but
+> the daemon will automatically rebuild the index. For you that would
+> mean another 2 days... If this is not desirable, you could stop the
+> daemon, upgrade to 0.89 and then, say, touch all those files to update
+> their timestamps. Finally, start the 0.89 daemon manually with the
+> "-i, --ignore-version" parameter. This should ensure only those files
+> are reindexed.
+
+I think the change from 0.88 to 0.89 is too small for me to 
+consider a reindex. If pinot supports more file types, I will do 
+it. Indexing for every little new supported filetype (except pinot 
+automates the process and does it itself) sounds like a waste of 
+time. As pinot allows reindexing of files in query results, I could 
+query all files with for example the same file extension and force 
+a reindex of them in the frontend without a problem if I feel the 
+need.
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From johnny666 at email.com  Fri Oct 10 07:40:57 2008
+From: johnny666 at email.com (John Werden)
+Date: Fri, 10 Oct 2008 00:40:57 -0500
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <20081010054058.3925116415B@ws1-4.us4.outblaze.com>
+
+> A real problem is that the file check on startup takes around 2.5
+> hours to finish. I know it has to check a lot of files for updates,
+> but I think there is a lot of room for improvements. It may not
+> compare, but a du -a on all the directory trees in question takes
+> only 5 minutes.
+
+This is an old measurement, this time it took 1 hour. To get a
+definite result, I will check it one more time under normal workload.
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From fabrice.colin at gmail.com  Sat Oct 11 07:56:57 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 11 Oct 2008 13:56:57 +0800
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+In-Reply-To: <20081009155109.40F971059C@ws1-3.us4.outblaze.com>
+References: <20081009155109.40F971059C@ws1-3.us4.outblaze.com>
+Message-ID: <6538c8c80810102256kd3dc076jffc0554ba11f4344@mail.gmail.com>
+
+Hi John,
+
+On Thu, Oct 9, 2008 at 11:51 PM, John Werden <johnny666 at email.com> wrote:
+> If I want to change the setting for max watched files, do I need it large enough for pinot to watch
+> all directories or every single file?
+>
+It needs to be as large as the number of files. This limit is
+specified in /proc/sys/fs/inotify/max_user_watches
+If you know directory /docs/A has files that rarely change, whereas
+files in /docs/B change all the time, you could add them separately to
+the list of directories to index, with Monitor being set to off for A
+and on for B
+I reckon the daemon could be a bit more clever about what it monitors,
+especially if it already knows the corpus.
+
+> A real problem is that the file check on startup takes around 2.5 hours to finish. I know it has to check a lot of files for updates, but I think there is a lot of room for improvements. It may not compare, but a du -a on all the directory trees in question takes only 5 minutes.
+>
+As you say, it's not entirely comparable because the daemon has to
+check its history database. No doubt it could be made faster though...
+On top of that, it may perform some additional checks and cleanup, a
+"full scan". This is activated at startup randomly. The log in
+~/.pinot will have something like ""Doing a full scan on /a/b/c".
+
+> It's the size of the whole index:
+> ...
+> => 770M
+>
+> testet xapian-compact on a copy (took maybe 10 minutes):
+> ...
+> => 598M
+>
+Do full text searches return the documents you expect ? I am concerned
+you may have hit the bug I mentioned earlier and your text/XML
+documents are not fully indexed.
+
+>> - it's not practical to show thousands of results in the results
+>> tree/list. The GUI would become sluggish and unresponsive.
+>
+> I don't think that holds true. I use another program written in gtk2 which shows a log in a table and the log can be several thousand lines long without any problem. The only slowdown which occurs is while the program loads a log, because it first loads the COMPLETE log into the table before it displays anything. If the log in question is 100k lines long, building the table will take a few seconds.
+>
+Hmm ok. I guess I should give it another try...
+
+> Sidenote: What the frontend needs is a 'Open Directory' Option, not only the 'Open File' Option (Right Click Menu). I needed it already and its painful to live without it.
+>
+Should that option open the directory the selected file lives in, in
+your file manager ?
+
+> I think the change from 0.88 to 0.89 is too small for me to consider a reindex. If pinot supports more file types, I will do it. Indexing for every little new supported filetype (except pinot automates the process and does it itself) sounds like a waste of time. As pinot allows reindexing of files in query results, I could query all files with for example the same file extension and force a reindex of them in the frontend without a problem if I feel the need.
+>
+Actually, trying to index a result that's already been indexed will
+not update it. I can't remember what the thinking behind this was, but
+the TODO file has had a note about this for a while.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sat Oct 11 10:45:17 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 11 Oct 2008 16:45:17 +0800
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+In-Reply-To: <6538c8c80810102256kd3dc076jffc0554ba11f4344@mail.gmail.com>
+References: <20081009155109.40F971059C@ws1-3.us4.outblaze.com>
+	<6538c8c80810102256kd3dc076jffc0554ba11f4344@mail.gmail.com>
+Message-ID: <6538c8c80810110145m62a011a8y6a6f442789a64ab5@mail.gmail.com>
+
+On Sat, Oct 11, 2008 at 1:56 PM, Fabrice Colin <fabrice.colin at gmail.com> wrote:
+> It needs to be as large as the number of files. This limit is
+> specified in /proc/sys/fs/inotify/max_user_watches
+>
+Scratch that. Here, it's the number of directories that matter.
+
+Fabrice
+
+
+From johnny666 at email.com  Sun Oct 12 13:32:54 2008
+From: johnny666 at email.com (John Werden)
+Date: Sun, 12 Oct 2008 06:32:54 -0500
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+Message-ID: <20081012113254.2C30D47808F@ws1-5.us4.outblaze.com>
+
+Hi Fabrice
+
+> As you say, it's not entirely comparable because the daemon has to
+> check its history database. No doubt it could be made faster though...
+> On top of that, it may perform some additional checks and cleanup, a
+> "full scan". This is activated at startup randomly. The log in
+> ~/.pinot will have something like ""Doing a full scan on /a/b/c".
+
+The log with 3.5 hours got overwritten, so I can't say anything about that.
+The newer logs don't contain a 'full scan' or similar line. If the machine is
+more or less idle, it takes around 30-35 minutes to check everything, under
+full load 2+ hours.
+
+> Do full text searches return the documents you expect ? I am concerned
+> you may have hit the bug I mentioned earlier and your text/XML
+> documents are not fully indexed.
+
+I checked the problem and it appears the content of textfiles didn't get
+indexed. Tried with several commen and not common words from selected textfiles
+and all searches failed.
+
+> Should that option open the directory the selected file lives in, in
+> your file manager ?
+
+Yes, it should open the directory where the files live in with the default file
+manager (or the directory itself, if you use the option on a directory.)
+
+> Actually, trying to index a result that's already been indexed will
+> not update it. I can't remember what the thinking behind this was, but
+> the TODO file has had a note about this for a while.
+
+Yes, read that. Maybe something about internet searches?
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+
+From fabrice.colin at gmail.com  Mon Oct 13 15:02:46 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 13 Oct 2008 21:02:46 +0800
+Subject: [Pinot-discuss] pinot 0.88 problems and suggestions
+In-Reply-To: <20081012113254.2C30D47808F@ws1-5.us4.outblaze.com>
+References: <20081012113254.2C30D47808F@ws1-5.us4.outblaze.com>
+Message-ID: <6538c8c80810130602qdd8fbd0j566dabf50eb43d94@mail.gmail.com>
+
+Hi John,
+
+On Sun, Oct 12, 2008 at 7:32 PM, John Werden <johnny666 at email.com> wrote:
+>> Do full text searches return the documents you expect ? I am concerned
+>> you may have hit the bug I mentioned earlier and your text/XML
+>> documents are not fully indexed.
+>
+> I checked the problem and it appears the content of textfiles didn't get
+> indexed. Tried with several commen and not common words from selected textfiles
+> and all searches failed.
+>
+OK. That's the bug. If you upgrade to 0.89, it should reindex those
+documents as expected and hopefully not take much longer than 0.88 did
+initially.
+
+>> Should that option open the directory the selected file lives in, in
+>> your file manager ?
+>
+> Yes, it should open the directory where the files live in with the default file
+> manager (or the directory itself, if you use the option on a directory.)
+>
+That shouldn't be too difficult. I will add that to my TODO list.
+
+>> Actually, trying to index a result that's already been indexed will
+>> not update it. I can't remember what the thinking behind this was, but
+>> the TODO file has had a note about this for a while.
+>
+> Yes, read that. Maybe something about internet searches?
+>
+I didn't have time to look into this over the weekend, but will add
+this to my ever-growing list for 0.90 :-)
+
+Cheers.
+
+Fabrice
+
+

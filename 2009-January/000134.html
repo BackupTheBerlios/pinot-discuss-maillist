@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090111104654.45039cce%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000133.html">
+   <LINK REL="Next"  HREF="000135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090111104654.45039cce%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">jwerden at hotpop.com
+       </A><BR>
+    <I>Sun Jan 11 10:46:54 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000133.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+        <LI>Next message: <A HREF="000135.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice!
+
+the test results for beta4:
+
+what works:
+
+- indexing symlinks works
+- searching symlinks with type:inode/symlink works
+- the build error (-lcurl/-lneon) does not exist anymore
+- terminating the daemon while indexing does not mislead a new instance
+  to think that everything got already indexed.
+
+what failed:
+
+- make install (beta4/svn 1478) if I use it to overwrite an existing
+  installation:
+
+ln: creating symbolic link `/home/jwerden/bin/pinot-prefs': File exists
+make[2]: *** [install-data-local] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/pinot-0.89'
+make[1]: *** [install-am] Error 2
+make[1]: Leaving directory `/home/jwerden/build/pinot/pinot-0.89'
+make: *** [install-recursive] Error 1
+
+manually removing the link in the destination directory solved the
+problem.
+
+- Logfile problems:
+
+(did exist in .88(!)/.89(?), but did not spot in beta3)
+
+(1) Garbage in logfile:
+
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset 
+indows-1252HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+
+(2) Rotated output:
+
+Quitting...
+Exiting...
+Scanned /jwerden/bin in 57539 ms
+
+- Number of files indexed in &quot;My Documents&quot; sometimes to small
+
+After I tested several times if the daemon can handle kill/start while
+indexing, I found out that the number of indexed files reported and
+listed by pinot was sometimes less than the number of files which needs
+to get indexed after indexing was done. This varied from test to test,
+where a test was a complete reindex from blank state with several
+interruptions.
+
+
+Hope the information helped. I will gladly test more, if you need more
+information (especially the last 2 points).
+
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000133.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+	<LI>Next message: <A HREF="000135.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

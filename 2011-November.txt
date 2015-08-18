@@ -1,0 +1,206 @@
+From fabrice.colin at gmail.com  Wed Nov  9 03:22:36 2011
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 9 Nov 2011 10:22:36 +0800
+Subject: [Pinot-discuss] Pinot 0.98
+Message-ID: <CADxN-mK1fJWe+exmtUnZj6R9dWZ_tRvyErcKTcyEbMMoPNFkbw@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.98 is out :
+http://pinotdev.blogspot.com/2011/11/pinot-098.html
+
+Fabrice
+
+
+From bennsn at gmail.com  Sat Nov 12 05:01:44 2011
+From: bennsn at gmail.com (Benjamin Oppermann)
+Date: Sat, 12 Nov 2011 05:01:44 +0100
+Subject: [Pinot-discuss] editing metadata
+Message-ID: <CAHcXvYa7fNnyNipxAb9xUonkUTZZ0jXcNiUAAdn3gisUNYqLFg@mail.gmail.com>
+
+Hello,
+I'm using Pinot 0.95, since that is latest version available on the
+repositories of my Linux. I run Bodhi Linux 1.2, which is based on
+Ubuntu Lucid 10.04.
+Your Homepage lists "editing of metadata" as a feature of Pinot.
+Also the following site lists Pinot as "allowing for user tagging":
+http://www.wikinfo.org/index.php/Comparison_of_desktop_search_software
+Can you help me make use of this function? How do I access it?
+I haven't found instructions in the Readme file.
+Thanks, Ben
+
+
+From fabrice.colin at gmail.com  Sat Nov 12 10:37:07 2011
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 12 Nov 2011 17:37:07 +0800
+Subject: [Pinot-discuss] editing metadata
+In-Reply-To: <CAHcXvYa7fNnyNipxAb9xUonkUTZZ0jXcNiUAAdn3gisUNYqLFg@mail.gmail.com>
+References: <CAHcXvYa7fNnyNipxAb9xUonkUTZZ0jXcNiUAAdn3gisUNYqLFg@mail.gmail.com>
+Message-ID: <CADxN-mJ11Ap40hmwdevVSjhWRLgu8wrMv2oAA=kSE2iCwa-AcA@mail.gmail.com>
+
+Hi Ben,
+
+On Sat, Nov 12, 2011 at 12:01 PM, Benjamin Oppermann <bennsn at gmail.com> wrote:
+> I'm using Pinot 0.95, since that is latest version available on the
+> repositories of my Linux. I run Bodhi Linux 1.2, which is based on
+> Ubuntu Lucid 10.04.
+> Your Homepage lists "editing of metadata" as a feature of Pinot.
+> Also the following site lists Pinot as "allowing for user tagging":
+> http://www.wikinfo.org/index.php/Comparison_of_desktop_search_software
+> Can you help me make use of this function? How do I access it?
+> I haven't found instructions in the Readme file.
+>
+In the UI, the menu Options, List Contents Of, My Documents will show
+what documents were indexed based on your preferences. Double-clicking
+on them or using the File, Properties menu will open the properties window
+where you will be able to edit metadata (title, language) and assign labels.
+Labels are configured in Edit, Preferences and allow for tagging documents.
+For instance, documents tagged with label "New" can be retrieved with the
+query "label:New". On the command-line, pinot-label allows getting and
+settings labels on files. Have a look at the man page.
+
+I hope this helps.
+
+Fabrice
+
+
+From bennsn at gmail.com  Tue Nov 15 01:43:17 2011
+From: bennsn at gmail.com (Benjamin Oppermann)
+Date: Tue, 15 Nov 2011 01:43:17 +0100
+Subject: [Pinot-discuss] Labels in Pinot and other questions
+Message-ID: <CAHcXvYY1gfvLOTFXMp+aNob0zbYs5RNS9jagOo_m3DhOetr95g@mail.gmail.com>
+
+Thank you Fabrice, this helped very much.
+
+Still more questions though, in order of importance for me:
+ 1.) Are Labels saved as properties of the file, or are they kept in a
+separate location? I ask this because:  If I transfer a copy of a file
+tagged by Pinot to another computer, will the Labels remain available
+for indexing to Pinot, or another search engine, if present on that
+other computer?
+
+ 2.) Can I assign multiple tags to a file?
+If yes, what would a query for multiple tags look like, e.g. I want
+documents with *all three* of the tags: "New", "Politics" and
+"Europe"?
+Would I have to go "label:New AND label:Politics AND label:Europe", or
+is there a shorter way to do it?
+(I went through the man page, As far as I understood it lists only the
+commands for terminal. Here I'm asking about what the query should
+look like in the UI search field.)
+
+ 3.) Some things I'm not sure I understand from the README:
+
+"The values of "file", "url", "dir" and "label" may be double-quoted."
+- What is the double quoting for?
+
+"It's also worth pointing out that the query "dir:/X/Y" will return
+files and directories
+  located in /X/Y, but not Y itself, which is what "dir:/X file:Y" would do."
+- In the 2nd example, is Y still a directory? If yes, do I still have
+to "dir:X FILE:Y", and it will return a directory?
+
+ 4.) I cannot access the Pinot Settings from Edit>Preferences, nothing
+happens when I click that. The Settings are only available to me in
+the menu of my OS'es system settings.
+
+Thank you very much, Ben
+
+
+
+2011/11/12 Fabrice Colin <fabrice.colin at gmail.com>:
+> Hi Ben,
+>
+> On Sat, Nov 12, 2011 at 12:01 PM, Benjamin Oppermann <bennsn at gmail.com> wrote:
+>> I'm using Pinot 0.95, since that is latest version available on the
+>> repositories of my Linux. I run Bodhi Linux 1.2, which is based on
+>> Ubuntu Lucid 10.04.
+>> Your Homepage lists "editing of metadata" as a feature of Pinot.
+>> Also the following site lists Pinot as "allowing for user tagging":
+>> http://www.wikinfo.org/index.php/Comparison_of_desktop_search_software
+>> Can you help me make use of this function? How do I access it?
+>> I haven't found instructions in the Readme file.
+>>
+> In the UI, the menu Options, List Contents Of, My Documents will show
+> what documents were indexed based on your preferences. Double-clicking
+> on them or using the File, Properties menu will open the properties window
+> where you will be able to edit metadata (title, language) and assign labels.
+> Labels are configured in Edit, Preferences and allow for tagging documents.
+> For instance, documents tagged with label "New" can be retrieved with the
+> query "label:New". On the command-line, pinot-label allows getting and
+> settings labels on files. Have a look at the man page.
+>
+> I hope this helps.
+>
+> Fabrice
+
+
+From fabrice.colin at gmail.com  Tue Nov 15 09:03:06 2011
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 15 Nov 2011 16:03:06 +0800
+Subject: [Pinot-discuss] Labels in Pinot and other questions
+In-Reply-To: <CAHcXvYY1gfvLOTFXMp+aNob0zbYs5RNS9jagOo_m3DhOetr95g@mail.gmail.com>
+References: <CAHcXvYY1gfvLOTFXMp+aNob0zbYs5RNS9jagOo_m3DhOetr95g@mail.gmail.com>
+Message-ID: <CADxN-m+kXTmE1e5pbbEtBuMc59=U2D64DOpOeHscmrSvK+=6gg@mail.gmail.com>
+
+Hi Ben,
+
+On Tue, Nov 15, 2011 at 8:43 AM, Benjamin Oppermann <bennsn at gmail.com> wrote:
+> Still more questions though, in order of importance for me:
+> ?1.) Are Labels saved as properties of the file, or are they kept in a
+> separate location? I ask this because: ?If I transfer a copy of a file
+> tagged by Pinot to another computer, will the Labels remain available
+> for indexing to Pinot, or another search engine, if present on that
+> other computer?
+>
+They are stored separately, in the database at ~/.pinot/history-daemon
+Pinot does support extended filesystem attributes, but for a reason I
+can't recall,
+labels aren't currently saved as extended attributes.
+I will look into that for the next release...
+
+> ?2.) Can I assign multiple tags to a file?
+> If yes, what would a query for multiple tags look like, e.g. I want
+> documents with *all three* of the tags: "New", "Politics" and
+> "Europe"?
+> Would I have to go "label:New AND label:Politics AND label:Europe", or
+> is there a shorter way to do it?
+> (I went through the man page, As far as I understood it lists only the
+> commands for terminal. Here I'm asking about what the query should
+> look like in the UI search field.)
+>
+Files may have any number of tags/labels.
+The above query would do the job. Since AND is the default operator,
+you should get the same results with "label:New label:Politics label:Europe".
+
+> ?3.) Some things I'm not sure I understand from the README:
+>
+> "The values of "file", "url", "dir" and "label" may be double-quoted."
+> - What is the double quoting for?
+>
+It's to help with spaces. Query elements are space separated.
+If you want to look for a file called "Some Thing Here", you will have to
+double-quote the value in the query string.
+For instance, 'file:"Some Thing Here"'
+
+> "It's also worth pointing out that the query "dir:/X/Y" will return
+> files and directories
+> ?located in /X/Y, but not Y itself, which is what "dir:/X file:Y" would do."
+> - In the 2nd example, is Y still a directory? If yes, do I still have
+> to "dir:X FILE:Y", and it will return a directory?
+>
+In the second example, Y can be a directory.
+Yes, "dir:/X FILE:Y" will return /X/Y only.
+
+> ?4.) I cannot access the Pinot Settings from Edit>Preferences, nothing
+> happens when I click that. The Settings are only available to me in
+> the menu of my OS'es system settings.
+>
+Does /usr/bin/pinot-prefs exist ? It should be symlinked to /usr/bin/pinot
+Maybe the Ubuntu package is missing this symlink ?
+
+I hope this helps.
+
+Fabrice
+
+

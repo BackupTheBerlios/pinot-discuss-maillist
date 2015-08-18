@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071108115044.GA6832%40hermes.commontology.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000072.html">
+   <LINK REL="Next"  HREF="000074.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Andreas Wagner</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071108115044.GA6832%40hermes.commontology.de%3E"
+       TITLE="[Pinot-discuss] Index huuuge">A.Wagner at stud.uni-frankfurt.de
+       </A><BR>
+    <I>Thu Nov  8 12:50:44 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000072.html">[Pinot-discuss] Index huuuge
+</A></li>
+        <LI>Next message: <A HREF="000074.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#73">[ date ]</a>
+              <a href="thread.html#73">[ thread ]</a>
+              <a href="subject.html#73">[ subject ]</a>
+              <a href="author.html#73">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi all,
+sorry for not responding earlier. Tuesday I have sumbitted my PhD thesis and now I am very slowly sorting out what to 
+do next (and how much and where I am getting my time from).
+
+I had the comp running for another 2 days and when I finally powered off, pinot-dbus-daemon was still using some 20% 
+of my RAM -- I suppose it gave away the other 20% without resistence when something else needed it. (But I did miss 
+the moment, I must admit.)
+
+A propos testing/stable. The weird mix of packages probably comes from the fact that at one point I had used &quot;testing&quot; 
+as primary repository, but got a bit afraid when the submission deadline was drawing nearer. At that point, I haven't 
+disabled it, but put it at the end of the repositories to be checked. So I suppose only when the core/extra repos have 
+a newer version will those from testing be cleaned. Peu &#224; peu.
+
+
+* On 08 Nov 2007, Fabrice Colin wrote:
+&gt;<i> Hi Andreas, 
+</I>&gt;&gt;&gt;&gt;<i> Couldn't retrieve document - <A HREF="file:///path/to/some_doc?ment_with_qu?stionmarks.html">file:///path/to/some_doc?ment_with_qu?stionmarks.html</A> (the names are with umlauts or 
+</I>&gt;&gt;&gt;&gt;<i> apostrophes and I can't figure out the filename encoding. Normally I have utf-8, but then 'ls' wouldn't throw 
+</I>&gt;&gt;&gt;&gt;<i> these questionmarks at me. mvconv doesn't want to change a thing about those filename...)
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Ah good catch. I'll look into this.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i> The problem with question marks comes from the URI parsing code. I'll check in 
+</I>&gt;&gt;<i> a fix soon-ish.
+</I>&gt;&gt;<i>
+</I>&gt;<i> This has been checked in. Would you be able to try a source snapshot ? 
+</I>&gt;<i> I have uploaded one at <A HREF="http://www.chez.com/colinf/pinot/">http://www.chez.com/colinf/pinot/</A> 
+</I>&gt;<i> If you touch the files the daemon failed to index properly last time, they 
+</I>&gt;<i> should be indexed now. Alternatively, you can run the daemon with the 
+</I>&gt;<i> &quot;-r&quot; option to force a full reindex.
+</I>
+I have just dl'ed the snapshot and I'm going to try it some of these days (sorry I can't be more specific. My schedule 
+has also to be sorted out with the family :rolleyes:). I am going to have it re-index anyway and try to pay more 
+attention to more exact metrics.
+And I'll first see if the crash is happening again (I didn't try a second time up to now), before I try with 
+dbus-1.1.2. (Tho I wonder that there's no update in any of the Arch Locations -- neither for xapian. Oh well.).
+
+
+BTW, in case I wasn't clear enough: the filenames probably messed up in my filesystem. I'll verify and report when I 
+have the snapshot up.
+
+Cheers,
+Andreas
+
+-- 
+Real programmers don't document. 
+If it was hard to write, it should be hard to understand.
+
+-- 
+My Public PGP Keys:
+1024 Bit DH/DSS: 0x869F81BA
+768 Bit RSA:     0x1AD97BA5
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000072.html">[Pinot-discuss] Index huuuge
+</A></li>
+	<LI>Next message: <A HREF="000074.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#73">[ date ]</a>
+              <a href="thread.html#73">[ thread ]</a>
+              <a href="subject.html#73">[ subject ]</a>
+              <a href="author.html#73">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

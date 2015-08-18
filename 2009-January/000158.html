@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090123142629.67f6ea83%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000157.html">
+   <LINK REL="Next"  HREF="000159.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090123142629.67f6ea83%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Fri Jan 23 14:26:29 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000157.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000159.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 22 Jan 2009 22:44:38 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hello John,
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Jan 22, 2009 at 1:34 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; On Thu, 22 Jan 2009 09:53:12 +0800
+</I>&gt;<i> &gt; Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; I thought the tests you ran with pinot-enum-index/find showed that
+</I>&gt;<i> &gt;&gt; everything was in the index ? Sorry for the confusion. Did you find
+</I>&gt;<i> &gt;&gt; out what files are not there ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Where did I mention that? Now I'm confused :D
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I know I used the script one time, but only to find out if there
+</I>&gt;<i> &gt; was a problem with a full uninterrupted scan, because the log shows
+</I>&gt;<i> &gt; only 'Retrieved' for around a third of the files in the directory
+</I>&gt;<i> &gt; tree. My Documents shows all files and the script proved that all
+</I>&gt;<i> &gt; files got indexed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> OK. What's the issue with &quot;lost data&quot; that you came across when
+</I>&gt;<i> interrupting the daemon ?
+</I>
+There are 2 issues:
+
+The first issue is that the database won't be complete after a full
+scan if I interrupted the scan and continued it later.
+
+The logfile is a different issue: 0.89 logged all files it encountered,
+pinot 0.90 only around a third of them.
+
+I don't know if both issues are related. I'm sorry if I made it seem
+like they are.
+
+&gt;<i> &gt;&gt; You get this if you open the UI after having terminated the daemon,
+</I>&gt;<i> &gt;&gt; right ? The UI opens the daemon's index in read-only mode and
+</I>&gt;<i> &gt;&gt; cannot fix it if a stale lock file exists. That said, I was hoping
+</I>&gt;<i> &gt;&gt; the index is now always closed properly and no stale lock file
+</I>&gt;<i> &gt;&gt; would be left around...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; No, this error appears at the end of the logfile used by the daemon
+</I>&gt;<i> &gt; if I terminate it while indexing.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Ah I see. Can you post the log messages between &quot;Quitting...&quot; and the
+</I>&gt;<i> end of file when this error is logged ?
+</I>
+Looks everytime different and sometimes there are no other messages
+after Quitting except:
+
+Exiting...
+Bad index /home/jwerden/.pinot/daemon
+
+(error one or several times)
+
+And there are other times when there are messages between and after
+Quitting/Exiting and the error does not appear.
+
+&gt;<i> &gt;&gt; Yes, I think that's safer. Could you drop an email to the package's
+</I>&gt;<i> &gt;&gt; maintainer to recommend he uses these flags ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I will send the maintainer a note. Recompiled it myself with the
+</I>&gt;<i> &gt; flag set, but made no difference. (But I don't have a multicore
+</I>&gt;<i> &gt; system.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> That's good because I can only test on multicore systems these
+</I>&gt;<i> days :-)
+</I>&gt;<i> 
+</I>&gt;<i> I think I have fixed the problem with preferences not taking effect on
+</I>&gt;<i> a first run (4th item in your list). Can you give beta 8 a try ?
+</I>
+Ok, will do.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000157.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000159.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

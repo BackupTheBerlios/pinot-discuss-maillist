@@ -1,0 +1,14 @@
+From fabrice.colin at gmail.com  Sat Aug 30 06:33:17 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 30 Aug 2008 12:33:17 +0800
+Subject: [Pinot-discuss] Pinot 0.88
+Message-ID: <6538c8c80808292133o4cf15793se257ab3d628a02f3@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.88 is available :
+http://developer.berlios.de/blog/archives/180-Released-Pinot-0.88.html
+
+Fabrice
+
+

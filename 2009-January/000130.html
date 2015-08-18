@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta3&In-Reply-To=%3C20090108164926.7af4085c%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000129.html">
+   <LINK REL="Next"  HREF="000131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta3</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta3&In-Reply-To=%3C20090108164926.7af4085c%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta3">jwerden at hotpop.com
+       </A><BR>
+    <I>Thu Jan  8 16:49:26 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000129.html">[Pinot-discuss] pinot follows selfreferencing directory links
+</A></li>
+        <LI>Next message: <A HREF="000131.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice,
+
+I built pinot from your pinot-0.90.beta3.tar.gz and gave it a testrun.
+
+The test results:
+
+(1) Pinot does not recurse into the same directory anymore. I tested it
+with the directory it failed at. Do you want me to run a special test
+to check if it does not skip anything? The output looked sane to me,
+but if you want to test anything, I'm ready to do it.
+
+(2) Pinot fails to recognize an interrupted index at restart:
+
+$ rm ~/.pinot -rf
+$ pinot              # configure everything
+$ pinot-dbus-daemon
+Ctrl+c
+$ pinot-dbus-daemon
+
+gives the following logfile:
+
+FilterFactory::loadFilters: /home/jwerden/.pinot/filters is not a directory
+ModuleFactory::loadModules: /home/jwerden/.pinot/backends is not a directory
+Statement &lt;SELECT Language FROM QueryHistory LIMIT 1;&gt; failed: no such column: Language
+Couldn't get battery state: The name org.freedesktop.PowerManagement was not provided by any .service files
+Couldn't get battery state: The name org.freedesktop.PowerManagement was not provided by any .service files
+Couldn't get battery state: The name org.gnome.PowerManager was not
+provided by any .service files
+Skipping /home/jwerden: it has already been crawled
+Scanned /home/jwerden in 9 ms
+
+(3) I tried to build the package from svn (1466) but failed. The
+problem was that linking was done without -lcurl/-lneon:
+
+./autogen.sh
+[...]
+g++ -DHAVE_CONFIG_H -I. -I..    -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam     -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -MT pinot-label.o -MD -MP -MF .deps/pinot-label.Tpo -c -o pinot-label.o pinot-label.cpp
+mv -f .deps/pinot-label.Tpo .deps/pinot-label.Po
+/bin/sh ../libtool --tag=CXX   --mode=link g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam     -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic  -o pinot-label pinot-label.o -L../Utils -lIndex -lUtils -lBasicUtils -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0  
+  -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0   -ldbus-glib-1 -ldbus-1 -lgobject-2.0 -lglib-2.0   -pthread -lgthread-2.0 -lrt -lglib-2.0   -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0
+libtool: link: g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic -o pinot-label pinot-label.o -pthread  -L/home/jwerden/build/pinot/trunk/Utils /home/jwerden/build/pinot/trunk/IndexSearch/.libs/libIndex.a /home/jwerden/build/
+ pinot/trunk/Utils/.libs/libUtils.a /home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a -lgio-2.0 -lgmodule-2.0 -ldbus-glib-1 -ldbus-1 -lgthread-2.0 -lrt -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0 -pthread
+/home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a(TimeConverter.o): In function `TimeConverter::fromTimestamp(std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)':
+/home/jwerden/build/pinot/trunk/Utils/TimeConverter.cpp:169: undefined reference to `curl_getdate'
+collect2: ld returned 1 exit status
+make[2]: *** [pinot-label] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/trunk/IndexSearch'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/jwerden/build/pinot/trunk'
+make: *** [all] Error 2
+
+
+./autogen.sh --with-http=neon:
+[...]
+g++ -DHAVE_CONFIG_H -I. -I..    -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon      -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -MT pinot-label.o -MD -MP -MF .deps/pinot-label.Tpo -c -o pinot-label.o pinot-label.cpp
+mv -f .deps/pinot-label.Tpo .deps/pinot-label.Po
+/bin/sh ../libtool --tag=CXX   --mode=link g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon      -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic  -o pinot-label pinot-label.o -L../Utils -lIndex -lUtils -lBasicUtils -lgio-2.0 -lgobject-2.0 -lgmo
+ dule-2.0 -lglib-2.0   -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0   -ldbus-glib-1 -ldbus-1 -lgobject-2.0 -lglib-2.0   -pthread -lgthread-2.0 -lrt -lglib-2.0   -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0
+libtool: link: g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic -o pinot-label pinot-label.o -pthread  -L/home/jwerden/build/pinot/trunk/Utils /home/jwerden/build/pinot/trunk/IndexSearch/.libs/libIndex.a 
+ /home/jwerden/build/pinot/trunk/Utils/.libs/libUtils.a /home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a -lgio-2.0 -lgmodule-2.0 -ldbus-glib-1 -ldbus-1 -lgthread-2.0 -lrt -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0 -pthread
+/home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a(TimeConverter.o): In function `TimeConverter::fromTimestamp(std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)':
+/home/jwerden/build/pinot/trunk/Utils/TimeConverter.cpp:166: undefined reference to `ne_rfc1123_parse'
+collect2: ld returned 1 exit status
+make[2]: *** [pinot-label] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/trunk/IndexSearch'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/jwerden/build/pinot/trunk'
+make: *** [all] Error 2
+
+I don't know if this is my failure and I misunderstood the build
+process or if it was a real error.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000129.html">[Pinot-discuss] pinot follows selfreferencing directory links
+</A></li>
+	<LI>Next message: <A HREF="000131.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

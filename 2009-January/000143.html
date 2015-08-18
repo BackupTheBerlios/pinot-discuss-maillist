@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C20090113170318.526b143c%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000141.html">
+   <LINK REL="Next"  HREF="000145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta5</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C20090113170318.526b143c%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta5">jwerden at hotpop.com
+       </A><BR>
+    <I>Tue Jan 13 17:03:18 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000141.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+        <LI>Next message: <A HREF="000145.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#143">[ date ]</a>
+              <a href="thread.html#143">[ thread ]</a>
+              <a href="subject.html#143">[ subject ]</a>
+              <a href="author.html#143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 13 Jan 2009 21:22:23 +0800
+&quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Tue, Jan 13, 2009 at 11:17 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; With beta5 the described problem still persists. If pinot is done
+</I>&gt;<i> &gt; scanning the files the index will be incomplete if you terminated
+</I>&gt;<i> &gt; and restarted the daemon while indexing. The number of indexed
+</I>&gt;<i> &gt; files won't be total - first pass.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sometimes pinot will tell me after restarting the daemon that the
+</I>&gt;<i> &gt; previous instance died prematurely, but this is not a trigger for
+</I>&gt;<i> &gt; the problem.
+</I>&gt;<i> &gt;
+</I>&gt;<i> The previous instance must have crashed when it was interrupted. We'd
+</I>&gt;<i> need to find out why.
+</I>
+It's hard to catch in gdb, but if I have a chance, I will post a
+backtrace.
+
+&gt;<i> &gt; I don't know if it is part of the problem or an intentional change,
+</I>&gt;<i> &gt; but the logfile only shows a little part of all indexed files if I
+</I>&gt;<i> &gt; do a scan without interrupting. around 2/3 of the files aren't
+</I>&gt;<i> &gt; listed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Another message I got one time after I killed the daemon after it
+</I>&gt;<i> &gt; finished an interrupted scan was:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Quitting...
+</I>&gt;<i> &gt; Exiting...
+</I>&gt;<i> &gt; Couldn't open read-only database Couldn't open read-only database
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Some numbers (single testcase):
+</I>&gt;<i> &gt; (1) indexed documents without interrupting: 3540
+</I>&gt;<i> &gt; (2) indexed documents before interrupt: 369
+</I>&gt;<i> &gt; (3) indexed documents after interrupt/completed scan: 3334
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The numbers for 2/3 vary from test to test.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Oooh... From one test run to the next, is the last file mentioned in
+</I>&gt;<i> the log the same, or are they all from the same directory ?
+</I>
+A full scan with or with interrupting?
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000141.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+	<LI>Next message: <A HREF="000145.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#143">[ date ]</a>
+              <a href="thread.html#143">[ thread ]</a>
+              <a href="subject.html#143">[ subject ]</a>
+              <a href="author.html#143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

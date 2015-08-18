@@ -1,0 +1,15 @@
+From fabrice.colin at gmail.com  Sun Jun 24 11:02:23 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 24 Jun 2007 17:02:23 +0800
+Subject: [Pinot-discuss] Pinot 0.74
+Message-ID: <6538c8c80706240202k3750162do35939db634a283eb@mail.gmail.com>
+
+Version 0.74 is out.
+It's a minor feature release and will work best with Xapian 1.0 or newer.
+
+The NEWS file has the details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_4/NEWS?op=file&rev=0&sc=0
+
+Fabrice
+
+

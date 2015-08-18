@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] high memory usage while indexing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090228054757.539631af%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000203.html">
+   <LINK REL="Next"  HREF="000205.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] high memory usage while indexing</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090228054757.539631af%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] high memory usage while indexing">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Feb 28 05:47:57 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000203.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+        <LI>Next message: <A HREF="000205.html">[Pinot-discuss] some test results
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#204">[ date ]</a>
+              <a href="thread.html#204">[ thread ]</a>
+              <a href="subject.html#204">[ subject ]</a>
+              <a href="author.html#204">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 28 Feb 2009 11:13:19 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> 2009/2/26 John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;:
+</I>&gt;<i> &gt; I made some testruns and got a lot of results. First is, that it
+</I>&gt;<i> &gt; seems like the memory usage went down, but it varied from run to run
+</I>&gt;<i> &gt; (see mem-usage.log which shows the usage for 4 runs).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Second is that pinot segfaulted sometimes while indexing. I got a
+</I>&gt;<i> &gt; core dump while it ran in memcheck. See memcheck.bt.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Is this reproducible easily ?
+</I>
+It happens at random every few runs. I don't know how to reproduce it
+except running it a few times. Do you need specific data? Was the
+backtrace not enough?
+
+&gt;<i> &gt; question: Is there a way to initialize .pinot from commandline? I'm
+</I>&gt;<i> &gt; tired of point-and-click and would like to do most stuff in an
+</I>&gt;<i> &gt; easier to automate manner.
+</I>&gt;<i> &gt;
+</I>&gt;<i> There isn't, no. You could keep a pre-configured, empty, .pinot aside.
+</I>&gt;<i> After configuring in Preferences, stop the daemon, reset all as
+</I>&gt;<i> explained in the README, and make a copy of .pinot.
+</I>
+Yeah, will go that way.
+
+&gt;<i> It looks like the changes made to the HTML parser brought a big
+</I>&gt;<i> improvement. I will look into the possibly lost records coming from
+</I>&gt;<i> the DB history classes. Unless a major problem crops up, I will try to
+</I>&gt;<i> release 0.91 sometime next week.
+</I>
+I will do some testruns on more files, but I think the problem with
+html parsing is solved. There are more version numbers for other
+problems :D
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000203.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+	<LI>Next message: <A HREF="000205.html">[Pinot-discuss] some test results
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#204">[ date ]</a>
+              <a href="thread.html#204">[ thread ]</a>
+              <a href="subject.html#204">[ subject ]</a>
+              <a href="author.html#204">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

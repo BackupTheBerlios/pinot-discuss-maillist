@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] high memory usage while indexing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C6538c8c80902250723y4a76d59btb40fe253ea6e8ac8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000200.html">
+   <LINK REL="Next"  HREF="000202.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] high memory usage while indexing</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C6538c8c80902250723y4a76d59btb40fe253ea6e8ac8%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] high memory usage while indexing">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Wed Feb 25 16:23:50 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000200.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+        <LI>Next message: <A HREF="000202.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Feb 25, 2009 at 11:24 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> Thank you, gave it a test. The result is that both pinot and
+</I>&gt;<i> pinot-dbus-daemon crash. Pinot if I close the window, pinot-dbus-daemon
+</I>&gt;<i> if I send send it the kill signal. GDB results attached.
+</I>&gt;<i>
+</I>&gt;<i> Can you check please if the bugs are important? I don't want to run an
+</I>&gt;<i> distorted memcheck.
+</I>&gt;<i>
+</I>Thanks.
+I have turned off filters unloading and found it fixed the crash. I am
+not sure why exactly it's become a problem and will have to take a
+deeper look.
+Grab beta 3 from <A HREF="http://colinf.chez.com/pinot/">http://colinf.chez.com/pinot/</A>
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000200.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+	<LI>Next message: <A HREF="000202.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

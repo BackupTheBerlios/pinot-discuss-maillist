@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] installation problem
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20installation%20problem&In-Reply-To=%3C6538c8c80612202052y7723bf99nb6bfff0e80c0a4c3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000011.html">
+   <LINK REL="Next"  HREF="000013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] installation problem</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20installation%20problem&In-Reply-To=%3C6538c8c80612202052y7723bf99nb6bfff0e80c0a4c3%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] installation problem">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Thu Dec 21 05:52:15 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000011.html">[Pinot-discuss] installation problem
+</A></li>
+        <LI>Next message: <A HREF="000013.html">[Pinot-discuss] pinot won't connect to dbus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#12">[ date ]</a>
+              <a href="thread.html#12">[ thread ]</a>
+              <a href="subject.html#12">[ subject ]</a>
+              <a href="author.html#12">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Gabriel C wrote :
+&gt;<i> Roger Mason schrieb:
+</I>&gt;<i> &gt; I just compiled Pinot 0.64 from source on a Gentoo linux machine.  The
+</I>&gt;<i> &gt; compilation went OK but I get this error when I do 'make install':
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; /usr/local/share/applications/pinot.desktop: error: Categories values
+</I>&gt;<i> &gt; must be one of &quot;Core&quot; [snip]
+</I>&gt;<i> &gt; desktop-file-install created an invalid desktop file!
+</I>&gt;<i>
+</I>&gt;<i> The solution is in the FAQ ;)
+</I>&gt;<i> ...
+</I>
+Another workaround is to remove &quot;Application&quot; from the &quot;Categories&quot;
+field in pinot.desktop.
+That change was actually committed to the trunk recently, you can get
+the file from
+<A HREF="http://svn.berlios.de/wsvn/pinot/trunk/pinot.desktop?op=file&amp;rev=0&amp;sc=0">http://svn.berlios.de/wsvn/pinot/trunk/pinot.desktop?op=file&amp;rev=0&amp;sc=0</A>
+
+BTW, for 0.64, I would recommend you apply the corrective patch at
+<A HREF="http://pinot.berlios.de/fixes_064_01.patch">http://pinot.berlios.de/fixes_064_01.patch</A>
+
+Coincidentally, I am planning to release 0.65 later on today.
+
+Cheers.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000011.html">[Pinot-discuss] installation problem
+</A></li>
+	<LI>Next message: <A HREF="000013.html">[Pinot-discuss] pinot won't connect to dbus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#12">[ date ]</a>
+              <a href="thread.html#12">[ thread ]</a>
+              <a href="subject.html#12">[ subject ]</a>
+              <a href="author.html#12">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

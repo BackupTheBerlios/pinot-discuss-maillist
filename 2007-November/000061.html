@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss]  Can't compile 0.80
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20%20Can%27t%20compile%200.80&In-Reply-To=%3C6538c8c80711020737w78738140o59c950ac570f3dc9%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000057.html">
+   <LINK REL="Next"  HREF="000062.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss]  Can't compile 0.80</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20%20Can%27t%20compile%200.80&In-Reply-To=%3C6538c8c80711020737w78738140o59c950ac570f3dc9%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss]  Can't compile 0.80">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Fri Nov  2 15:37:04 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000057.html">[Pinot-discuss] Pinot 0.80
+</A></li>
+        <LI>Next message: <A HREF="000062.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#61">[ date ]</a>
+              <a href="thread.html#61">[ thread ]</a>
+              <a href="subject.html#61">[ subject ]</a>
+              <a href="author.html#61">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andreas sent me the output of 'make', so I am taking this
+back to the list in case others run into the same issue.
+
+On 11/2/07, Andreas Wagner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">A.Wagner at stud.uni-frankfurt.de</A>&gt; wrote:
+&gt;<i> * On 01 Nov 2007, Fabrice Colin wrote:
+</I>&gt;<i> &gt; It's failing somewhere else. Previously, it was in Tokenize, this
+</I>&gt;<i> time in UI...
+</I>&gt;<i>
+</I>&gt;<i> That could also be because of something else: At some point -- and I
+</I>&gt;<i> didn't pay enough attention -- compiling failed at other points
+</I>&gt;<i> because 'no space left on device' ;) Now that I have as per the
+</I>&gt;<i> README manually deleted stuff, I can try compiling again...
+</I>&gt;<i>
+</I>Ahah. Time to get yourself a bigger hard disk :-)
+
+&gt;<i> &gt; Did you compile 0.76 on your box, or use a package ? What version
+</I>&gt;<i> &gt; of glibmm, gtkmm and libsigc++ do you have ?
+</I>&gt;<i>
+</I>&gt;<i> I have it compiled on my box. Right now I have also upgraded to
+</I>&gt;<i> xapian 1.0.4, but the problem remains.
+</I>&gt;<i>
+</I>&gt;<i> glibmm: 2.14.1
+</I>&gt;<i> gtkmm: 2.12.1
+</I>&gt;<i> libsigc++: 2.1.1
+</I>&gt;<i> ...
+</I>&gt;<i> PinotUtils.h:25:34: Fehler: sigc++/compatibility.h: Datei oder Verzeichnis nicht gefunden
+</I>&gt;<i> ...
+</I>&gt;<i> I have looked around a bit and I don't find a compatibility.h
+</I>&gt;<i> (except for one for acaml) anywhere.
+</I>&gt;<i>
+</I>&gt;<i> I have dl'ed a current libsigc++ and found this in the changelog:
+</I>&gt;<i>
+</I>&gt;<i> 2007-08-14  Murray Cumming  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">murrayc at murrayc.com</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>          * sigc++/Makefile.am:
+</I>&gt;<i>          * sigc++/compatibility.h: Removed this header.
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> I am not sure if this has anything to do with my actual problem, but
+</I>&gt;<i> it looks like something you'd probably want to fix anyway.
+</I>&gt;<i>
+</I>Yes, that's what it is. Pinot uses the compatibility layer defined
+in compatibility.h
+Thanks for catching this. I'll have to update the source to do
+without it then... In the meantime, if you want to compile 0.80
+you will have to revert to an older version of libsigc++.
+I use 2.0.17 here.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000057.html">[Pinot-discuss] Pinot 0.80
+</A></li>
+	<LI>Next message: <A HREF="000062.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#61">[ date ]</a>
+              <a href="thread.html#61">[ thread ]</a>
+              <a href="subject.html#61">[ subject ]</a>
+              <a href="author.html#61">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

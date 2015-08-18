@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-March/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20How%20much%20memory%20pinot-dbus-daemon%20should%20get%20%3F&In-Reply-To=%3C81c921f30803040824w1123f302n3e6186ca54f09599%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000093.html">
+   <LINK REL="Next"  HREF="000095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] How much memory pinot-dbus-daemon should get ?</H1>
+    <B>Javier Barroso</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20How%20much%20memory%20pinot-dbus-daemon%20should%20get%20%3F&In-Reply-To=%3C81c921f30803040824w1123f302n3e6186ca54f09599%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] How much memory pinot-dbus-daemon should get ?">javibarroso at gmail.com
+       </A><BR>
+    <I>Tue Mar  4 17:24:44 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000093.html">[Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+</A></li>
+        <LI>Next message: <A HREF="000095.html">[Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#94">[ date ]</a>
+              <a href="thread.html#94">[ thread ]</a>
+              <a href="subject.html#94">[ subject ]</a>
+              <a href="author.html#94">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Mar 4, 2008 at 2:22 PM, Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt;
+wrote:
+
+&gt;<i> Could you run &quot;du -hsc ~/.pinot/daemon/*&quot; ? I'd like to see how big each
+</I>&gt;<i> file in
+</I>&gt;<i> there actually is.
+</I>
+Yes, of course (sorry, i forgot it before):
+ 4,0K    /home/javi/.pinot/daemon/CACHEDIR.TAG
+0    /home/javi/.pinot/daemon/flintlock
+4,0K    /home/javi/.pinot/daemon/iamflint
+4,0K    /home/javi/.pinot/daemon/position.baseB
+125M    /home/javi/.pinot/daemon/position.DB
+4,0K    /home/javi/.pinot/daemon/postlist.baseA
+4,0K    /home/javi/.pinot/daemon/postlist.baseB
+249M    /home/javi/.pinot/daemon/postlist.DB
+4,0K    /home/javi/.pinot/daemon/record.baseA
+7,3M    /home/javi/.pinot/daemon/record.DB
+16K    /home/javi/.pinot/daemon/spelling.baseA
+16K    /home/javi/.pinot/daemon/spelling.baseB
+913M    /home/javi/.pinot/daemon/spelling.DB
+4,0K    /home/javi/.pinot/daemon/termlist.baseA
+56M    /home/javi/.pinot/daemon/termlist.DB
+4,0K    /home/javi/.pinot/daemon/value.baseA
+4,0K    /home/javi/.pinot/daemon/value.baseB
+4,1M    /home/javi/.pinot/daemon/value.DB
+1,4G    total
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; I have 30410 documents indexed, but with a few advisement about
+</I>&gt;<i> documents
+</I>&gt;<i> &gt; which have root as owner. I chowned to me these documments and I killed
+</I>&gt;<i> &gt; pinot-dbus-daemon, and start it again. 50 minutes later I have 75m in
+</I>&gt;<i> RES
+</I>&gt;<i> &gt; column and 30% of cpu.
+</I>&gt;<i> &gt;
+</I>&gt;<i> The daemon was still indexing the few files you had chown'ed ?
+</I>
+I suppose can be ...
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; Now I can see many &quot;'monitor file' errors&quot; (all are directories) from
+</I>&gt;<i> status
+</I>&gt;<i> &gt; pinot console, and have no idea about the reason.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Do you have any other process running that may be using inotify ? Chances
+</I>&gt;<i> are
+</I>&gt;<i> that Pinot wasn't able to place watches on these directories.
+</I>
+
+This is my list, but  my ~/tmp directory (where errors were) is a private
+directory where I don't configure anything in the programs in the list:
+avahi-daemon
+dbus-daemon
+ekiga
+firefox-bin
+gnome-power-man
+gnome-vfs-daemo
+hald
+icedove-bin
+pdftotext
+pinot-dbus-daem
+rhythmbox
+seahorse-agent
+udevd
+xfrun4
+
+
+&gt;<i>
+</I>&gt;<i> &gt; Could I configure pinot to ignore symbolic links ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> That's not possible, but you can certainly add those directories to
+</I>&gt;<i> the blacklist.
+</I>&gt;<i> For instance, the pattern &quot;*/Desktop*&quot; will skip all directories whose
+</I>&gt;<i> name start
+</I>&gt;<i> with &quot;Desktop&quot;. See the README for details on how to do this.
+</I>
+Thanks I'll do it.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080304/e8e7f221/attachment.html">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080304/e8e7f221/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000093.html">[Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+</A></li>
+	<LI>Next message: <A HREF="000095.html">[Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#94">[ date ]</a>
+              <a href="thread.html#94">[ thread ]</a>
+              <a href="subject.html#94">[ subject ]</a>
+              <a href="author.html#94">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

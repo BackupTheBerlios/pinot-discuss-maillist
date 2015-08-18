@@ -1,0 +1,105 @@
+From danjele at gmail.com  Sat Mar  4 20:17:51 2006
+From: danjele at gmail.com (daniele favara)
+Date: Sat, 4 Mar 2006 20:17:51 +0100
+Subject: [Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'
+Message-ID: <ecd176b60603041117i4f78c00am8bd9153c2391d8a3@mail.gmail.com>
+
+i have problems compiling pinot on dapper:
+
+Making all in Index
+make[2]: Entering directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43/Index'
+if /bin/sh ../libtool --tag=CXX --mode=compile g++ -DHAVE_CONFIG_H -I.
+-I. -I..    -I../Utils -I../Tokenize  -I/usr/include/libots-1
+-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include    -g -Wall -O2
+-MT Summarizer.lo -MD -MP -MF ".deps/Summarizer.Tpo" -c -o
+Summarizer.lo Summarizer.cpp; \
+        then mv -f ".deps/Summarizer.Tpo" ".deps/Summarizer.Plo"; else
+rm -f ".deps/Summarizer.Tpo"; exit 1; fi
+ g++ -DHAVE_CONFIG_H -I. -I. -I.. -I../Utils -I../Tokenize
+-I/usr/include/libots-1 -I/usr/include/glib-2.0
+-I/usr/lib/glib-2.0/include -g -Wall -O2 -MT Summarizer.lo -MD -MP -MF
+.deps/Summarizer.Tpo -c Summarizer.cpp  -fPIC -DPIC -o
+.libs/Summarizer.o
+Summarizer.cpp: In member function 'std::string
+Summarizer::summarize(const unsigned char*, unsigned int)':
+Summarizer.cpp:74: error: invalid conversion from 'const char*' to
+'const unsigned char*'Summarizer.cpp:74: error:   initializing
+argument 2 of 'gboolean ots_load_xml_dictionary(OtsArticle*, const
+unsigned char*)'
+make[2]: *** [Summarizer.lo] Error 1
+make[2]: Leaving directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43/Index'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43'
+make: *** [all] Error 2
+
+this is the libots version installed
+
+
+ii  libots-dev  0.4.2+cvs.2004.02.20-1.1 Open Text Summarizer (development)
+
+any suggestions ?
+
+thanks
+
+ciao
+
+--
+----
+http://dsslive.org
+----
+
+
+From fabrice.colin at gmail.com  Thu Mar 23 12:11:33 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 23 Mar 2006 19:11:33 +0800
+Subject: [Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'
+Message-ID: <6538c8c80603230311n7a56329ai134479e94de0a121@mail.gmail.com>
+
+Hi Daniele,
+
+Sorry for the late reply, your post somehow didn't get to me :-(
+
+daniele favara <danjele at gmail.com> wrote:
+> i have problems compiling pinot on dapper:
+> ...
+> Summarizer.cpp: In member function 'std::string
+> Summarizer::summarize(const unsigned char*, unsigned int)':
+> Summarizer.cpp:74: error: invalid conversion from 'const char*' to
+> 'const unsigned char*'Summarizer.cpp:74: error:   initializing
+> argument 2 of 'gboolean ots_load_xml_dictionary(OtsArticle*, const
+> unsigned char*)'
+> ...
+> any suggestions ?
+>
+OTS is no longer required by Pinot, starting with version 0.44.
+Could you give 0.44 a try and see if it works for you ?
+
+I got it to compile and run on Breezy Badger and have recently checked in a
+fix for an exit time segfault. This is already in SVN and will be in
+the next version,
+which will be released in the next few days.
+
+Let me know what other problem if any you are seeing on Ubuntu.
+
+Thanks for your interest, and sorry again for the late reply !
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Wed Mar 29 15:51:48 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 29 Mar 2006 21:51:48 +0800
+Subject: [Pinot-discuss] Ubuntu packages
+Message-ID: <6538c8c80603290551i61247eecq5d7cd953b9d1a2c2@mail.gmail.com>
+
+Daniele Favara was kind enough to package Pinot as well as Xapian and libtextcat
+for Dapper and Xubuntu.
+Details can be found on the download page :
+http://pinot.berlios.de/download.html
+
+Fabrice
+
+

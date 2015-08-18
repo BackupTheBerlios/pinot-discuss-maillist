@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000134.html">
+   <LINK REL="Next"  HREF="000136.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Sun Jan 11 11:59:46 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000134.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+        <LI>Next message: <A HREF="000136.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#135">[ date ]</a>
+              <a href="thread.html#135">[ thread ]</a>
+              <a href="subject.html#135">[ subject ]</a>
+              <a href="author.html#135">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Sun, Jan 11, 2009 at 5:46 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> what failed:
+</I>&gt;<i>
+</I>&gt;<i> - make install (beta4/svn 1478) if I use it to overwrite an existing
+</I>&gt;<i>  installation:
+</I>&gt;<i>
+</I>Thanks ! Fixed in SVN r1480.
+
+&gt;<i> - Logfile problems:
+</I>&gt;<i>
+</I>&gt;<i> (did exist in .88(!)/.89(?), but did not spot in beta3)
+</I>&gt;<i>
+</I>&gt;<i> (1) Garbage in logfile:
+</I>&gt;<i>
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset
+</I>&gt;<i> indows-1252HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i> HTML parser doesn't support charset windows-1252
+</I>&gt;<i>
+</I>&gt;<i> (2) Rotated output:
+</I>&gt;<i>
+</I>&gt;<i> Quitting...
+</I>&gt;<i> Exiting...
+</I>&gt;<i> Scanned /jwerden/bin in 57539 ms
+</I>&gt;<i>
+</I>I wouldn't worry about those two. Threads are left to write to the log
+file without any synchronization on purpose, and as a result messages
+might get mixed up.
+
+&gt;<i> - Number of files indexed in &quot;My Documents&quot; sometimes to small
+</I>&gt;<i>
+</I>&gt;<i> After I tested several times if the daemon can handle kill/start while
+</I>&gt;<i> indexing, I found out that the number of indexed files reported and
+</I>&gt;<i> listed by pinot was sometimes less than the number of files which needs
+</I>&gt;<i> to get indexed after indexing was done. This varied from test to test,
+</I>&gt;<i> where a test was a complete reindex from blank state with several
+</I>&gt;<i> interruptions.
+</I>&gt;<i>
+</I>&gt;<i> Hope the information helped. I will gladly test more, if you need more
+</I>&gt;<i> information (especially the last 2 points).
+</I>&gt;<i>
+</I>Yes it did, thanks.
+
+For this last issue, did you get the figure from the number of indexed
+documents shown in the UI, when browsing an index, or as displayed by
+the status window ?
+If you are looking at it right after the daemon finishes the initial
+indexing run, it may be a bit off if the daemon hasn't yet flushed
+everything to disk.
+The latest README mentions a 'pinot-stats' alias. The second figure
+this command returns should be the exact number of documents in your
+My Documents index.
+If that doesn't show the number you expect, you could generate a list
+of all indexed files and see if anything obvious is missing. There are
+two ways :
+- browse the index and export each page using the Options, Export List menu
+- run the pinot-enum-index.sh script to get the whole list of files in
+~/.pinot/daemon/urls.txt :
+   $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+  Get this script from SVN r1479, it's got a minor fix.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000134.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+	<LI>Next message: <A HREF="000136.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#135">[ date ]</a>
+              <a href="thread.html#135">[ thread ]</a>
+              <a href="subject.html#135">[ subject ]</a>
+              <a href="author.html#135">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

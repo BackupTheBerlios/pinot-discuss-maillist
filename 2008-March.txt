@@ -1,0 +1,373 @@
+From javibarroso at gmail.com  Tue Mar  4 12:57:10 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Tue, 4 Mar 2008 12:57:10 +0100
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+	<6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+Message-ID: <81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+
+After than reindex my documents, top shows me 143 % of cpu use ! and  232m
+of memory:
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+
+COMMAND
+ 8395 javi      35  15  363m 232m 6272 R  143 23.1 259:38.11 pinot-dbus-daem
+
+I have 30410 documents indexed, but with a few advisement about documents
+which have root as owner. I chowned to me these documments and I killed
+pinot-dbus-daemon, and start it again. 50 minutes later I have 75m in RES
+column and 30% of cpu.
+
+Now I can see many "'monitor file' errors" (all are directories) from status
+pinot console, and have no idea about the reason.
+
+Could I configure pinot to ignore symbolic links ?
+
+Thank you
+
+
+
+On Thu, Feb 28, 2008 at 2:06 AM, Fabrice Colin <fabrice.colin at gmail.com>
+wrote:
+
+> On Thu, Feb 28, 2008 at 6:24 AM, Javier Barroso <javibarroso at gmail.com>
+> wrote:
+> > On Wed, Feb 27, 2008 at 4:54 PM, Fabrice Colin <fabrice.colin at gmail.com>
+> > wrote:
+> >  Currently my .pinot/daemon directory has 1.5 G (~ 5% of my home). I
+> will
+> > count how many documents are on "My documents" on Monday (when I'll
+> return
+> > from my hollidays)
+> >
+> Ok. If you open pinot, and either go to the Session, Status menu or
+> use Index, List Contents Of, My Documents, you will see immediately
+> how many documents there are in the Status window, or in the status
+> bar at the bottom.
+>
+> > > By the way, 0.82 has a bug that prevents the daemon from indexing
+> > > all documents in one swoop. 0.83 should be out in a few days time.
+> > > Once the Debian package has been updated to 0.83, would you be
+> > > able to try this again and reindex from scratch ?
+> >
+> >  I'll try reindex with 0.83 when it hits sid and I'll post the result in
+> > this thread
+> >
+> Thanks for that.
+>
+> Fabrice
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080304/98bc2739/attachment.html>
+
+From fabrice.colin at gmail.com  Tue Mar  4 14:22:05 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 4 Mar 2008 21:22:05 +0800
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+	<6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+	<81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+Message-ID: <6538c8c80803040522h463e98e8l8145d94bd7b4fa1f@mail.gmail.com>
+
+Hi Javier,
+
+On Tue, Mar 4, 2008 at 7:57 PM, Javier Barroso <javibarroso at gmail.com> wrote:
+> After than reindex my documents, top shows me 143 % of cpu use !
+>
+Your box is dual CPU/core, right ? ;-)
+I wouldn't worry about the high CPU load. The daemon's priority is set
+quite low (15 by default), so that it gives way to other applications
+if need be.
+
+> and  232m of memory:
+>
+>   PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+>  8395 javi      35  15  363m 232m 6272 R  143 23.1 259:38.11 pinot-dbus-daem
+>
+The amount of memory used seems reasonable considering the size of the index.
+Is ~/.pinot/daemon still 1.5Gb big or so ?
+Could you run "du -hsc ~/.pinot/daemon/*" ? I'd like to see how big each file in
+there actually is.
+
+When building the index from scratch, memory usage will be higher. The good
+news is that a large chunk is due to the index being mapped in memory. The
+OS drops unmodified mmaped pages when running low on memory, so this
+shouldn't cause any major issue.
+Nevertheless, it should be possible to decrease this, at least when indexing is
+done. I'll look into it for the next release.
+
+> I have 30410 documents indexed, but with a few advisement about documents
+> which have root as owner. I chowned to me these documments and I killed
+> pinot-dbus-daemon, and start it again. 50 minutes later I have 75m in RES
+> column and 30% of cpu.
+>
+The daemon was still indexing the few files you had chown'ed ?
+
+> Now I can see many "'monitor file' errors" (all are directories) from status
+> pinot console, and have no idea about the reason.
+>
+Do you have any other process running that may be using inotify ? Chances are
+that Pinot wasn't able to place watches on these directories.
+
+> Could I configure pinot to ignore symbolic links ?
+>
+That's not possible, but you can certainly add those directories to
+the blacklist.
+For instance, the pattern "*/Desktop*" will skip all directories whose
+name start
+with "Desktop". See the README for details on how to do this.
+
+Fabrice
+
+
+From javibarroso at gmail.com  Tue Mar  4 17:24:44 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Tue, 4 Mar 2008 17:24:44 +0100
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <6538c8c80803040522h463e98e8l8145d94bd7b4fa1f@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+	<6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+	<81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+	<6538c8c80803040522h463e98e8l8145d94bd7b4fa1f@mail.gmail.com>
+Message-ID: <81c921f30803040824w1123f302n3e6186ca54f09599@mail.gmail.com>
+
+On Tue, Mar 4, 2008 at 2:22 PM, Fabrice Colin <fabrice.colin at gmail.com>
+wrote:
+
+> Could you run "du -hsc ~/.pinot/daemon/*" ? I'd like to see how big each
+> file in
+> there actually is.
+
+Yes, of course (sorry, i forgot it before):
+ 4,0K    /home/javi/.pinot/daemon/CACHEDIR.TAG
+0    /home/javi/.pinot/daemon/flintlock
+4,0K    /home/javi/.pinot/daemon/iamflint
+4,0K    /home/javi/.pinot/daemon/position.baseB
+125M    /home/javi/.pinot/daemon/position.DB
+4,0K    /home/javi/.pinot/daemon/postlist.baseA
+4,0K    /home/javi/.pinot/daemon/postlist.baseB
+249M    /home/javi/.pinot/daemon/postlist.DB
+4,0K    /home/javi/.pinot/daemon/record.baseA
+7,3M    /home/javi/.pinot/daemon/record.DB
+16K    /home/javi/.pinot/daemon/spelling.baseA
+16K    /home/javi/.pinot/daemon/spelling.baseB
+913M    /home/javi/.pinot/daemon/spelling.DB
+4,0K    /home/javi/.pinot/daemon/termlist.baseA
+56M    /home/javi/.pinot/daemon/termlist.DB
+4,0K    /home/javi/.pinot/daemon/value.baseA
+4,0K    /home/javi/.pinot/daemon/value.baseB
+4,1M    /home/javi/.pinot/daemon/value.DB
+1,4G    total
+
+>
+>
+> > I have 30410 documents indexed, but with a few advisement about
+> documents
+> > which have root as owner. I chowned to me these documments and I killed
+> > pinot-dbus-daemon, and start it again. 50 minutes later I have 75m in
+> RES
+> > column and 30% of cpu.
+> >
+> The daemon was still indexing the few files you had chown'ed ?
+
+I suppose can be ...
+
+>
+>
+> > Now I can see many "'monitor file' errors" (all are directories) from
+> status
+> > pinot console, and have no idea about the reason.
+> >
+> Do you have any other process running that may be using inotify ? Chances
+> are
+> that Pinot wasn't able to place watches on these directories.
+
+
+This is my list, but  my ~/tmp directory (where errors were) is a private
+directory where I don't configure anything in the programs in the list:
+avahi-daemon
+dbus-daemon
+ekiga
+firefox-bin
+gnome-power-man
+gnome-vfs-daemo
+hald
+icedove-bin
+pdftotext
+pinot-dbus-daem
+rhythmbox
+seahorse-agent
+udevd
+xfrun4
+
+
+>
+> > Could I configure pinot to ignore symbolic links ?
+> >
+> That's not possible, but you can certainly add those directories to
+> the blacklist.
+> For instance, the pattern "*/Desktop*" will skip all directories whose
+> name start
+> with "Desktop". See the README for details on how to do this.
+
+Thanks I'll do it.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080304/e8e7f221/attachment.html>
+
+From fabrice.colin at gmail.com  Wed Mar  5 14:47:23 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 5 Mar 2008 21:47:23 +0800
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <81c921f30803040824w1123f302n3e6186ca54f09599@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+	<6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+	<81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+	<6538c8c80803040522h463e98e8l8145d94bd7b4fa1f@mail.gmail.com>
+	<81c921f30803040824w1123f302n3e6186ca54f09599@mail.gmail.com>
+Message-ID: <6538c8c80803050547q40ae14eenc93771d3286bdc49@mail.gmail.com>
+
+On Wed, Mar 5, 2008 at 12:24 AM, Javier Barroso <javibarroso at gmail.com> wrote:
+> On Tue, Mar 4, 2008 at 2:22 PM, Fabrice Colin <fabrice.colin at gmail.com> wrote:
+> > Could you run "du -hsc ~/.pinot/daemon/*" ? I'd like to see how big
+> > each file in there actually is.
+> Yes, of course (sorry, i forgot it before):
+> ...
+> 16K    /home/javi/.pinot/daemon/spelling.baseA
+> 16K    /home/javi/.pinot/daemon/spelling.baseB
+> 913M    /home/javi/.pinot/daemon/spelling.DB
+> ...
+>  1,4G    total
+>
+The spelling database is huge. If you can live without spelling
+corrections in the UI, you would benefit from disabling it. The size
+of the index (as well as the daemon's memory usage, I think)
+will go down quite a bit.
+See section 15 in the README for how to do this.
+
+> > The daemon was still indexing the few files you had chown'ed ?
+> I suppose can be ...
+>
+How many were there ? 50 minutes to index a few docs seems wrong.
+Is this on a laptop ? Was it on battery ?
+
+Fabrice
+
+
+From javibarroso at gmail.com  Thu Mar  6 09:05:23 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Thu, 6 Mar 2008 09:05:23 +0100
+Subject: [Pinot-discuss] How much memory pinot-dbus-daemon should get ?
+In-Reply-To: <6538c8c80803050547q40ae14eenc93771d3286bdc49@mail.gmail.com>
+References: <81c921f30802270211y49dab095r7ecbf86264ef2021@mail.gmail.com>
+	<6538c8c80802270754m559dfbadi852f4bc4b5ce534d@mail.gmail.com>
+	<81c921f30802271424x2d39da1avc8abf334220620b3@mail.gmail.com>
+	<6538c8c80802271706x6d3ae9c0hf87fa23f38a8f6db@mail.gmail.com>
+	<81c921f30803040357x5341552fkea073619953dc71c@mail.gmail.com>
+	<6538c8c80803040522h463e98e8l8145d94bd7b4fa1f@mail.gmail.com>
+	<81c921f30803040824w1123f302n3e6186ca54f09599@mail.gmail.com>
+	<6538c8c80803050547q40ae14eenc93771d3286bdc49@mail.gmail.com>
+Message-ID: <81c921f30803060005q6e8ba624l911615878fdba197@mail.gmail.com>
+
+On Wed, Mar 5, 2008 at 2:47 PM, Fabrice Colin <fabrice.colin at gmail.com>
+wrote:
+
+> If you can live without spelling
+
+Yes, I can, I disabled it now
+
+How many were there ? 50 minutes to index a few docs seems wrong.
+> Is this on a laptop ? Was it on battery ?
+
+I don't know (many documents sure). I have not laptop (I have a ?PC?)
+
+
+Thank you
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080306/fb32074c/attachment.html>
+
+From javibarroso at gmail.com  Thu Mar  6 09:11:47 2008
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Thu, 6 Mar 2008 09:11:47 +0100
+Subject: [Pinot-discuss] pinot-dbus-daemon stop his work, is it normal ?
+Message-ID: <81c921f30803060011i5b102d97g710f0d75713138d6@mail.gmail.com>
+
+Hi again,
+
+I don't know if is normal pinot-dbus-daemon stop his work:
+
+$ ps -p 23130
+  PID TTY          TIME CMD
+23130 ?        00:01:21 pinot-dbus-daem
+$ date ; while ps -p 23130 &> /dev/null; do sleep 60; done ; date
+mi? mar  5 14:09:27 CET 2008
+jue mar  6 07:39:41 CET 2008
+
+
+I haven't got pinot-dbus-daemon.log because I have removed .pinot (I'll
+reindex without spelling).
+
+Regards
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20080306/ecb7d181/attachment.html>
+
+From fabrice.colin at gmail.com  Thu Mar  6 10:45:57 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 6 Mar 2008 17:45:57 +0800
+Subject: [Pinot-discuss] pinot-dbus-daemon stop his work, is it normal ?
+In-Reply-To: <81c921f30803060011i5b102d97g710f0d75713138d6@mail.gmail.com>
+References: <81c921f30803060011i5b102d97g710f0d75713138d6@mail.gmail.com>
+Message-ID: <6538c8c80803060145i4206d332p7f0704654797b04f@mail.gmail.com>
+
+Hi Javier,
+
+On Thu, Mar 6, 2008 at 4:11 PM, Javier Barroso <javibarroso at gmail.com> wrote:
+> Hi again,
+>
+> I don't know if is normal pinot-dbus-daemon stop his work:
+>
+> $ ps -p 23130
+>   PID TTY          TIME CMD
+> 23130 ?        00:01:21 pinot-dbus-daem
+> $ date ; while ps -p 23130 &> /dev/null; do sleep 60; done ; date
+>  mi? mar  5 14:09:27 CET 2008
+> jue mar  6 07:39:41 CET 2008
+>
+No, it shouldn't stop of its own accord.
+
+> I haven't got pinot-dbus-daemon.log because I have removed .pinot
+> (I'll reindex without spelling).
+>
+Okay. Let us know if you have more information about this...
+
+Thanks.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Thu Mar 27 10:11:34 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 27 Mar 2008 17:11:34 +0800
+Subject: [Pinot-discuss] Pinot 0.84
+Message-ID: <6538c8c80803270211u5256a51yc36259930e2876a3@mail.gmail.com>
+
+Dear all,
+
+Version 0.84 is available :
+http://developer.berlios.de/blog/archives/169-Just-released-Pinot-0.84.html
+
+Fabrice
+
+

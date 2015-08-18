@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Problem with custom engine
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-December/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Problem%20with%20custom%20engine&In-Reply-To=%3C20071215040450.2d7f04de%40bichote%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000084.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Problem with custom engine</H1>
+    <B>Claudio Bustos Navarrete</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Problem%20with%20custom%20engine&In-Reply-To=%3C20071215040450.2d7f04de%40bichote%3E"
+       TITLE="[Pinot-discuss] Problem with custom engine">clbustos at surnet.cl
+       </A><BR>
+    <I>Sat Dec 15 08:04:50 CET 2007</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000084.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, everyone.
+
+I'm doing some research and Pinot is a great tool to search in many academic places.
+I have a problem with ERIC (<A HREF="http://www.eric.ed.gov">http://www.eric.ed.gov</A>). They use capitalized params on the query URL, and the Sherlock parser doesn't work well with they.
+
+My engine is:
+
+&lt;search 
+   name=&quot;ERIC&quot;
+   description=&quot;Educational Resources Information Center&quot;
+   method=&quot;GET&quot;
+   action=&quot;<A HREF="http://www.eric.ed.gov/ERICWebPortal/Home.portal">http://www.eric.ed.gov/ERICWebPortal/Home.portal</A>&quot;
+   updateCheckDays=1   
+   routeType=&quot;Research&quot;
+&gt;<i>
+</I>
+&lt;input name=&quot;ERICExtSearch_SearchValue_0&quot; user&gt;
+&lt;input name=&quot;ERICExtSearch_SearchType_0&quot; value=&quot;kw&quot;&gt;
+&lt;input name=&quot;_nfpb&quot; value=&quot;true&quot;&gt;
+
+&lt;input name=&quot;_pageLabel&quot; value=&quot;ERICSearchResult&quot;&gt;
+&lt;input name=&quot;rnd&quot; value=&quot;0&quot;&gt;
+&lt;input name=&quot;newSearch&quot; value=&quot;true&quot;&gt;
+&lt;input name=&quot;searchtype&quot; value=&quot;basic&quot;&gt;
+&lt;input name=&quot;sourceid&quot; value=&quot;Mozilla-search&quot;&gt;
+&lt;inputnext name=&quot;eric_displayStartCount&quot; factor=&quot;1&quot;&gt;
+&lt;inputprev name=&quot;eric_displayStartCount&quot; factor=&quot;1&quot;&gt;
+
+&lt;interpret 
+    browserResultType=&quot;result&quot; 
+    resultListStart=&quot;Use My Clipboard to print&quot; 
+    resultListEnd=&quot;Now showing results&quot; 
+    resultItemStart=&quot;tblSearchResult&quot;
+    resultItemEnd=&quot;&lt;/p&gt;&quot;
+&gt;<i>
+</I>&lt;/search&gt;
+
+
+And the log for &quot;educational&quot; is
+
+&lt;search 
+   name=&quot;ERIC&quot;
+   description=&quot;Educational Resources Information Center&quot;
+   method=&quot;GET&quot;
+   action=&quot;<A HREF="http://www.eric.ed.gov/ERICWebPortal/Home.portal">http://www.eric.ed.gov/ERICWebPortal/Home.portal</A>&quot;
+   updateCheckDays=1   
+   routeType=&quot;Research&quot;
+&gt;<i>
+</I>
+&lt;input name=&quot;ERICExtSearch_SearchValue_0&quot; user&gt;
+&lt;input name=&quot;ERICExtSearch_SearchType_0&quot; value=&quot;kw&quot;&gt;
+&lt;input name=&quot;_nfpb&quot; value=&quot;true&quot;&gt;
+
+&lt;input name=&quot;_pageLabel&quot; value=&quot;ERICSearchResult&quot;&gt;
+&lt;input name=&quot;rnd&quot; value=&quot;0&quot;&gt;
+&lt;input name=&quot;newSearch&quot; value=&quot;true&quot;&gt;
+&lt;input name=&quot;searchtype&quot; value=&quot;basic&quot;&gt;
+&lt;input name=&quot;sourceid&quot; value=&quot;Mozilla-search&quot;&gt;
+&lt;inputnext name=&quot;eric_displayStartCount&quot; factor=&quot;1&quot;&gt;
+&lt;inputprev name=&quot;eric_displayStartCount&quot; factor=&quot;1&quot;&gt;
+
+&lt;interpret 
+    browserResultType=&quot;result&quot; 
+    resultListStart=&quot;Use My Clipboard to print&quot; 
+    resultListEnd=&quot;Now showing results&quot; 
+    resultItemStart=&quot;tblSearchResult&quot;
+    resultItemEnd=&quot;&lt;/p&gt;&quot;
+&gt;<i>
+</I>&lt;/search&gt;
+
+The log for curl is:
+
+CurlDownloader::retrieveUrl: URL is <A HREF="http://www.eric.ed.gov/ERICWebPortal/Home.portal?ERICExtSearch_SearchValue_0=educational&amp;_nfpb=true&amp;_pagelabel=ERICSearchResult&amp;ericextsearch_searchtype_0=kw&amp;ericextsearch_searchvalue_0=Research&amp;newsearch=true&amp;rnd=0&amp;searchtype=basic&amp;sourceid=Mozilla-search&amp;eric_displayStartCount=0">http://www.eric.ed.gov/ERICWebPortal/Home.portal?ERICExtSearch_SearchValue_0=educational&amp;_nfpb=true&amp;_pagelabel=ERICSearchResult&amp;ericextsearch_searchtype_0=kw&amp;ericextsearch_searchvalue_0=Research&amp;newsearch=true&amp;rnd=0&amp;searchtype=basic&amp;sourceid=Mozilla-search&amp;eric_displayStartCount=0</A>
+
+As you can see, &quot;ERICExtSearch_SearchValue_0&quot; was used twice, first time capitalized and second time on lowercase.
+
+Thanks in advance.
+
+-- 
+Claudio Bustos Navarrete
+Psic&#243;logo
+<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">clbustos at surnet.cl</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000084.html">[Pinot-discuss] Problem with custom engine
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#83">[ date ]</a>
+              <a href="thread.html#83">[ thread ]</a>
+              <a href="subject.html#83">[ subject ]</a>
+              <a href="author.html#83">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

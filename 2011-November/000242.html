@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Labels in Pinot and other questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2011-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Labels%20in%20Pinot%20and%20other%20questions&In-Reply-To=%3CCAHcXvYY1gfvLOTFXMp%2BaNob0zbYs5RNS9jagOo_m3DhOetr95g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000241.html">
+   <LINK REL="Next"  HREF="000243.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Labels in Pinot and other questions</H1>
+    <B>Benjamin Oppermann</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Labels%20in%20Pinot%20and%20other%20questions&In-Reply-To=%3CCAHcXvYY1gfvLOTFXMp%2BaNob0zbYs5RNS9jagOo_m3DhOetr95g%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Labels in Pinot and other questions">bennsn at gmail.com
+       </A><BR>
+    <I>Tue Nov 15 01:43:17 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000241.html">[Pinot-discuss] editing metadata
+</A></li>
+        <LI>Next message: <A HREF="000243.html">[Pinot-discuss] Labels in Pinot and other questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#242">[ date ]</a>
+              <a href="thread.html#242">[ thread ]</a>
+              <a href="subject.html#242">[ subject ]</a>
+              <a href="author.html#242">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thank you Fabrice, this helped very much.
+
+Still more questions though, in order of importance for me:
+ 1.) Are Labels saved as properties of the file, or are they kept in a
+separate location? I ask this because:  If I transfer a copy of a file
+tagged by Pinot to another computer, will the Labels remain available
+for indexing to Pinot, or another search engine, if present on that
+other computer?
+
+ 2.) Can I assign multiple tags to a file?
+If yes, what would a query for multiple tags look like, e.g. I want
+documents with *all three* of the tags: &quot;New&quot;, &quot;Politics&quot; and
+&quot;Europe&quot;?
+Would I have to go &quot;label:New AND label:Politics AND label:Europe&quot;, or
+is there a shorter way to do it?
+(I went through the man page, As far as I understood it lists only the
+commands for terminal. Here I'm asking about what the query should
+look like in the UI search field.)
+
+ 3.) Some things I'm not sure I understand from the README:
+
+&quot;The values of &quot;file&quot;, &quot;url&quot;, &quot;dir&quot; and &quot;label&quot; may be double-quoted.&quot;
+- What is the double quoting for?
+
+&quot;It's also worth pointing out that the query &quot;dir:/X/Y&quot; will return
+files and directories
+  located in /X/Y, but not Y itself, which is what &quot;dir:/X file:Y&quot; would do.&quot;
+- In the 2nd example, is Y still a directory? If yes, do I still have
+to &quot;dir:X FILE:Y&quot;, and it will return a directory?
+
+ 4.) I cannot access the Pinot Settings from Edit&gt;Preferences, nothing
+happens when I click that. The Settings are only available to me in
+the menu of my OS'es system settings.
+
+Thank you very much, Ben
+
+
+
+2011/11/12 Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt;:
+&gt;<i> Hi Ben,
+</I>&gt;<i>
+</I>&gt;<i> On Sat, Nov 12, 2011 at 12:01 PM, Benjamin Oppermann &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">bennsn at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> I'm using Pinot 0.95, since that is latest version available on the
+</I>&gt;&gt;<i> repositories of my Linux. I run Bodhi Linux 1.2, which is based on
+</I>&gt;&gt;<i> Ubuntu Lucid 10.04.
+</I>&gt;&gt;<i> Your Homepage lists &quot;editing of metadata&quot; as a feature of Pinot.
+</I>&gt;&gt;<i> Also the following site lists Pinot as &quot;allowing for user tagging&quot;:
+</I>&gt;&gt;<i> <A HREF="http://www.wikinfo.org/index.php/Comparison_of_desktop_search_software">http://www.wikinfo.org/index.php/Comparison_of_desktop_search_software</A>
+</I>&gt;&gt;<i> Can you help me make use of this function? How do I access it?
+</I>&gt;&gt;<i> I haven't found instructions in the Readme file.
+</I>&gt;&gt;<i>
+</I>&gt;<i> In the UI, the menu Options, List Contents Of, My Documents will show
+</I>&gt;<i> what documents were indexed based on your preferences. Double-clicking
+</I>&gt;<i> on them or using the File, Properties menu will open the properties window
+</I>&gt;<i> where you will be able to edit metadata (title, language) and assign labels.
+</I>&gt;<i> Labels are configured in Edit, Preferences and allow for tagging documents.
+</I>&gt;<i> For instance, documents tagged with label &quot;New&quot; can be retrieved with the
+</I>&gt;<i> query &quot;label:New&quot;. On the command-line, pinot-label allows getting and
+</I>&gt;<i> settings labels on files. Have a look at the man page.
+</I>&gt;<i>
+</I>&gt;<i> I hope this helps.
+</I>&gt;<i>
+</I>&gt;<i> Fabrice
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000241.html">[Pinot-discuss] editing metadata
+</A></li>
+	<LI>Next message: <A HREF="000243.html">[Pinot-discuss] Labels in Pinot and other questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#242">[ date ]</a>
+              <a href="thread.html#242">[ thread ]</a>
+              <a href="subject.html#242">[ subject ]</a>
+              <a href="author.html#242">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

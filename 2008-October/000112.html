@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.88 problems and suggestions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C6538c8c80810090517j4f8c8c49lccd74d1b5e4b05d8%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000110.html">
+   <LINK REL="Next"  HREF="000111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.88 problems and suggestions</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C6538c8c80810090517j4f8c8c49lccd74d1b5e4b05d8%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] pinot 0.88 problems and suggestions">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Thu Oct  9 14:17:06 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000110.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+        <LI>Next message: <A HREF="000111.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#112">[ date ]</a>
+              <a href="thread.html#112">[ thread ]</a>
+              <a href="subject.html#112">[ subject ]</a>
+              <a href="author.html#112">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Thu, Oct 9, 2008 at 2:21 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">johnny666 at email.com</A>&gt; wrote:
+&gt;&gt;<i> From: &quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt;
+</I>&gt;<i> Pinot needed ~2 days to index all my files, tracker needed 3 days,
+</I>&gt;<i> but it would have taken another 10 days WITHOUT turning the machine
+</I>&gt;<i> off or stopping tracker (worst case, I don't know) to built the
+</I>&gt;<i> final index.
+</I>&gt;<i>
+</I>&gt;<i> Both don't use much memory. I did not change the inotify
+</I>&gt;<i> configuration, which makes it highly possible, that pinot does not
+</I>&gt;<i> watch all files.
+</I>&gt;<i>
+</I>In the list of directories to index, if the Monitor checkbox is
+activated for your docs directory, Pinot will attempt to monitor all
+files in that directory. There's a limit on the number of files a
+process can watch with inotify, so most probably not all your 400k
+files will be watched. The Status window won't show any error for this
+though.
+
+&gt;<i> I can't compare the search speed, because tracker doesn't seem to
+</I>&gt;<i> be able to show all search results while the final index is built
+</I>&gt;<i> and I had to drop it because of this problem, before I could test
+</I>&gt;<i> all its capabilities.
+</I>&gt;<i>
+</I>Okay. Being able to search while indexing is a big plus that Xapian gives us.
+
+&gt;<i> For me, it would be enough if I could check some box 'search for
+</I>&gt;<i> similar words' or use a button [list similar] and choose from a
+</I>&gt;<i> displayed list of similar queries. But this is more about taste,
+</I>&gt;<i> because it annoys me to death if a search engine tells me what to
+</I>&gt;<i> search for (worse, if the corrections are WRONG or plain stupid
+</I>&gt;<i> which makes me facepalm).
+</I>&gt;<i>
+</I>&gt;<i> The idea with clicking on a possible alternative (not correction!)
+</I>&gt;<i> isn't bad, if it adds something for the user like enhanced queries.
+</I>&gt;<i> At least it's much better than how it works right now.
+</I>&gt;<i>
+</I>&gt;<i> But the idea to correct/educate the user itself (except he wants
+</I>&gt;<i> it) is bad, because it says implicitly 'you are stupid'. Enhancing
+</I>&gt;<i> his _possibilities_ on the other side is a good idea.
+</I>&gt;<i>
+</I>I agree, and will look into changing how alternative spellings are suggested.
+
+&gt;&gt;<i> Did you find indexing was much slower with spelling enabled ? How much
+</I>&gt;&gt;<i> bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+</I>&gt;<i>
+</I>&gt;<i> No, it wasn't much slower for me. I can only give highly subjective
+</I>&gt;<i> answers, but I think it would have taken maybe 4 days at worst case
+</I>&gt;<i> for building the index instead of 2. Maybe it would have taken the
+</I>&gt;<i> same amount of time as without the dictionary.
+</I>&gt;<i>
+</I>&gt;<i> As far as I remember the dictionary had the size ratio as told in
+</I>&gt;<i> the documentation. Right now the complete dictionary
+</I>&gt;<i> ~/.pinot/daemon is 780 MiByte large. But I have a lot of free
+</I>&gt;<i> GiBytes free, I would not care if it uses several of them.
+</I>&gt;<i>
+</I>Is that the size of the spelling database at
+~/.pinot/daemon/spelling.DB ? What about the whole index ?
+How much space do your documents take on the disk, altogether ?
+If your documents collection is static, you could try compacting the
+index at ~/.pinot/daemon with xapian-compact. See the FAQ
+(<A HREF="http://svn.berlios.de/wsvn/pinot/trunk/FAQ">http://svn.berlios.de/wsvn/pinot/trunk/FAQ</A>). It will take a long a
+while to compact such a big index though.
+
+&gt;&gt;<i> Did you try using stored queries to filter the index list while
+</I>&gt;&gt;<i> browsing. If you choose the &quot;Index, List Contents Of My Documents&quot;
+</I>&gt;&gt;<i> menu, this will list all your documents. This list can be filtered
+</I>&gt;&gt;<i> with a stored query, using the combo box next to the Previous and Next
+</I>&gt;&gt;<i> buttons. In this case, the query's maximum number of results doesn't
+</I>&gt;&gt;<i> apply. This should allow you to get the complete list of documents
+</I>&gt;&gt;<i> matching the query.
+</I>&gt;<i>
+</I>&gt;<i> Yes, I just found out how to use the stored query feature with 'My
+</I>&gt;<i> Documents'. It seems inconsistent, because first I tried it with
+</I>&gt;<i> opening 'My Documents' and running the stored query out of the 'v
+</I>&gt;<i> Stored Queries' Subwindow. Only later did I see that you have to
+</I>&gt;<i> use select the stored query from a drop down menu, instead of just
+</I>&gt;<i> running it.
+</I>&gt;<i>
+</I>&gt;<i> (I know you described how to do it in complete here, but I came to
+</I>&gt;<i> the first line and was already all over pinot instead of reading
+</I>&gt;<i> the whole paragraph, but it still shows that the GUI is too
+</I>&gt;<i> complex).
+</I>&gt;<i>
+</I>There's several reasons for the limit on the number of results, and
+the existence of search and browse modes :
+- it's not practical to show thousands of results in the results
+tree/list. The GUI would become sluggish and unresponsive.
+- for full text searches, usually the desired documents are in the top
+10 or 20 results.
+- search mode is designed for viewing results, comparing results
+between engines, digging deeper with More Like or Search This For, and
+indexing results locally
+- browse mode is designed for exploring the corpus, viewing documents
+and editing their properties (labels, metadata...)
+Anyway, I am not saying it's perfect. As you point out, there's a lot
+of room for improvement.
+
+&gt;&gt;<i> Did you find you had to edit the configuration file manually ? For
+</I>&gt;&gt;<i> what setting ? Ideally, users shouldn't have to. If you let me know
+</I>&gt;&gt;<i> what setting should be made editable, I can add it to the preferences
+</I>&gt;&gt;<i> dialog.
+</I>&gt;<i>
+</I>&gt;<i> No, I had not, but I opened it, because I wanted to see all options
+</I>&gt;<i> in case I had not made the best out of the configuration or the gui
+</I>&gt;<i> did not show everything. As said, I'm heavy influenced after using
+</I>&gt;<i> tracker. (But I don't think tracker had a command to reread the
+</I>&gt;<i> configuration file and you had to use the configurator for the
+</I>&gt;<i> daemon to recognize the changed options at runtime.)
+</I>&gt;<i>
+</I>Yes, in recent versions of Pinot, configuration changes are picked up
+by the daemon right away.
+
+&gt;&gt;<i> In what case did you have to wait for several minutes ?
+</I>&gt;<i>
+</I>&gt;<i> I used catfish to request everything in my &quot;dir:/docs&quot; (42k indexed
+</I>&gt;<i> files) and the connection timed out with the following message on
+</I>&gt;<i> the console after some seconds:
+</I>&gt;<i>
+</I>&gt;<i> &quot;Debug: org.freedesktop.DBus.Error.NoReply: Did not receive a
+</I>&gt;<i> reply. Possible causes include: the remote application did not send
+</I>&gt;<i> a reply, the message bus security policy blocked the reply, the
+</I>&gt;<i> reply timeout expired, or the network connection was broken.&quot;
+</I>&gt;<i>
+</I>&gt;<i> after the message was displayed, the cpu was still busy for some seconds.
+</I>&gt;<i>
+</I>I see. The D-Bus search method is quite basic at the moment and
+returns all results in one go. If there's a large number of results,
+the reply timeout will kick in while the daemon is still looking for
+matches. This won't cancel the query however, and the daemon will keep
+searching, which explains why your system was still busy.
+
+&gt;<i> As I now watched the gif animation, I made some tests with the
+</I>&gt;<i> following command:
+</I>&gt;<i>
+</I>&gt;<i> time pinot-search --max &lt;x&gt; xapian ~/.pinot/daemon &quot;dir:/docs&quot; &gt; /dev/zero
+</I>&gt;<i>
+</I>&gt;<i> The machine was more or less idle and had enough free ram. As said
+</I>&gt;<i> above, /docs has around 42k indexed files.
+</I>&gt;<i>
+</I>&gt;<i> I have to note, that times can vary greatly and can double or half
+</I>&gt;<i> for the small result numbers. I didn't made a complete test with
+</I>&gt;<i> several iterations and computing the average, but the numbers
+</I>&gt;<i> should still give some hints:
+</I>&gt;<i> ...
+</I>&gt;<i> I made a second test and piped the result of the 100k result and it
+</I>&gt;<i> returned everything as wanted.
+</I>&gt;<i>
+</I>&gt;<i> As you can see, waiting for all results takes over a minute. Giving
+</I>&gt;<i> some faster intermediate response (except the busy lights) can help
+</I>&gt;<i> a lot. Intermediate results could be for example partial results
+</I>&gt;<i> (good) or numbers of results still to fetch (bad, because the user
+</I>&gt;<i> has still to wait a minute before he can proceed and maybe the
+</I>&gt;<i> first results had already what he wanted or he changed his mind,
+</I>&gt;<i> because the query was stupid).
+</I>&gt;<i>
+</I>I have some idea as to how to fix this.
+
+&gt;&gt;<i> The browse+filter method described above was actually designed to help
+</I>&gt;&gt;<i> with this. Let me know what you think of it.
+</I>&gt;<i>
+</I>&gt;<i> As I said above, I think it's to complex and hidden. The user has
+</I>&gt;<i> to use nonintuitive and long ways to make such queries and to walk
+</I>&gt;<i> through them (the 100 results per page limit).
+</I>&gt;<i>
+</I>&gt;<i> As the user already needs to select the searchengine/location in
+</I>&gt;<i> the 'Search Engines' Tab, before he can really use the Live Query
+</I>&gt;<i> or stored queries, He should not need to discern betwen stored
+</I>&gt;<i> queries in the list and the drop down list, just because the second
+</I>&gt;<i> removes the limit.
+</I>&gt;<i>
+</I>Okay.
+
+&gt;<i> Sidenote: Choosing the searchengine itself should be visible all
+</I>&gt;<i> the time, but it takes too much spaces if i want too, maybe a
+</I>&gt;<i> dropdown list (but that would possibly disable multiselection, so I
+</I>&gt;<i> don't know)? Right now I have to open/close the list of
+</I>&gt;<i> searchengines some times, because the used search engine changes,
+</I>&gt;<i> which is not visible, if it is not open. But if I don't close it,
+</I>&gt;<i> it wastes a lot of space the time I don't need it.
+</I>&gt;<i>
+</I>Yes, the engines tree can take quite a bit of room. You can resize the
+pane to be as wide as you want it to be though.
+
+&gt;<i> Your program is great, so I enjoyed the time working the stuff out.
+</I>&gt;<i> My mail is already long enough and I don't know what to write
+</I>&gt;<i> anymore. If there is something else I will send another mail.
+</I>&gt;<i>
+</I>Thanks for that.
+The next step for me will be to come up with a list of changes and see
+which I can fit in my next scrum.
+
+By the way, there's a bug in 0.88 that may have prevented all your
+plain text and XML files from being fully indexed. 0.89 fixes that but
+the daemon will automatically rebuild the index. For you that would
+mean another 2 days... If this is not desirable, you could stop the
+daemon, upgrade to 0.89 and then, say, touch all those files to update
+their timestamps. Finally, start the 0.89 daemon manually with the
+&quot;-i, --ignore-version&quot; parameter. This should ensure only those files
+are reindexed.
+
+Cheers.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000110.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+	<LI>Next message: <A HREF="000111.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#112">[ date ]</a>
+              <a href="thread.html#112">[ thread ]</a>
+              <a href="subject.html#112">[ subject ]</a>
+              <a href="author.html#112">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

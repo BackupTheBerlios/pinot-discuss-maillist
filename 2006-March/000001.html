@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20ots_load_xml_dictionary%28OtsArticle%2A%2C%20const%20unsigned%20char%2A%29%27&In-Reply-To=%3Cecd176b60603041117i4f78c00am8bd9153c2391d8a3%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000002.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'</H1>
+    <B>daniele favara</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20ots_load_xml_dictionary%28OtsArticle%2A%2C%20const%20unsigned%20char%2A%29%27&In-Reply-To=%3Cecd176b60603041117i4f78c00am8bd9153c2391d8a3%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'">danjele at gmail.com
+       </A><BR>
+    <I>Sat Mar  4 20:17:51 CET 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000002.html">[Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>i have problems compiling pinot on dapper:
+
+Making all in Index
+make[2]: Entering directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43/Index'
+if /bin/sh ../libtool --tag=CXX --mode=compile g++ -DHAVE_CONFIG_H -I.
+-I. -I..    -I../Utils -I../Tokenize  -I/usr/include/libots-1
+-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include    -g -Wall -O2
+-MT Summarizer.lo -MD -MP -MF &quot;.deps/Summarizer.Tpo&quot; -c -o
+Summarizer.lo Summarizer.cpp; \
+        then mv -f &quot;.deps/Summarizer.Tpo&quot; &quot;.deps/Summarizer.Plo&quot;; else
+rm -f &quot;.deps/Summarizer.Tpo&quot;; exit 1; fi
+ g++ -DHAVE_CONFIG_H -I. -I. -I.. -I../Utils -I../Tokenize
+-I/usr/include/libots-1 -I/usr/include/glib-2.0
+-I/usr/lib/glib-2.0/include -g -Wall -O2 -MT Summarizer.lo -MD -MP -MF
+.deps/Summarizer.Tpo -c Summarizer.cpp  -fPIC -DPIC -o
+.libs/Summarizer.o
+Summarizer.cpp: In member function 'std::string
+Summarizer::summarize(const unsigned char*, unsigned int)':
+Summarizer.cpp:74: error: invalid conversion from 'const char*' to
+'const unsigned char*'Summarizer.cpp:74: error:   initializing
+argument 2 of 'gboolean ots_load_xml_dictionary(OtsArticle*, const
+unsigned char*)'
+make[2]: *** [Summarizer.lo] Error 1
+make[2]: Leaving directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43/Index'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory
+`/home/nomed/Progetti/xubuntu/works/desktopsearch/pinot/pinot-0.43'
+make: *** [all] Error 2
+
+this is the libots version installed
+
+
+ii  libots-dev  0.4.2+cvs.2004.02.20-1.1 Open Text Summarizer (development)
+
+any suggestions ?
+
+thanks
+
+ciao
+
+--
+----
+<A HREF="http://dsslive.org">http://dsslive.org</A>
+----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000002.html">[Pinot-discuss] ots_load_xml_dictionary(OtsArticle*, const unsigned char*)'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

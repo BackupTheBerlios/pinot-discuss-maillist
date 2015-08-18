@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta3
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta3&In-Reply-To=%3C20090110004330.04f5f639%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000131.html">
+   <LINK REL="Next"  HREF="000133.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta3</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta3&In-Reply-To=%3C20090110004330.04f5f639%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta3">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Jan 10 00:43:30 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000131.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+        <LI>Next message: <A HREF="000133.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#132">[ date ]</a>
+              <a href="thread.html#132">[ thread ]</a>
+              <a href="subject.html#132">[ subject ]</a>
+              <a href="author.html#132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 9 Jan 2009 20:01:51 +0800
+&quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Jan 8, 2009 at 11:49 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; I built pinot from your pinot-0.90.beta3.tar.gz and gave it a
+</I>&gt;<i> &gt; testrun.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The test results:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; (1) Pinot does not recurse into the same directory anymore. I
+</I>&gt;<i> &gt; tested it with the directory it failed at. Do you want me to run a
+</I>&gt;<i> &gt; special test to check if it does not skip anything? The output
+</I>&gt;<i> &gt; looked sane to me, but if you want to test anything, I'm ready to
+</I>&gt;<i> &gt; do it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Great. There should be a message along the line of &quot;Skipping /a/b/c:
+</I>&gt;<i> ...&quot; in your log file for each symlink that has been skipped. Apart
+</I>&gt;<i> from that, you could browse your My Documents index to see if anything
+</I>&gt;<i> is amiss.
+</I>
+Yes, I get several of these messages. Number of indexed files seems
+fine (difference between all files/directories and symlinks).
+
+Only problem which exists is that the names of symlinks won't get
+stored. A search for a file which is a symlink will fail.
+
+&gt;<i> &gt; (2) Pinot fails to recognize an interrupted index at restart:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; $ rm ~/.pinot -rf
+</I>&gt;<i> &gt; $ pinot              # configure everything
+</I>&gt;<i> &gt; $ pinot-dbus-daemon
+</I>&gt;<i> &gt; Ctrl+c
+</I>&gt;<i> &gt; $ pinot-dbus-daemon
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; gives the following logfile:
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; Skipping /home/jwerden: it has already been crawled
+</I>&gt;<i> &gt; Scanned /home/jwerden in 9 ms
+</I>&gt;<i> &gt;
+</I>&gt;<i> Hmm I ran into the same issue, and thought I fixed it. I will take
+</I>&gt;<i> another look.
+</I>
+Thank you. This problem didn't appear with 0.89, looks like a
+regression for me, too.
+
+&gt;<i> &gt; (3) I tried to build the package from svn (1466) but failed. The
+</I>&gt;<i> &gt; problem was that linking was done without -lcurl/-lneon:
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt; I don't know if this is my failure and I misunderstood the build
+</I>&gt;<i> &gt; process or if it was a real error.
+</I>&gt;<i> &gt;
+</I>&gt;<i> My fault here. I am aware of this, have a fix but haven't committed
+</I>&gt;<i> it yet.
+</I>
+Ok
+
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000131.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+	<LI>Next message: <A HREF="000133.html">[Pinot-discuss] first test pinot 0.90 beta3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#132">[ date ]</a>
+              <a href="thread.html#132">[ thread ]</a>
+              <a href="subject.html#132">[ subject ]</a>
+              <a href="author.html#132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

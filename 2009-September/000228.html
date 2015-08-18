@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Pinot-discuss Digest, Vol 30, Issue 1
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Pinot-discuss%20Digest%2C%20Vol%2030%2C%20Issue%201&In-Reply-To=%3C8403460.378291252061621376.JavaMail.coremail%40bj126app33.126.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000231.html">
+   <LINK REL="Next"  HREF="000232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Pinot-discuss Digest, Vol 30, Issue 1</H1>
+    <B>rglujing</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Pinot-discuss%20Digest%2C%20Vol%2030%2C%20Issue%201&In-Reply-To=%3C8403460.378291252061621376.JavaMail.coremail%40bj126app33.126.com%3E"
+       TITLE="[Pinot-discuss] Pinot-discuss Digest, Vol 30, Issue 1">rglujing at 126.com
+       </A><BR>
+    <I>Fri Sep  4 12:53:41 CEST 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000231.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+        <LI>Next message: <A HREF="000232.html">[Pinot-discuss] port pinot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#228">[ date ]</a>
+              <a href="thread.html#228">[ thread ]</a>
+              <a href="subject.html#228">[ subject ]</a>
+              <a href="author.html#228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Oh,That's right!
+ I have meet this problem too,so i reduced the number of background threads,this is a method.
+But i believe there are better ways!
+
+regards,
+Omego
+
+
+
+
+
+
+
+&#22312;2009-09-04?18:02:18&#65292;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss-request at lists.berlios.de</A>?&#20889;&#36947;&#65306;
+&gt;<i>Send?Pinot-discuss?mailing?list?submissions?to
+</I>&gt;<i>	<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i>To?subscribe?or?unsubscribe?via?the?World?Wide?Web,?visit
+</I>&gt;<i>	<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">https://lists.berlios.de/mailman/listinfo/pinot-discuss</A>
+</I>&gt;<i>or,?via?email,?send?a?message?with?subject?or?body?'help'?to
+</I>&gt;<i>	<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss-request at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i>You?can?reach?the?person?managing?the?list?at
+</I>&gt;<i>	<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss-owner at lists.berlios.de</A>
+</I>&gt;<i>
+</I>&gt;<i>When?replying,?please?edit?your?Subject?line?so?it?is?more?specific
+</I>&gt;<i>than?&quot;Re:?Contents?of?Pinot-discuss?digest...&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>Today's?Topics:
+</I>&gt;<i>
+</I>&gt;<i>???1.?High?Memory?consume?in?pinot?0.94?(Javier?Barroso)
+</I>&gt;<i>???2.?Re:?High?Memory?consume?in?pinot?0.94?(Javier?Barroso)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>----------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i>Message:?1
+</I>&gt;<i>Date:?Thu,?3?Sep?2009?17:10:54?+0200
+</I>&gt;<i>From:?Javier?Barroso?&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">javibarroso at gmail.com</A>&gt;
+</I>&gt;<i>Subject:?[Pinot-discuss]?High?Memory?consume?in?pinot?0.94
+</I>&gt;<i>To:?<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss at lists.berlios.de</A>
+</I>&gt;<i>Message-ID:
+</I>&gt;<i>	&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">81c921f30909030810i45e733d3o9f57bbbfdaacf08d at mail.gmail.com</A>&gt;
+</I>&gt;<i>Content-Type:?text/plain;?charset=&quot;iso-8859-1&quot;
+</I>&gt;<i>
+</I>&gt;<i>Hi,
+</I>&gt;<i>
+</I>&gt;<i>This?morning?I?activate?pinot?in?my?box?(debian?sid)
+</I>&gt;<i>
+</I>&gt;<i>Now?it?was?eating?my?memory,.?and?I?couldn't?work:
+</I>&gt;<i>
+</I>&gt;<i>Mem:???1554880k?total,??1520516k?used,????34364k?free,?????2152k?buffers
+</I>&gt;<i>Swap:??1572856k?total,???887856k?used,???685000k?free,????36572k?cached
+</I>&gt;<i>
+</I>&gt;<i>??PID?USER??????PR??NI??VIRT??RES??SHR?S?%CPU?%MEM????TIME+??COMMAND
+</I>&gt;<i>??194?root??????15??-5?????0????0????0?S????7??0.0???0:06.61
+</I>&gt;<i>kswapd0
+</I>&gt;<i>
+</I>&gt;<i>?8549?javi??????35??15?2411m?1.2g?2360?S????3?81.8??87:04.05?pinot-dbus-daem
+</I>&gt;<i>
+</I>&gt;<i>$?du?-sh?.pinot
+</I>&gt;<i>134M????.pinot
+</I>&gt;<i>
+</I>&gt;<i>I'm?trying?pinot?again?because?a?post?where?I?read?about?better?memory
+</I>&gt;<i>consume?[1]
+</I>&gt;<i>
+</I>&gt;<i>Regards,
+</I>&gt;<i>
+</I>&gt;<i>[1]?<A HREF="http://pinotdev.blogspot.com/2009/04/pinot-092.html">http://pinotdev.blogspot.com/2009/04/pinot-092.html</A>
+</I>&gt;<i>--------------?next?part?--------------
+</I>&gt;<i>An?HTML?attachment?was?scrubbed...
+</I>&gt;<i>URL:?<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment-0001.html?">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment-0001.html?</A>
+</I>&gt;<i>
+</I>&gt;<i>------------------------------
+</I>&gt;<i>
+</I>&gt;<i>Message:?2
+</I>&gt;<i>Date:?Thu,?3?Sep?2009?17:12:08?+0200
+</I>&gt;<i>From:?Javier?Barroso?&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">javibarroso at gmail.com</A>&gt;
+</I>&gt;<i>Subject:?Re:?[Pinot-discuss]?High?Memory?consume?in?pinot?0.94
+</I>&gt;<i>To:?<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">pinot-discuss at lists.berlios.de</A>
+</I>&gt;<i>Message-ID:
+</I>&gt;<i>	&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">81c921f30909030812i575631aekf958f930caea304f at mail.gmail.com</A>&gt;
+</I>&gt;<i>Content-Type:?text/plain;?charset=&quot;iso-8859-1&quot;
+</I>&gt;<i>
+</I>&gt;<i>On?Thu,?Sep?3,?2009?at?5:10?PM,?Javier?Barroso?&lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">javibarroso at gmail.com</A>&gt;wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i>?Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?This?morning?I?activate?pinot?in?my?box?(debian?sid)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?Now?it?was?eating?my?memory,.?and?I?couldn't?work:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?Mem:???1554880k?total,??1520516k?used,????34364k?free,?????2152k?buffers
+</I>&gt;&gt;<i>?Swap:??1572856k?total,???887856k?used,???685000k?free,????36572k?cached
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>???PID?USER??????PR??NI??VIRT??RES??SHR?S?%CPU?%MEM????TIME+??COMMAND
+</I>&gt;&gt;<i>???194?root??????15??-5?????0????0????0?S????7??0.0???0:06.61
+</I>&gt;&gt;<i>?kswapd0
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>??8549?javi??????35??15?2411m?1.2g?2360?S????3?81.8??87:04.05
+</I>&gt;&gt;<i>?pinot-dbus-daem
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?$?du?-sh?.pinot
+</I>&gt;&gt;<i>?134M????.pinot
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i>?I'm?trying?pinot?again?because?a?post?where?I?read?about?better?memory
+</I>&gt;&gt;<i>?consume?[1]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?Regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?[1]?<A HREF="http://pinotdev.blogspot.com/2009/04/pinot-092.html">http://pinotdev.blogspot.com/2009/04/pinot-092.html</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>?Sorry,?I?wanted?to?say?du?-sh?directory?indexed?==?14?G
+</I>&gt;<i>--------------?next?part?--------------
+</I>&gt;<i>An?HTML?attachment?was?scrubbed...
+</I>&gt;<i>URL:?<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/5bc80758/attachment-0001.html?">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/5bc80758/attachment-0001.html?</A>
+</I>&gt;<i>
+</I>&gt;<i>------------------------------
+</I>&gt;<i>
+</I>&gt;<i>_______________________________________________
+</I>&gt;<i>Pinot-discuss?mailing?list
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">Pinot-discuss at lists.berlios.de</A>
+</I>&gt;<i><A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">https://lists.berlios.de/mailman/listinfo/pinot-discuss</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>End?of?Pinot-discuss?Digest,?Vol?30,?Issue?1
+</I>&gt;<i>********************************************
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090904/d5e1df61/attachment.html">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090904/d5e1df61/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000231.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+	<LI>Next message: <A HREF="000232.html">[Pinot-discuss] port pinot
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#228">[ date ]</a>
+              <a href="thread.html#228">[ thread ]</a>
+              <a href="subject.html#228">[ subject ]</a>
+              <a href="author.html#228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

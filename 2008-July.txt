@@ -1,0 +1,84 @@
+From simon at mungewell.org  Fri Jul  4 17:47:10 2008
+From: simon at mungewell.org (simon at mungewell.org)
+Date: Fri, 4 Jul 2008 11:47:10 -0400 (EDT)
+Subject: [Pinot-discuss] Pinot: 1st look and suggestions
+Message-ID: <22724.68.146.205.60.1215186430.squirrel@host171.canaca.com>
+
+Hi all,
+I came across Pinot and it looks good, so far.
+
+I am primarily searching for a replacment for a personal search proxy
+which I have been running for a while called Mindretrieve
+(http://www.mindretrieve.net/), which indexes every web page a user visits
+automatically. However Mindretrieve is a bit of a memory monster (with a
+large index)....
+
+Seeing how Pinot (and Pinot-dbus-deamon) treats File scans and Web imports
+as seperate indexes (or at least catogories), does the idea of adding a
+third 'web seen' catagory make sense?
+
+A small proxy could parse/index all the webpages seen and push the result
+into xapian index.
+
+Am I mad?
+Mungewell.
+
+
+
+From fabrice.colin at gmail.com  Sat Jul  5 13:29:30 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 5 Jul 2008 19:29:30 +0800
+Subject: [Pinot-discuss] Pinot: 1st look and suggestions
+In-Reply-To: <22724.68.146.205.60.1215186430.squirrel@host171.canaca.com>
+References: <22724.68.146.205.60.1215186430.squirrel@host171.canaca.com>
+Message-ID: <6538c8c80807050429j68e940b5ia036f38608d3ee63@mail.gmail.com>
+
+Hi Simon,
+
+On Fri, Jul 4, 2008 at 11:47 PM,  <simon at mungewell.org> wrote:
+> I came across Pinot and it looks good, so far.
+>
+> I am primarily searching for a replacment for a personal search proxy
+> which I have been running for a while called Mindretrieve
+> (http://www.mindretrieve.net/), which indexes every web page a user visits
+> automatically. However Mindretrieve is a bit of a memory monster (with a
+> large index)....
+>
+> Seeing how Pinot (and Pinot-dbus-deamon) treats File scans and Web imports
+> as seperate indexes (or at least catogories), does the idea of adding a
+> third 'web seen' catagory make sense?
+>
+> A small proxy could parse/index all the webpages seen and push the result
+> into xapian index.
+>
+Thanks for the link, I didn't know about Mindretrieve... What you
+describe is definitely possible. A Web proxy or browser extension
+could feed documents to Pinot for indexing. No such proxy or extension
+exists right now though.
+If you only wanted to index Web pages of interest, I would recommend
+using Firefox' Scrapbook extension and adding your scrapbook directory
+to the list of directories to index.
+I see that Mindretrieve is under the BSD license. In theory, one could
+replace its Lucene back-end with Xapian, and search the resulting
+index with Pinot. There are several Python-based toolkits that allow
+indexing and searching with Xapian.
+
+Does this help ?
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sun Jul 20 13:56:41 2008
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 20 Jul 2008 19:56:41 +0800
+Subject: [Pinot-discuss] Pinot 0.87
+Message-ID: <6538c8c80807200456k69ee3e2jae99528bc8829313@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.87 is available :
+http://developer.berlios.de/blog/archives/177-Released-Pinot-0.87.html
+
+Fabrice
+
+

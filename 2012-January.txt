@@ -1,0 +1,80 @@
+From germanazo at gmail.com  Mon Jan 23 02:03:30 2012
+From: germanazo at gmail.com (germanazo)
+Date: Sun, 22 Jan 2012 22:03:30 -0300
+Subject: [Pinot-discuss] Pinot dbus deamon stop indexing
+Message-ID: <CACxpABGzPHcNNYzH=MUwX2P6uBm-JAnK--GL=cvt11=nKhg6tw@mail.gmail.com>
+
+Hello everybody, I'm new in the list, my name is German and I'm from
+Argentina.
+
+The last day I would make a search engine based on web, with pinot, I need
+the console mode interface, installed pinot ( from official ubuntu 11.10
+repos ), then configured it with prefs.xml and launched the
+pinot-dbus-deamon, well, this was working fine, was searching my files and
+everything, the last day, I added a new file, and just died the indexing
+stuff.
+
+The log says:
+
+gbortoli at development ~% cat .pinot/pinot-dbus-daemon.log
+>
+> FilterFactory::loadFilters: /home/gbortoli/.pinot/filters is not a
+>> directory
+>
+> ModuleFactory::loadModules: /home/gbortoli/.pinot/backends is not a
+>> directory
+>
+> Couldn't open settings file /home/gbortoli/.pinot/ui.xml
+>
+> /home/gbortoli/.pinot/history-daemon: no such column: Language
+>
+> 0 actions left
+>
+> System is on battery
+>
+>
+> Don't know what is happening but can't let it work correctly
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20120122/ffc25160/attachment.html>
+
+From fabrice.colin at gmail.com  Mon Jan 23 04:32:02 2012
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 23 Jan 2012 11:32:02 +0800
+Subject: [Pinot-discuss] Pinot dbus deamon stop indexing
+In-Reply-To: <CACxpABGzPHcNNYzH=MUwX2P6uBm-JAnK--GL=cvt11=nKhg6tw@mail.gmail.com>
+References: <CACxpABGzPHcNNYzH=MUwX2P6uBm-JAnK--GL=cvt11=nKhg6tw@mail.gmail.com>
+Message-ID: <C535BF4C-63A9-45AA-B9C1-8EFF12D3C624@gmail.com>
+
+Hi!
+Something is up with history-daemon... Could you delete it and restart the daemon?
+Also note that battery status affects indexing, not search, but better check that document is in your index using Pinot's List Contents Of menu.
+
+Sent from my iPhone
+
+On 23 Jan, 2012, at 9:03 AM, germanazo <germanazo at gmail.com> wrote:
+
+> Hello everybody, I'm new in the list, my name is German and I'm from Argentina.
+> 
+> The last day I would make a search engine based on web, with pinot, I need the console mode interface, installed pinot ( from official ubuntu 11.10 repos ), then configured it with prefs.xml and launched the pinot-dbus-deamon, well, this was working fine, was searching my files and everything, the last day, I added a new file, and just died the indexing stuff.
+> 
+> The log says:
+> 
+> gbortoli at development ~% cat .pinot/pinot-dbus-daemon.log 
+> FilterFactory::loadFilters: /home/gbortoli/.pinot/filters is not a directory
+> ModuleFactory::loadModules: /home/gbortoli/.pinot/backends is not a directory
+> Couldn't open settings file /home/gbortoli/.pinot/ui.xml
+> /home/gbortoli/.pinot/history-daemon: no such column: Language
+> 0 actions left
+> System is on battery
+> 
+> Don't know what is happening but can't let it work correctly
+>  
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20120123/78f6547a/attachment.html>
+

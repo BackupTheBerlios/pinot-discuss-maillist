@@ -1,0 +1,15 @@
+From fabrice.colin at gmail.com  Mon Oct 30 14:04:18 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 30 Oct 2006 21:04:18 +0800
+Subject: [Pinot-discuss] Updated Ubuntu packages
+Message-ID: <6538c8c80610300504h6a38084dm23e8eebb4ec8b59f@mail.gmail.com>
+
+Gauvain Pocentek was kind enough to package Pinot (and libtextcat) for Edgy Eft.
+Please refer to http://gauvain.tuxfamily.org/repos/ for instructions
+(what to add to
+sources.list, package name, etc...).
+Note that lbxapian11 (Xapian 0.9.6) is included in the Universe repository.
+
+Fabrice
+
+

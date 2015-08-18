@@ -1,0 +1,417 @@
+From fabrice.colin at gmail.com  Fri Dec  8 12:45:37 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 8 Dec 2006 19:45:37 +0800
+Subject: [Pinot-discuss] Packages for FreeBSD
+Message-ID: <6538c8c80612080345v70b418ap6ecb5d5892ef2f2d@mail.gmail.com>
+
+Thanks to Thierry Thomas, Pinot and its dependencies are in FreshPorts.
+More information can be found at http://www.freshports.org/deskutils/pinot/
+
+Fabrice
+
+
+From cms01 at tampabay.rr.com  Sat Dec  9 22:40:47 2006
+From: cms01 at tampabay.rr.com (Richard)
+Date: Sat, 09 Dec 2006 16:40:47 -0500
+Subject: [Pinot-discuss] search the web?
+Message-ID: <457B2D5F.9020509@tampabay.rr.com>
+
+how does one search the web, using pinot
+try to setup a search engine yahoo... but tell me it can't search.
+--
+Rich
+
+
+
+From fabrice.colin at gmail.com  Sun Dec 10 16:17:43 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 10 Dec 2006 23:17:43 +0800
+Subject: [Pinot-discuss] search the web?
+Message-ID: <6538c8c80612100717wa2247b2o393d2f4ed875ebb4@mail.gmail.com>
+
+Hi Richard,
+
+> how does one search the web, using pinot
+>
+You would just select the search engine of your choice in the engines
+list on the left
+and either click the Find button next to Query, or the one right to
+the stored queries
+list if you are using a stored query.
+
+> try to setup a search engine yahoo... but tell me it can't search.
+>
+What's the error message you get ?
+
+Are you connected directly to the Internet ? If proxy configuration is
+required, Web
+searches will not work in the current version.
+
+Fabrice
+
+
+From rmason at esd.mun.ca  Wed Dec 20 18:15:27 2006
+From: rmason at esd.mun.ca (Roger Mason)
+Date: Wed, 20 Dec 2006 13:45:27 -0330
+Subject: [Pinot-discuss] installation problem
+Message-ID: <y657iwmmqts.fsf@minnie.esd.mun.ca>
+
+Hello,
+
+I just compiled Pinot 0.64 from source on a Gentoo linux machine.  The
+compilation went OK but I get this error when I do 'make install':
+
+/usr/local/share/applications/pinot.desktop: error: Categories values
+must be one of "Core" [snip]
+desktop-file-install created an invalid desktop file!
+
+Thanks for any help,
+
+Roger Mason
+
+
+
+From nix.or.die at googlemail.com  Wed Dec 20 19:08:47 2006
+From: nix.or.die at googlemail.com (Gabriel C)
+Date: Wed, 20 Dec 2006 19:08:47 +0100
+Subject: [Pinot-discuss] installation problem
+In-Reply-To: <y657iwmmqts.fsf@minnie.esd.mun.ca>
+References: <y657iwmmqts.fsf@minnie.esd.mun.ca>
+Message-ID: <45897C2F.60801@googlemail.com>
+
+Roger Mason schrieb:
+> Hello,
+>   
+
+Hi ,
+
+> I just compiled Pinot 0.64 from source on a Gentoo linux machine.  The
+> compilation went OK but I get this error when I do 'make install':
+>
+> /usr/local/share/applications/pinot.desktop: error: Categories values
+> must be one of "Core" [snip]
+> desktop-file-install created an invalid desktop file!
+>   
+
+The solution is in the FAQ ;)
+
+snip
+
+.....
+
+* If "make install" fails with an error about Categories in pinot.desktop
+and you have desktop-file-utils 0.11, either downgrade to 0.10 or
+upgrade to 0.12
+if possible, or edit the top-level Makefile and replace the line
+@desktop-file-install --vendor=""
+--dir=$(DESTDIR)$(datadir)/applications pinot.desktop
+with
+$(INSTALL_DATA) pinot.desktop
+$(DESTDIR)$(datadir)/applications/pinot.desktop
+and run "make install" again.
+
+.....
+
+snip
+
+> Thanks for any help,
+>
+> Roger Mason
+>   
+
+Regards
+
+Gabriel
+
+
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+>
+>   
+
+
+
+From fabrice.colin at gmail.com  Thu Dec 21 05:52:15 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 21 Dec 2006 12:52:15 +0800
+Subject: [Pinot-discuss] installation problem
+Message-ID: <6538c8c80612202052y7723bf99nb6bfff0e80c0a4c3@mail.gmail.com>
+
+Gabriel C wrote :
+> Roger Mason schrieb:
+> > I just compiled Pinot 0.64 from source on a Gentoo linux machine.  The
+> > compilation went OK but I get this error when I do 'make install':
+> >
+> > /usr/local/share/applications/pinot.desktop: error: Categories values
+> > must be one of "Core" [snip]
+> > desktop-file-install created an invalid desktop file!
+>
+> The solution is in the FAQ ;)
+> ...
+
+Another workaround is to remove "Application" from the "Categories"
+field in pinot.desktop.
+That change was actually committed to the trunk recently, you can get
+the file from
+http://svn.berlios.de/wsvn/pinot/trunk/pinot.desktop?op=file&rev=0&sc=0
+
+BTW, for 0.64, I would recommend you apply the corrective patch at
+http://pinot.berlios.de/fixes_064_01.patch
+
+Coincidentally, I am planning to release 0.65 later on today.
+
+Cheers.
+
+Fabrice
+
+
+From rmason at esd.mun.ca  Fri Dec 22 00:27:34 2006
+From: rmason at esd.mun.ca (Roger Mason)
+Date: Thu, 21 Dec 2006 19:57:34 -0330
+Subject: [Pinot-discuss] pinot won't connect to dbus
+Message-ID: <y65ejqskexl.fsf@minnie.esd.mun.ca>
+
+hello,
+
+I have pinot-0.65 installed and running.  I worked through the docs on
+the web page and was able to generate hits for a couple of terms.
+However, I cannot get pinot to index my home directory.  I followed
+the instructions on the web page but after I do
+
+pinot-dbus-daemon &
+
+followed by
+
+pinot-search xapian ~/.pinot/daemon "calcite" 10
+
+I see: Couldn't get a results list !
+
+and pinot-dbus-daemon.log says
+
+TokenizerFactory::loadTokenizers: /home/rmason/.pinot/tokenizers
+doesn't exist
+Couldn't open bus connection: Unable to determine the address of the
+message bus (try 'man dbus-launch' and 'man dbus-daemon'$
+Exiting...
+
+Thanks for any help,
+
+Roger
+
+
+
+From nix.or.die at googlemail.com  Fri Dec 22 00:56:50 2006
+From: nix.or.die at googlemail.com (Gabriel C)
+Date: Fri, 22 Dec 2006 00:56:50 +0100
+Subject: [Pinot-discuss] pinot won't connect to dbus
+In-Reply-To: <y65ejqskexl.fsf@minnie.esd.mun.ca>
+References: <y65ejqskexl.fsf@minnie.esd.mun.ca>
+Message-ID: <458B1F42.8030606@googlemail.com>
+
+Roger Mason schrieb:
+> hello,
+>   
+
+Hi
+
+> I have pinot-0.65 installed and running.  I worked through the docs on
+> the web page and was able to generate hits for a couple of terms.
+> However, I cannot get pinot to index my home directory.  I followed
+> the instructions on the web page but after I do
+>
+> pinot-dbus-daemon &
+>
+> followed by
+>
+> pinot-search xapian ~/.pinot/daemon "calcite" 10
+>
+> I see: Couldn't get a results list !
+>
+> and pinot-dbus-daemon.log says
+>
+> TokenizerFactory::loadTokenizers: /home/rmason/.pinot/tokenizers
+> doesn't exist
+> Couldn't open bus connection: Unable to determine the address of the
+> message bus (try 'man dbus-launch' and 'man dbus-daemon'$
+> Exiting...
+>   
+
+Well I wonder what Distro you are using ..
+If you have some /etc/profile.d/ folder ( or alike ) add dbus.sh file in
+there. Like this one :
+
+#!/bin/sh
+
+dbuslaunch="`which dbus-launch 2>/dev/null`"
+if [ "`whoami`" != "root" ]; then
+if [ -n "$dbuslaunch" ] && [ -x "$dbuslaunch" ] && [ -z
+"$DBUS_SESSION_BUS_ADDRESS" ]; then
+eval `$dbuslaunch --auto-syntax --exit-with-session`
+fi
+fi
+
+chmod +x the file , logout and login again with your user.
+
+If you now do ps aux you should see something like this :
+
+your_user ...... 0:00 /usr/bin/dbus-launch --auto-syntax --exit-with-session
+your_user ...... 0:00 /usr/bin/dbus-daemon --fork --print-pid 4
+--print-address 6 --session
+
+
+> Thanks for any help,
+>
+> Roger
+>   
+
+Gabriel
+
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+>
+>   
+
+
+
+From fabrice.colin at gmail.com  Fri Dec 22 01:07:09 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 22 Dec 2006 08:07:09 +0800
+Subject: [Pinot-discuss] pinot won't connect to dbus
+In-Reply-To: <458B1F42.8030606@googlemail.com>
+References: <y65ejqskexl.fsf@minnie.esd.mun.ca>
+	<458B1F42.8030606@googlemail.com>
+Message-ID: <6538c8c80612211607r23ed2085v8b2034dd89a94399@mail.gmail.com>
+
+On 12/22/06, Gabriel C <nix.or.die at googlemail.com> wrote:
+> Roger Mason schrieb:
+> > TokenizerFactory::loadTokenizers: /home/rmason/.pinot/tokenizers
+> > doesn't exist
+> > Couldn't open bus connection: Unable to determine the address of the
+> > message bus (try 'man dbus-launch' and 'man dbus-daemon'$
+> > Exiting...
+> >
+> If you now do ps aux you should see something like this :
+>
+> your_user ...... 0:00 /usr/bin/dbus-launch --auto-syntax --exit-with-session
+> your_user ...... 0:00 /usr/bin/dbus-daemon --fork --print-pid 4
+> --print-address 6 --session
+>
+The important bit here is the "dbus-daemon" process running with "--session".
+If this process is not running, there is no session bus to which
+pinot-dbus-daemon can
+connect and it will exit almost immediately and not crawl and index anything.
+
+Fabrice
+
+
+From rmason at esd.mun.ca  Fri Dec 22 16:43:04 2006
+From: rmason at esd.mun.ca (Roger Mason)
+Date: Fri, 22 Dec 2006 12:13:04 -0330
+Subject: [Pinot-discuss] Incomplete indexing?
+Message-ID: <y65wt4krl6f.fsf@minnie.esd.mun.ca>
+
+Hi,
+
+I just indexed my home directory and afterwards ran the query:
+
+pinot-search xapian ~/.pinot/daemon "crystal" 1000
+
+This returned about 20 hits.  However, in one of my subdirectories I
+have a number of pdf documents that contain the keyword crystal: none
+of them have been found and I'm wondering why?
+
+Thanks for your help,
+
+Roger
+
+P.S. I checked one of the "missing" documents with pdftotext to make
+sure it was not a pdf image file and that it contains the stem
+"crystal".
+
+
+
+From rmason at esd.mun.ca  Fri Dec 22 16:35:08 2006
+From: rmason at esd.mun.ca (Roger Mason)
+Date: Fri, 22 Dec 2006 12:05:08 -0330
+Subject: [Pinot-discuss] pinot won't connect to dbus
+In-Reply-To: <458B1F42.8030606@googlemail.com> (Gabriel C.'s message of
+	"Fri, 22 Dec 2006 00:56:50 +0100")
+References: <y65ejqskexl.fsf@minnie.esd.mun.ca>
+	<458B1F42.8030606@googlemail.com>
+Message-ID: <y651wmst043.fsf@minnie.esd.mun.ca>
+
+Hello Gabriel & Fabrice,
+
+Gabriel C <nix.or.die at googlemail.com> writes:
+
+> Well I wonder what Distro you are using ..
+> If you have some /etc/profile.d/ folder ( or alike ) add dbus.sh file in
+> there. Like this one :
+
+Gentoo.
+
+> #!/bin/sh
+>
+> dbuslaunch="`which dbus-launch 2>/dev/null`"
+> if [ "`whoami`" != "root" ]; then
+> if [ -n "$dbuslaunch" ] && [ -x "$dbuslaunch" ] && [ -z
+> "$DBUS_SESSION_BUS_ADDRESS" ]; then
+> eval `$dbuslaunch --auto-syntax --exit-with-session`
+> fi
+> fi
+>
+> chmod +x the file , logout and login again with your user.
+>
+> If you now do ps aux you should see something like this :
+>
+> your_user ...... 0:00 /usr/bin/dbus-launch --auto-syntax --exit-with-session
+> your_user ...... 0:00 /usr/bin/dbus-daemon --fork --print-pid 4
+> --print-address 6 --session
+
+Yes! That was it.  Thanks.  I was able to index (most of) my home
+dir.  I'll post another question regrding the "most of".
+
+Thanks for your help.
+
+Roger
+
+
+
+From fabrice.colin at gmail.com  Sat Dec 23 02:48:18 2006
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 23 Dec 2006 09:48:18 +0800
+Subject: [Pinot-discuss] Incomplete indexing?
+In-Reply-To: <y65wt4krl6f.fsf@minnie.esd.mun.ca>
+References: <y65wt4krl6f.fsf@minnie.esd.mun.ca>
+Message-ID: <6538c8c80612221748s628aa140ga2b89cf0ba574913@mail.gmail.com>
+
+Hi Roger,
+
+On 12/22/06, Roger Mason <rmason at esd.mun.ca> wrote:
+> I just indexed my home directory and afterwards ran the query:
+>
+> pinot-search xapian ~/.pinot/daemon "crystal" 1000
+>
+> This returned about 20 hits.  However, in one of my subdirectories I
+> have a number of pdf documents that contain the keyword crystal: none
+> of them have been found and I'm wondering why?
+>
+> P.S. I checked one of the "missing" documents with pdftotext to make
+> sure it was not a pdf image file and that it contains the stem
+> "crystal".
+>
+First thing is to verify whether all these documents are actually in the index.
+Run pinot and select the menuitem Index, List Contents Of, My Documents.
+Can you see all your PDFs in there ? You can also run a search for "ext:pdf"
+and/or "dir:/home/roger/mypdfdir", either using pinot-search or a Stored Query
+in pinot, with "Number Of Results" set suitably high.
+
+Let us know what you find out.
+
+Fabrice
+
+

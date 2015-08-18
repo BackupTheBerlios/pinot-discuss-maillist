@@ -1,0 +1,176 @@
+From clbustos at surnet.cl  Sat Dec 15 08:04:50 2007
+From: clbustos at surnet.cl (Claudio Bustos Navarrete)
+Date: Sat, 15 Dec 2007 04:04:50 -0300
+Subject: [Pinot-discuss] Problem with custom engine
+Message-ID: <20071215040450.2d7f04de@bichote>
+
+Hi, everyone.
+
+I'm doing some research and Pinot is a great tool to search in many academic places.
+I have a problem with ERIC (http://www.eric.ed.gov). They use capitalized params on the query URL, and the Sherlock parser doesn't work well with they.
+
+My engine is:
+
+<search 
+   name="ERIC"
+   description="Educational Resources Information Center"
+   method="GET"
+   action="http://www.eric.ed.gov/ERICWebPortal/Home.portal"
+   updateCheckDays=1   
+   routeType="Research"
+>
+
+<input name="ERICExtSearch_SearchValue_0" user>
+<input name="ERICExtSearch_SearchType_0" value="kw">
+<input name="_nfpb" value="true">
+
+<input name="_pageLabel" value="ERICSearchResult">
+<input name="rnd" value="0">
+<input name="newSearch" value="true">
+<input name="searchtype" value="basic">
+<input name="sourceid" value="Mozilla-search">
+<inputnext name="eric_displayStartCount" factor="1">
+<inputprev name="eric_displayStartCount" factor="1">
+
+<interpret 
+    browserResultType="result" 
+    resultListStart="Use My Clipboard to print" 
+    resultListEnd="Now showing results" 
+    resultItemStart="tblSearchResult"
+    resultItemEnd="</p>"
+>
+</search>
+
+
+And the log for "educational" is
+
+<search 
+   name="ERIC"
+   description="Educational Resources Information Center"
+   method="GET"
+   action="http://www.eric.ed.gov/ERICWebPortal/Home.portal"
+   updateCheckDays=1   
+   routeType="Research"
+>
+
+<input name="ERICExtSearch_SearchValue_0" user>
+<input name="ERICExtSearch_SearchType_0" value="kw">
+<input name="_nfpb" value="true">
+
+<input name="_pageLabel" value="ERICSearchResult">
+<input name="rnd" value="0">
+<input name="newSearch" value="true">
+<input name="searchtype" value="basic">
+<input name="sourceid" value="Mozilla-search">
+<inputnext name="eric_displayStartCount" factor="1">
+<inputprev name="eric_displayStartCount" factor="1">
+
+<interpret 
+    browserResultType="result" 
+    resultListStart="Use My Clipboard to print" 
+    resultListEnd="Now showing results" 
+    resultItemStart="tblSearchResult"
+    resultItemEnd="</p>"
+>
+</search>
+
+The log for curl is:
+
+CurlDownloader::retrieveUrl: URL is http://www.eric.ed.gov/ERICWebPortal/Home.portal?ERICExtSearch_SearchValue_0=educational&_nfpb=true&_pagelabel=ERICSearchResult&ericextsearch_searchtype_0=kw&ericextsearch_searchvalue_0=Research&newsearch=true&rnd=0&searchtype=basic&sourceid=Mozilla-search&eric_displayStartCount=0
+
+As you can see, "ERICExtSearch_SearchValue_0" was used twice, first time capitalized and second time on lowercase.
+
+Thanks in advance.
+
+-- 
+Claudio Bustos Navarrete
+Psic?logo
+clbustos at surnet.cl
+
+
+From fabrice.colin at gmail.com  Wed Dec 19 09:39:40 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 19 Dec 2007 09:39:40 +0100
+Subject: [Pinot-discuss] Problem with custom engine
+In-Reply-To: <20071215040450.2d7f04de@bichote>
+References: <20071215040450.2d7f04de@bichote>
+Message-ID: <6538c8c80712190039t1f05f093t224c63823e2ecb5f@mail.gmail.com>
+
+Hi Claudio,
+
+Sorry for the late reply, I was travelling.
+
+On Dec 15, 2007 8:04 AM, Claudio Bustos Navarrete <clbustos at surnet.cl> wrote:
+> I'm doing some research and Pinot is a great tool to search in many academic places.
+> I have a problem with ERIC (http://www.eric.ed.gov). They use capitalized params on
+> the query URL, and the Sherlock parser doesn't work well with they.
+> ...
+> As you can see, "ERICExtSearch_SearchValue_0" was used twice, first time
+> capitalized and second time on lowercase.
+>
+You're right. The user input item is used twice.
+
+What OS/distro are you using ? Are you comfortable with compiling from source
+and applying patches ?
+I have attached a patch for SherlockParser.cpp that should fix this problem.
+
+Let me know if this works for you. Thanks.
+
+Fabrice
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: sherlockparser_lowercase_user_input.diff
+Type: application/octet-stream
+Size: 1238 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20071219/792affe8/attachment.obj>
+
+From clbustos at surnet.cl  Wed Dec 19 14:15:00 2007
+From: clbustos at surnet.cl (Claudio Bustos)
+Date: Wed, 19 Dec 2007 10:15:00 -0300
+Subject: [Pinot-discuss] Problem with custom engine
+In-Reply-To: <6538c8c80712190039t1f05f093t224c63823e2ecb5f@mail.gmail.com>
+References: <20071215040450.2d7f04de@bichote>
+	<6538c8c80712190039t1f05f093t224c63823e2ecb5f@mail.gmail.com>
+Message-ID: <20071219101500.64922575@jack>
+
+Hi Fabrice:
+
+> Hi Claudio,
+> 
+> Sorry for the late reply, I was travelling.
+
+No problem.
+> 
+> > As you can see, "ERICExtSearch_SearchValue_0" was used twice, first time
+> > capitalized and second time on lowercase.
+> >
+> You're right. The user input item is used twice.
+> 
+> What OS/distro are you using ?
+
+Gentoo
+
+> Are you comfortable with compiling from source  and applying patches ?
+
+Yes, of course. Compiling, making ebuilds and applying a lot of patches!
+
+I looked the code and try to make some changes, but I don't be good on C++ 
+
+> I have attached a patch for SherlockParser.cpp that should fix this problem.
+> 
+
+Cool!
+
+> Let me know if this works for you. Thanks.
+Thanks
+
+
+> 
+> Fabrice
+
+
+-- 
+Claudio Bustos Navarrete
+
+

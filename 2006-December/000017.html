@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot won't connect to dbus
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2006-December/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20won%27t%20connect%20to%20dbus&In-Reply-To=%3Cy651wmst043.fsf%40minnie.esd.mun.ca%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000015.html">
+   <LINK REL="Next"  HREF="000016.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot won't connect to dbus</H1>
+    <B>Roger Mason</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20won%27t%20connect%20to%20dbus&In-Reply-To=%3Cy651wmst043.fsf%40minnie.esd.mun.ca%3E"
+       TITLE="[Pinot-discuss] pinot won't connect to dbus">rmason at esd.mun.ca
+       </A><BR>
+    <I>Fri Dec 22 16:35:08 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000015.html">[Pinot-discuss] pinot won't connect to dbus
+</A></li>
+        <LI>Next message: <A HREF="000016.html">[Pinot-discuss] Incomplete indexing?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Gabriel &amp; Fabrice,
+
+Gabriel C &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">nix.or.die at googlemail.com</A>&gt; writes:
+
+&gt;<i> Well I wonder what Distro you are using ..
+</I>&gt;<i> If you have some /etc/profile.d/ folder ( or alike ) add dbus.sh file in
+</I>&gt;<i> there. Like this one :
+</I>
+Gentoo.
+
+&gt;<i> #!/bin/sh
+</I>&gt;<i>
+</I>&gt;<i> dbuslaunch=&quot;`which dbus-launch 2&gt;/dev/null`&quot;
+</I>&gt;<i> if [ &quot;`whoami`&quot; != &quot;root&quot; ]; then
+</I>&gt;<i> if [ -n &quot;$dbuslaunch&quot; ] &amp;&amp; [ -x &quot;$dbuslaunch&quot; ] &amp;&amp; [ -z
+</I>&gt;<i> &quot;$DBUS_SESSION_BUS_ADDRESS&quot; ]; then
+</I>&gt;<i> eval `$dbuslaunch --auto-syntax --exit-with-session`
+</I>&gt;<i> fi
+</I>&gt;<i> fi
+</I>&gt;<i>
+</I>&gt;<i> chmod +x the file , logout and login again with your user.
+</I>&gt;<i>
+</I>&gt;<i> If you now do ps aux you should see something like this :
+</I>&gt;<i>
+</I>&gt;<i> your_user ...... 0:00 /usr/bin/dbus-launch --auto-syntax --exit-with-session
+</I>&gt;<i> your_user ...... 0:00 /usr/bin/dbus-daemon --fork --print-pid 4
+</I>&gt;<i> --print-address 6 --session
+</I>
+Yes! That was it.  Thanks.  I was able to index (most of) my home
+dir.  I'll post another question regrding the &quot;most of&quot;.
+
+Thanks for your help.
+
+Roger
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000015.html">[Pinot-discuss] pinot won't connect to dbus
+</A></li>
+	<LI>Next message: <A HREF="000016.html">[Pinot-discuss] Incomplete indexing?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

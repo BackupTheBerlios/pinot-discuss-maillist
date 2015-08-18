@@ -1,0 +1,17 @@
+From fabrice.colin at gmail.com  Wed Sep  5 16:08:10 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 5 Sep 2007 22:08:10 +0800
+Subject: [Pinot-discuss] A patch for 0.76
+Message-ID: <6538c8c80709050708x762a320x76338d09d816c847@mail.gmail.com>
+
+There's a problem in 0.76 related to dbus, more specifically,
+the new Reload method that is invoked by the Preferences dialog.
+In some cases, it could cause pinot to segfault when pressing
+the Ok button in Preferences.
+The patch at http://pinot.berlios.de/dbusxapianindex_reload03.patch
+should fix this issue, as well as some confusion about the value of
+the DBUS_VERSION macro.
+
+Fabrice
+
+

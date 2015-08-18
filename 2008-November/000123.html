@@ -1,0 +1,628 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] upgrade results 0.88-&gt;0.89
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20upgrade%20results%200.88-%3E0.89&In-Reply-To=%3C20081106111957.6ae793b0%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000122.html">
+   <LINK REL="Next"  HREF="000124.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] upgrade results 0.88-&gt;0.89</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20upgrade%20results%200.88-%3E0.89&In-Reply-To=%3C20081106111957.6ae793b0%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] upgrade results 0.88-&gt;0.89">jwerden at hotpop.com
+       </A><BR>
+    <I>Thu Nov  6 11:19:57 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000122.html">[Pinot-discuss] pinot 0.89
+</A></li>
+        <LI>Next message: <A HREF="000124.html">[Pinot-discuss] upgrade results 0.88-&gt;0.89
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice,
+
+The upgrade and reindexing is finally done. The results are:
+- I could not trigger the segfault a second time, seems to be random.
+  But I didn't do a reindex after the first segfault, because I didn't
+  want to lose a second day.
+- The indexing took around 4 days.
+- The documents which failed before are now indexed.
+- The check for changed files took much less time after I restarted
+  pinot. (But I disabled atime for my file systems after I upgraded to
+  0.89. Don't know how much it takes with enabled access time.)
+- The database doubled in size after the upgrade. (see below)
+- I had another weird problem: pinot used nearly all memory up but did
+  not progress. The problem didn't reappear. 2 bt's are displayed
+  below. The first is before indexing failed, the second
+  after it did.
+  At that time, daemon/ didn't seem to grow, but history-daemon had
+  a lot of activity.
+
+database size:
+
+before xapian-compact:
+
+     0  flintlock
+    12  iamflint
+  648M  position.DB
+   11K  position.baseA
+   11K  position.baseB
+  634M  postlist.DB
+   10K  postlist.baseA
+   10K  postlist.baseB
+   43M  record.DB
+   695  record.baseA
+   696  record.baseB
+  231M  termlist.DB
+  3.7K  termlist.baseA
+  3.7K  termlist.baseB
+   15M  value.DB
+   253  value.baseA
+   253  value.baseB
+=&gt; 1.6G
+
+after xapian-compact:
+
+    12  iamflint
+  647M  position.DB
+    13  position.baseA
+   11K  position.baseB
+  336M  postlist.DB
+    13  postlist.baseA
+  5.3K  postlist.baseB
+   41M  record.DB
+    13  record.baseA
+   670  record.baseB
+  213M  termlist.DB
+    13  termlist.baseA
+  3.4K  termlist.baseB
+   15M  value.DB
+    13  value.baseA
+   243  value.baseB
+=&gt; 1.3G
+
+Backtraces (Don't know if they are useful in any way):
+
+before indexing failed:
+
+Program received signal SIGINT, Interrupt.
+0x00007f341871c936 in poll () from /lib/libc.so.6
+(gdb) thread apply all bt
+
+Thread 8320 (Thread 0x46271950 (LWP 29011)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8319 (Thread 0x45a70950 (LWP 28822)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8318 (Thread 0x44a6e950 (LWP 28684)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8317 (Thread 0x4426d950 (LWP 28682)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8316 (Thread 0x43a6c950 (LWP 28323)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8315 (Thread 0x42a6a950 (LWP 28117)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8314 (Thread 0x46a72950 (LWP 27909)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8313 (Thread 0x40bce950 (LWP 27555)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d46ade in XapianIndex::deleteDocuments () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x00007f3416d47275 in XapianIndex::unindexDocuments () from /usr/lib/pinot/backends/libxapianbackend.so
+#6  0x00000000004a9e47 in FilterWrapper::unindexNestedDocuments ()
+#7  0x00000000004ab2d4 in FilterWrapper::indexDocument ()
+#8  0x00000000004993fc in ?? ()
+#9  0x00000000004a0267 in ?? ()
+#10 0x00000000004a3441 in ?? ()
+#11 0x00000000004a345d in ?? ()
+#12 0x00000000004a3480 in ?? ()
+#13 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#14 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#15 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#16 0x00007f341872523d in clone () from /lib/libc.so.6
+#17 0x0000000000000000 in ?? ()
+
+Thread 8311 (Thread 0x4326b950 (LWP 27467)):
+#0  0x00007f34186cb5d0 in _int_free () from /lib/libc.so.6
+#1  0x00007f34186cbb66 in free () from /lib/libc.so.6
+#2  0x00007f3418ee979d in std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::~basic_string () from /usr/lib/libstdc++.so.6
+#3  0x000000000049274c in std::_Destroy&lt;std::string&gt; ()
+#4  0x0000000000492769 in std::_Destroy&lt;std::string*&gt; ()
+#5  0x000000000049279b in std::_Destroy&lt;std::string*, std::string&gt; ()
+#6  0x0000000000492f61 in std::vector&lt;std::string, std::allocator&lt;std::string&gt; &gt;::~vector ()
+#7  0x00000000004ea0dc in Dijon::CJKVTokenizer::tokenize ()
+#8  0x00007f3416d47c33 in XapianIndex::addPostingsToDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#9  0x00007f3416d47f36 in XapianIndex::addPostingsToDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#10 0x00007f3416d4b395 in XapianIndex::indexDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#11 0x00000000004aaf1c in FilterWrapper::filterDocument ()
+#12 0x00000000004ab327 in FilterWrapper::indexDocument ()
+#13 0x00000000004993fc in ?? ()
+#14 0x00000000004a0267 in ?? ()
+#15 0x00000000004a3441 in ?? ()
+#16 0x00000000004a345d in ?? ()
+#17 0x00000000004a3480 in ?? ()
+#18 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#19 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#20 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#21 0x00007f341872523d in clone () from /lib/libc.so.6
+#22 0x0000000000000000 in ?? ()
+
+Thread 8309 (Thread 0x4526f950 (LWP 27463)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d4b29d in XapianIndex::indexDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x00000000004aaf1c in FilterWrapper::filterDocument ()
+#6  0x00000000004ab327 in FilterWrapper::indexDocument ()
+#7  0x00000000004993fc in ?? ()
+#8  0x00000000004a0267 in ?? ()
+#9  0x00000000004a3441 in ?? ()
+#10 0x00000000004a345d in ?? ()
+#11 0x00000000004a3480 in ?? ()
+#12 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#13 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#14 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#15 0x00007f341872523d in clone () from /lib/libc.so.6
+#16 0x0000000000000000 in ?? ()
+
+Thread 16 (Thread 0x416a6950 (LWP 3900)):
+#0  0x00007f341915df17 in fsync () from /lib/libpthread.so.0
+#1  0x00007f34195fed05 in unixSync () from /usr/lib/libsqlite3.so.0
+#2  0x00007f34195d0737 in sqlite3PagerCommitPhaseOne () from /usr/lib/libsqlite3.so.0
+#3  0x00007f34195d0bbe in sqlite3BtreeCommitPhaseOne () from /usr/lib/libsqlite3.so.0
+#4  0x00007f34195d13c5 in sqlite3VdbeHalt () from /usr/lib/libsqlite3.so.0
+#5  0x00007f34195f8bcc in sqlite3VdbeExec () from /usr/lib/libsqlite3.so.0
+#6  0x00007f34195f4848 in sqlite3_step () from /usr/lib/libsqlite3.so.0
+#7  0x00007f34195f5107 in sqlite3_exec () from /usr/lib/libsqlite3.so.0
+#8  0x00007f34195f5613 in sqlite3_get_table () from /usr/lib/libsqlite3.so.0
+#9  0x00000000004e431e in ?? ()
+#10 0x00000000004dfbff in ?? ()
+#11 0x000000000048d952 in ?? ()
+#12 0x000000000048d851 in ?? ()
+#13 0x000000000048d851 in ?? ()
+#14 0x000000000048d851 in ?? ()
+#15 0x000000000048d851 in ?? ()
+#16 0x000000000048d851 in ?? ()
+#17 0x000000000048d851 in ?? ()
+#18 0x000000000048e174 in ?? ()
+#19 0x00000000004a0267 in ?? ()
+#20 0x00000000004a3441 in ?? ()
+#21 0x00000000004a345d in ?? ()
+#22 0x00000000004a3480 in ?? ()
+#23 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#24 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#25 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#26 0x00007f341872523d in clone () from /lib/libc.so.6
+#27 0x0000000000000000 in ?? ()
+
+Thread 4 (Thread 0x42269950 (LWP 3673)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d40964 in XapianIndex::flush () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000046ec61 in ?? ()
+#6  0x00000000004962fc in ?? ()
+#7  0x00000000004a0267 in ?? ()
+#8  0x00000000004a3441 in ?? ()
+#9  0x00000000004a345d in ?? ()
+#10 0x00000000004a3480 in ?? ()
+#11 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#12 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#13 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#14 0x00007f341872523d in clone () from /lib/libc.so.6
+#15 0x0000000000000000 in ?? ()
+
+Thread 1 (Thread 0x7f341bfeb700 (LWP 3112)):
+#0  0x00007f341871c936 in poll () from /lib/libc.so.6
+#1  0x00007f341a26c0d8 in g_main_context_iterate () from /usr/lib/libglib-2.0.so.0
+#2  0x00007f341a26c76d in g_main_loop_run () from /usr/lib/libglib-2.0.so.0
+#3  0x0000000000465f14 in _start ()
+-------------------------------------
+
+after indexing failed (1 gbyte of memory got released):
+
+Logfile:
+
+Couldn't index document, unknown exception occured
+
+bt:
+
+Program received signal SIGINT, Interrupt.
+0x00007f341871c936 in poll () from /lib/libc.so.6
+(gdb) thread apply all bt
+
+Thread 8320 (Thread 0x46271950 (LWP 29011)):
+#0  0x00007f34186ca07b in malloc_consolidate () from /lib/libc.so.6
+#1  0x00007f34186cca8e in _int_malloc () from /lib/libc.so.6
+#2  0x00007f34186ce548 in malloc () from /lib/libc.so.6
+#3  0x00007f3418f0ab5d in operator new () from /usr/lib/libstdc++.so.6
+#4  0x00007f3418f0ac99 in operator new[] () from /usr/lib/libstdc++.so.6
+#5  0x00007f34169ed77c in FlintCursor::FlintCursor () from /usr/lib/libxapian.so.15
+#6  0x00007f3416a09d3f in FlintTable::cursor_get () from /usr/lib/libxapian.so.15
+#7  0x00007f34169fe706 in FlintPostList::FlintPostList () from /usr/lib/libxapian.so.15
+#8  0x00007f34169f532b in FlintWritableDatabase::open_post_list () from /usr/lib/libxapian.so.15
+#9  0x00007f34169c7e72 in Xapian::Database::postlist_begin () from /usr/lib/libxapian.so.15
+#10 0x00007f3416d41f28 in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#11 0x000000000049833e in ?? ()
+#12 0x00000000004a0267 in ?? ()
+#13 0x00000000004a3441 in ?? ()
+#14 0x00000000004a345d in ?? ()
+#15 0x00000000004a3480 in ?? ()
+#16 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#17 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#18 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#19 0x00007f341872523d in clone () from /lib/libc.so.6
+#20 0x0000000000000000 in ?? ()
+
+Thread 8319 (Thread 0x45a70950 (LWP 28822)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8318 (Thread 0x44a6e950 (LWP 28684)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8317 (Thread 0x4426d950 (LWP 28682)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8316 (Thread 0x43a6c950 (LWP 28323)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8315 (Thread 0x42a6a950 (LWP 28117)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8314 (Thread 0x46a72950 (LWP 27909)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e837 in XapianDatabase::readLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d41cae in XapianIndex::hasDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000049833e in ?? ()
+#6  0x00000000004a0267 in ?? ()
+#7  0x00000000004a3441 in ?? ()
+#8  0x00000000004a345d in ?? ()
+#9  0x00000000004a3480 in ?? ()
+#10 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#11 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#12 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#13 0x00007f341872523d in clone () from /lib/libc.so.6
+#14 0x0000000000000000 in ?? ()
+
+Thread 8313 (Thread 0x40bce950 (LWP 27555)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d46ade in XapianIndex::deleteDocuments () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x00007f3416d47275 in XapianIndex::unindexDocuments () from /usr/lib/pinot/backends/libxapianbackend.so
+#6  0x00000000004a9e47 in FilterWrapper::unindexNestedDocuments ()
+#7  0x00000000004ab2d4 in FilterWrapper::indexDocument ()
+#8  0x00000000004993fc in ?? ()
+#9  0x00000000004a0267 in ?? ()
+#10 0x00000000004a3441 in ?? ()
+#11 0x00000000004a345d in ?? ()
+#12 0x00000000004a3480 in ?? ()
+#13 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#14 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#15 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#16 0x00007f341872523d in clone () from /lib/libc.so.6
+#17 0x0000000000000000 in ?? ()
+
+Thread 8311 (Thread 0x4326b950 (LWP 27467)):
+#0  0x00007f3418730c8e in __lll_lock_wait_private () from /lib/libc.so.6
+#1  0x00007f34186cf2be in _L_lock_2837 () from /lib/libc.so.6
+#2  0x00007f34186cbb5b in free () from /lib/libc.so.6
+#3  0x00007f3418ee979d in std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::~basic_string () from /usr/lib/libstdc++.so.6
+#4  0x00000000004872a3 in std::pair&lt;std::string const, std::string&gt;::~pair ()
+#5  0x00000000004872f9 in __gnu_cxx::new_allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt;::destroy ()
+#6  0x0000000000487330 in std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, std::string&gt;, std::_Select1st&lt;std::pair&lt;std::string const, std::string&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt; &gt;::_M_destroy_node ()
+#7  0x00000000004873b5 in std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, std::string&gt;, std::_Select1st&lt;std::pair&lt;std::string const, std::string&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt; &gt;::_M_erase ()
+#8  0x000000000048739b in std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, std::string&gt;, std::_Select1st&lt;std::pair&lt;std::string const, std::string&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt; &gt;::_M_erase ()
+#9  0x0000000000487478 in std::_Rb_tree&lt;std::string, std::pair&lt;std::string const, std::string&gt;, std::_Select1st&lt;std::pair&lt;std::string const, std::string&gt; &gt;, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt; &gt;::~_Rb_tree ()
+#10 0x00000000004874d3 in std::map&lt;std::string, std::string, std::less&lt;std::string&gt;, std::allocator&lt;std::pair&lt;std::string const, std::string&gt; &gt; &gt;::~map ()
+#11 0x00000000004f7e76 in DocumentInfo::~DocumentInfo ()
+#12 0x00000000004f6f9d in Document::~Document ()
+#13 0x00000000004aafd9 in FilterWrapper::filterDocument ()
+#14 0x00000000004ab327 in FilterWrapper::indexDocument ()
+#15 0x00000000004993fc in ?? ()
+#16 0x00000000004a0267 in ?? ()
+#17 0x00000000004a3441 in ?? ()
+#18 0x00000000004a345d in ?? ()
+#19 0x00000000004a3480 in ?? ()
+#20 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#21 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#22 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#23 0x00007f341872523d in clone () from /lib/libc.so.6
+#24 0x0000000000000000 in ?? ()
+
+Thread 8309 (Thread 0x4526f950 (LWP 27463)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d4b29d in XapianIndex::indexDocument () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x00000000004aaf1c in FilterWrapper::filterDocument ()
+#6  0x00000000004ab327 in FilterWrapper::indexDocument ()
+#7  0x00000000004993fc in ?? ()
+#8  0x00000000004a0267 in ?? ()
+#9  0x00000000004a3441 in ?? ()
+#10 0x00000000004a345d in ?? ()
+#11 0x00000000004a3480 in ?? ()
+#12 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#13 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#14 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#15 0x00007f341872523d in clone () from /lib/libc.so.6
+#16 0x0000000000000000 in ?? ()
+
+Thread 16 (Thread 0x416a6950 (LWP 3900)):
+#0  0x00007f341915df17 in fsync () from /lib/libpthread.so.0
+#1  0x00007f34195fed05 in unixSync () from /usr/lib/libsqlite3.so.0
+#2  0x00007f34195d0737 in sqlite3PagerCommitPhaseOne () from /usr/lib/libsqlite3.so.0
+#3  0x00007f34195d0bbe in sqlite3BtreeCommitPhaseOne () from /usr/lib/libsqlite3.so.0
+#4  0x00007f34195d13c5 in sqlite3VdbeHalt () from /usr/lib/libsqlite3.so.0
+#5  0x00007f34195f8bcc in sqlite3VdbeExec () from /usr/lib/libsqlite3.so.0
+#6  0x00007f34195f4848 in sqlite3_step () from /usr/lib/libsqlite3.so.0
+#7  0x00007f34195f5107 in sqlite3_exec () from /usr/lib/libsqlite3.so.0
+#8  0x00007f34195f5613 in sqlite3_get_table () from /usr/lib/libsqlite3.so.0
+#9  0x00000000004e431e in ?? ()
+#10 0x00000000004dfbff in ?? ()
+#11 0x000000000048d952 in ?? ()
+#12 0x000000000048d851 in ?? ()
+#13 0x000000000048d851 in ?? ()
+#14 0x000000000048d851 in ?? ()
+#15 0x000000000048d851 in ?? ()
+#16 0x000000000048d851 in ?? ()
+#17 0x000000000048d851 in ?? ()
+#18 0x000000000048e174 in ?? ()
+#19 0x00000000004a0267 in ?? ()
+#20 0x00000000004a3441 in ?? ()
+#21 0x00000000004a345d in ?? ()
+#22 0x00000000004a3480 in ?? ()
+#23 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#24 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#25 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#26 0x00007f341872523d in clone () from /lib/libc.so.6
+#27 0x0000000000000000 in ?? ()
+
+Thread 4 (Thread 0x42269950 (LWP 3673)):
+#0  0x00007f341915d344 in __lll_lock_wait () from /lib/libpthread.so.0
+#1  0x00007f3419158c10 in _L_lock_55 () from /lib/libpthread.so.0
+#2  0x00007f341915851e in pthread_mutex_lock () from /lib/libpthread.so.0
+#3  0x00007f3416d3e792 in XapianDatabase::writeLock () from /usr/lib/pinot/backends/libxapianbackend.so
+#4  0x00007f3416d40964 in XapianIndex::flush () from /usr/lib/pinot/backends/libxapianbackend.so
+#5  0x000000000046ec61 in ?? ()
+#6  0x00000000004962fc in ?? ()
+#7  0x00000000004a0267 in ?? ()
+#8  0x00000000004a3441 in ?? ()
+#9  0x00000000004a345d in ?? ()
+#10 0x00000000004a3480 in ?? ()
+#11 0x00007f341a9728b2 in call_thread_entry_slot () from /usr/lib/libglibmm-2.4.so.1
+#12 0x00007f341a291ce4 in g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0
+#13 0x00007f3419156fe7 in start_thread () from /lib/libpthread.so.0
+#14 0x00007f341872523d in clone () from /lib/libc.so.6
+#15 0x0000000000000000 in ?? ()
+
+Thread 1 (Thread 0x7f341bfeb700 (LWP 3112)):
+#0  0x00007f341871c936 in poll () from /lib/libc.so.6
+#1  0x00007f341a26c0d8 in g_main_context_iterate () from /usr/lib/libglib-2.0.so.0
+#2  0x00007f341a26c76d in g_main_loop_run () from /usr/lib/libglib-2.0.so.0
+#3  0x0000000000465f14 in _start ()
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000122.html">[Pinot-discuss] pinot 0.89
+</A></li>
+	<LI>Next message: <A HREF="000124.html">[Pinot-discuss] upgrade results 0.88-&gt;0.89
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#123">[ date ]</a>
+              <a href="thread.html#123">[ thread ]</a>
+              <a href="subject.html#123">[ subject ]</a>
+              <a href="author.html#123">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Labels in Pinot and other questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2011-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Labels%20in%20Pinot%20and%20other%20questions&In-Reply-To=%3CCADxN-m%2BkXTmE1e5pbbEtBuMc59%3DU2D64DOpOeHscmrSvK%2B%3D6gg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000242.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Labels in Pinot and other questions</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Labels%20in%20Pinot%20and%20other%20questions&In-Reply-To=%3CCADxN-m%2BkXTmE1e5pbbEtBuMc59%3DU2D64DOpOeHscmrSvK%2B%3D6gg%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Labels in Pinot and other questions">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Tue Nov 15 09:03:06 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000242.html">[Pinot-discuss] Labels in Pinot and other questions
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#243">[ date ]</a>
+              <a href="thread.html#243">[ thread ]</a>
+              <a href="subject.html#243">[ subject ]</a>
+              <a href="author.html#243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ben,
+
+On Tue, Nov 15, 2011 at 8:43 AM, Benjamin Oppermann &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">bennsn at gmail.com</A>&gt; wrote:
+&gt;<i> Still more questions though, in order of importance for me:
+</I>&gt;<i> &#160;1.) Are Labels saved as properties of the file, or are they kept in a
+</I>&gt;<i> separate location? I ask this because: &#160;If I transfer a copy of a file
+</I>&gt;<i> tagged by Pinot to another computer, will the Labels remain available
+</I>&gt;<i> for indexing to Pinot, or another search engine, if present on that
+</I>&gt;<i> other computer?
+</I>&gt;<i>
+</I>They are stored separately, in the database at ~/.pinot/history-daemon
+Pinot does support extended filesystem attributes, but for a reason I
+can't recall,
+labels aren't currently saved as extended attributes.
+I will look into that for the next release...
+
+&gt;<i> &#160;2.) Can I assign multiple tags to a file?
+</I>&gt;<i> If yes, what would a query for multiple tags look like, e.g. I want
+</I>&gt;<i> documents with *all three* of the tags: &quot;New&quot;, &quot;Politics&quot; and
+</I>&gt;<i> &quot;Europe&quot;?
+</I>&gt;<i> Would I have to go &quot;label:New AND label:Politics AND label:Europe&quot;, or
+</I>&gt;<i> is there a shorter way to do it?
+</I>&gt;<i> (I went through the man page, As far as I understood it lists only the
+</I>&gt;<i> commands for terminal. Here I'm asking about what the query should
+</I>&gt;<i> look like in the UI search field.)
+</I>&gt;<i>
+</I>Files may have any number of tags/labels.
+The above query would do the job. Since AND is the default operator,
+you should get the same results with &quot;label:New label:Politics label:Europe&quot;.
+
+&gt;<i> &#160;3.) Some things I'm not sure I understand from the README:
+</I>&gt;<i>
+</I>&gt;<i> &quot;The values of &quot;file&quot;, &quot;url&quot;, &quot;dir&quot; and &quot;label&quot; may be double-quoted.&quot;
+</I>&gt;<i> - What is the double quoting for?
+</I>&gt;<i>
+</I>It's to help with spaces. Query elements are space separated.
+If you want to look for a file called &quot;Some Thing Here&quot;, you will have to
+double-quote the value in the query string.
+For instance, 'file:&quot;Some Thing Here&quot;'
+
+&gt;<i> &quot;It's also worth pointing out that the query &quot;dir:/X/Y&quot; will return
+</I>&gt;<i> files and directories
+</I>&gt;<i> &#160;located in /X/Y, but not Y itself, which is what &quot;dir:/X file:Y&quot; would do.&quot;
+</I>&gt;<i> - In the 2nd example, is Y still a directory? If yes, do I still have
+</I>&gt;<i> to &quot;dir:X FILE:Y&quot;, and it will return a directory?
+</I>&gt;<i>
+</I>In the second example, Y can be a directory.
+Yes, &quot;dir:/X FILE:Y&quot; will return /X/Y only.
+
+&gt;<i> &#160;4.) I cannot access the Pinot Settings from Edit&gt;Preferences, nothing
+</I>&gt;<i> happens when I click that. The Settings are only available to me in
+</I>&gt;<i> the menu of my OS'es system settings.
+</I>&gt;<i>
+</I>Does /usr/bin/pinot-prefs exist ? It should be symlinked to /usr/bin/pinot
+Maybe the Ubuntu package is missing this symlink ?
+
+I hope this helps.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000242.html">[Pinot-discuss] Labels in Pinot and other questions
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#243">[ date ]</a>
+              <a href="thread.html#243">[ thread ]</a>
+              <a href="subject.html#243">[ subject ]</a>
+              <a href="author.html#243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

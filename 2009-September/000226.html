@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] High Memory consume in pinot 0.94
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-September/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20High%20Memory%20consume%20in%20pinot%200.94&In-Reply-To=%3C81c921f30909030810i45e733d3o9f57bbbfdaacf08d%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000227.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] High Memory consume in pinot 0.94</H1>
+    <B>Javier Barroso</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20High%20Memory%20consume%20in%20pinot%200.94&In-Reply-To=%3C81c921f30909030810i45e733d3o9f57bbbfdaacf08d%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] High Memory consume in pinot 0.94">javibarroso at gmail.com
+       </A><BR>
+    <I>Thu Sep  3 17:10:54 CEST 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000227.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#226">[ date ]</a>
+              <a href="thread.html#226">[ thread ]</a>
+              <a href="subject.html#226">[ subject ]</a>
+              <a href="author.html#226">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+This morning I activate pinot in my box (debian sid)
+
+Now it was eating my memory,. and I couldn't work:
+
+Mem:   1554880k total,  1520516k used,    34364k free,     2152k buffers
+Swap:  1572856k total,   887856k used,   685000k free,    36572k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+  194 root      15  -5     0    0    0 S    7  0.0   0:06.61
+kswapd0
+
+ 8549 javi      35  15 2411m 1.2g 2360 S    3 81.8  87:04.05 pinot-dbus-daem
+
+$ du -sh .pinot
+134M    .pinot
+
+I'm trying pinot again because a post where I read about better memory
+consume [1]
+
+Regards,
+
+[1] <A HREF="http://pinotdev.blogspot.com/2009/04/pinot-092.html">http://pinotdev.blogspot.com/2009/04/pinot-092.html</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment.html">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000227.html">[Pinot-discuss] High Memory consume in pinot 0.94
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#226">[ date ]</a>
+              <a href="thread.html#226">[ thread ]</a>
+              <a href="subject.html#226">[ subject ]</a>
+              <a href="author.html#226">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

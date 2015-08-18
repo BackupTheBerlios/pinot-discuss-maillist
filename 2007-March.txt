@@ -1,0 +1,236 @@
+From fabrice.colin at gmail.com  Tue Mar  6 16:01:24 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 6 Mar 2007 23:01:24 +0800
+Subject: [Pinot-discuss] Pinot 0.70
+Message-ID: <6538c8c80703060701q1393edf2n511274bedb988dd5@mail.gmail.com>
+
+Version 0.70 is out.
+A list of changes since 0.65 can be found in the NEWS file at
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_0/NEWS?op=file&rev=0&sc=0
+
+Fabrice
+
+
+From erik at corporateeurope.org  Thu Mar  8 14:04:07 2007
+From: erik at corporateeurope.org (Erik Wesselius)
+Date: Thu, 08 Mar 2007 14:04:07 +0100
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+Message-ID: <45F009C7.3020300@corporateeurope.org>
+
+Dear Fabrice,
+
+I'm testing pinot running it via gdb as you suggested on the zenwalk 
+forum. Unfortunately, I can't put too much time into this right now and 
+will be away for my job the next two days. But I promise that I will 
+make some time to test and experiment with this configuration early next 
+week.
+
+Kind greetings,
+
+Erik
+
+
+
+From fabrice.colin at gmail.com  Thu Mar  8 14:18:16 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 8 Mar 2007 21:18:16 +0800
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+In-Reply-To: <45F009C7.3020300@corporateeurope.org>
+References: <45F009C7.3020300@corporateeurope.org>
+Message-ID: <6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+
+Hi Erik,
+
+On 3/8/07, Erik Wesselius <erik at corporateeurope.org> wrote:
+> I'm testing pinot running it via gdb as you suggested on the zenwalk
+> forum. Unfortunately, I can't put too much time into this right now and
+> will be away for my job the next two days. But I promise that I will
+> make some time to test and experiment with this configuration early next
+> week.
+>
+Thanks, your help is very much appreciated.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sat Mar 10 03:46:59 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 10 Mar 2007 10:46:59 +0800
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+In-Reply-To: <6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+References: <45F009C7.3020300@corporateeurope.org>
+	<6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+Message-ID: <6538c8c80703091846k5c352da0x712071392b1aee44@mail.gmail.com>
+
+I installed Zenwalk and took a look.
+A summary of issues I found is here
+http://support.zenwalk.org/index.php/topic,6806.0.html
+Until the official packages are updated, use the packages at
+http://www.chez.com/colinf/pinot/
+
+Let us know if you experience any problem.
+
+Fabrice
+
+
+From erik at corporateeurope.org  Wed Mar 14 10:23:03 2007
+From: erik at corporateeurope.org (Erik Wesselius)
+Date: Wed, 14 Mar 2007 10:23:03 +0100
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+In-Reply-To: <6538c8c80703091846k5c352da0x712071392b1aee44@mail.gmail.com>
+References: <45F009C7.3020300@corporateeurope.org>	<6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+	<6538c8c80703091846k5c352da0x712071392b1aee44@mail.gmail.com>
+Message-ID: <45F7BEF7.3020109@corporateeurope.org>
+
+Fabrice,
+
+I installed the packages from your website and it works super and so far 
+without problems.It is very quick, and finds the things I want to find.
+
+One question: when and for how long the indexing daemon is started up?
+
+I use Thunderbird as mail client and am not sure if I can use the 
+"search mbox" option. If that would also work fine, your program is a 
+perfect solution for me. Thanks a lot!
+
+Erik Wesselius
+
+
+
+Fabrice Colin wrote:
+> I installed Zenwalk and took a look.
+> A summary of issues I found is here
+> http://support.zenwalk.org/index.php/topic,6806.0.html
+> Until the official packages are updated, use the packages at
+> http://www.chez.com/colinf/pinot/
+>
+> Let us know if you experience any problem.
+>
+> Fabrice
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+>
+>   
+
+
+
+From fabrice.colin at gmail.com  Wed Mar 14 14:48:29 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 14 Mar 2007 21:48:29 +0800
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+In-Reply-To: <45F7BEF7.3020109@corporateeurope.org>
+References: <45F009C7.3020300@corporateeurope.org>
+	<6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+	<6538c8c80703091846k5c352da0x712071392b1aee44@mail.gmail.com>
+	<45F7BEF7.3020109@corporateeurope.org>
+Message-ID: <6538c8c80703140648n20501ab7t75b5db3fd0ba7492@mail.gmail.com>
+
+Hi Erik,
+
+On 3/14/07, Erik Wesselius <erik at corporateeurope.org> wrote:
+> I installed the packages from your website and it works super and so far
+> without problems.It is very quick, and finds the things I want to find.
+>
+That's good to hear :-)
+
+> One question: when and for how long the indexing daemon is started up?
+>
+It should be started automatically whenever you login into XFCE. I am not
+running Zenwalk right now, but I think there's a "Startup Programs" panel
+somewhere in the Preferences menu that shows what programs are started
+upon login : pinot-dbus-daemon should be in that list. It will run in the
+background for as long as you stay logged in, or until it is killed, or signaled
+to quit.
+When it starts up, it goes through the locations you have configured for
+indexing and indexes new or modified files. Depending on how many there
+are it will cause some disk activity for a little while.
+
+> I use Thunderbird as mail client and am not sure if I can use the
+> "search mbox" option. If that would also work fine, your program is a
+> perfect solution for me. Thanks a lot!
+>
+Here for instance, my Thunderbird mail boxes are located under
+"/home/fabrice/.thunderbird/zd2u8mz5.default/Mail".
+The directory is likely to be very similar for you. The easiest is for you to
+create a symlink somewhere else in your home directory, eg :
+$ ln -s /home/fabrice/.thunderbird/zd2u8mz5.default/Mail/ ~/ThunderbirdMail
+then add mail boxes you are interested in to the second list in the Indexing tab
+of the Preferences window, using the Add button.
+Next time the daemon starts up, it should index these mail boxes.
+
+I hope this makes sense. Let us know if you need more information.
+
+Cheers.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Wed Mar 14 15:35:07 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 14 Mar 2007 22:35:07 +0800
+Subject: [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+In-Reply-To: <45F80502.7060509@corporateeurope.org>
+References: <45F009C7.3020300@corporateeurope.org>
+	<6538c8c80703080518n1dbcb2c7ha2daceb8611cd68c@mail.gmail.com>
+	<6538c8c80703091846k5c352da0x712071392b1aee44@mail.gmail.com>
+	<45F7BEF7.3020109@corporateeurope.org>
+	<6538c8c80703140648n20501ab7t75b5db3fd0ba7492@mail.gmail.com>
+	<45F80502.7060509@corporateeurope.org>
+Message-ID: <6538c8c80703140735y6692c2e8qb47e0d0e8aad91fa@mail.gmail.com>
+
+On 3/14/07, Erik Wesselius <erik at corporateeurope.org> wrote:
+> The daemon does start up automatically, but strangely enough it is not
+> listed in the Startup Services window (that can be accessed from
+> Applications Menu -> System -> Zenpanel -> Stratup Services.
+>
+> I also cannot find a file in the /etc/rc.d directory, so I wonder what
+> script is starting the daemon (just curiosity).
+>
+The file is /etc/xdg/autostart/pinot-dbus-daemon.desktop
+I will check what panel is called next time I use Zenwalk, it may not be
+Startup Services...
+
+> Sounds easy: I'll try it out. Is the search result the whole mailbox (I
+> archive my mail per month) or does it open up individual email messages.
+> That would be really cool. Otherwise, I rather use Thunderbird's own
+> search functions.
+>
+Search results will be individual messages. They can be open using the View
+menu.
+I have just found a bug in the mail filter that causes attachments to not be
+numbered correctly, which may prevent you from opening some messages.
+A fix will be in 0.71, but I am not definite as to when it will be out yet.
+
+> Thank you very  much for your quick and clear answer.
+>
+You are welcome.
+
+> If I can help you in any way to improve or promote the program (I'm not
+> a programmer), please let me know.
+>
+Thanks for the offer. Would you be able to help with translations ?
+Pinot uses Rosetta to manage translations, at :
+https://launchpad.net/pinot/trunk/+pots/pinot
+You would have to create an account on launchpad.net to be allowed to edit
+message strings online. The Dutch translation for instance is not yet complete.
+
+Cheers.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sat Mar 31 07:04:22 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 31 Mar 2007 13:04:22 +0800
+Subject: [Pinot-discuss] Pinot 0.71
+Message-ID: <6538c8c80703302204l4f5aadf0yfa1aad8b6912f612@mail.gmail.com>
+
+Version 0.71 is out.
+It's mainly a bug fix release. As usual, the NEWS file has the details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_1/NEWS?op=file&rev=0&sc=0
+
+Fabrice
+
+

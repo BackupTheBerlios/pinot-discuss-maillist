@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.88 problems and suggestions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081008182147.4F95F32675A%40ws1-8.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000108.html">
+   <LINK REL="Next"  HREF="000112.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.88 problems and suggestions</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081008182147.4F95F32675A%40ws1-8.us4.outblaze.com%3E"
+       TITLE="[Pinot-discuss] pinot 0.88 problems and suggestions">johnny666 at email.com
+       </A><BR>
+    <I>Wed Oct  8 20:21:47 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000108.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+        <LI>Next message: <A HREF="000112.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&gt;<i> ----- Original Message -----
+</I>&gt;<i> From: &quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt;
+</I>&gt;<i> To: &quot;John Werden&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">johnny666 at email.com</A>&gt;
+</I>&gt;<i> Subject: Re: pinot 0.88 problems and suggestions
+</I>&gt;<i> Date: Wed, 8 Oct 2008 20:06:58 +0800
+</I>
+&gt;<i>  From your experience, how much faster is it ? What OS and box is this on ?
+</I>
+I use pinot 0.88 on archlinux (rolling release distribution). 
+Machine is a 1.6 GHz amd64 running in 64bit mode and 1GiByte RAM 
+and 5 GByte swap space. Xfce runs as window manager.
+
+Pinot needed ~2 days to index all my files, tracker needed 3 days, 
+but it would have taken another 10 days WITHOUT turning the machine 
+off or stopping tracker (worst case, I don't know) to built the 
+final index.
+
+Both don't use much memory. I did not change the inotify 
+configuration, which makes it highly possible, that pinot does not 
+watch all files.
+
+I can't compare the search speed, because tracker doesn't seem to 
+be able to show all search results while the final index is built 
+and I had to drop it because of this problem, before I could test 
+all its capabilities.
+
+&gt;<i> Okay. I realize the current mechanism is far from ideal and can be
+</I>&gt;<i> disruptive. Would it be less disruptive if the spelling suggestion was
+</I>&gt;<i> displayed inline, in the results list. A click on it would then create
+</I>&gt;<i> a corrected stored query.
+</I>
+I think the idea of stored queries themselves is bad implemented, 
+because to use all the advanced options you have first to built one 
+instead of just using the Live Query. (I found out how you can 
+display all the results in 'My Documents' and you NEED to use 
+stored queries for this feature, which disrupts my workflow).
+
+For me, it would be enough if I could check some box 'search for 
+similar words' or use a button [list similar] and choose from a 
+displayed list of similar queries. But this is more about taste, 
+because it annoys me to death if a search engine tells me what to 
+search for (worse, if the corrections are WRONG or plain stupid 
+which makes me facepalm).
+
+The idea with clicking on a possible alternative (not correction!) 
+isn't bad, if it adds something for the user like enhanced queries. 
+At least it's much better than how it works right now.
+
+But the idea to correct/educate the user itself (except he wants 
+it) is bad, because it says implicitly 'you are stupid'. Enhancing 
+his _possibilities_ on the other side is a good idea.
+
+&gt;<i> Did you find indexing was much slower with spelling enabled ? How much
+</I>&gt;<i> bigger was your index at ~/.pinot/daemon when spelling was enabled ?
+</I>
+No, it wasn't much slower for me. I can only give highly subjective 
+answers, but I think it would have taken maybe 4 days at worst case 
+for building the index instead of 2. Maybe it would have taken the 
+same amount of time as without the dictionary.
+
+As far as I remember the dictionary had the size ratio as told in 
+the documentation. Right now the complete dictionary 
+~/.pinot/daemon is 780 MiByte large. But I have a lot of free 
+GiBytes free, I would not care if it uses several of them.
+
+&gt;<i> As you noticed, the &quot;Live query&quot; is limited to 10 results and there's
+</I>&gt;<i> no way to increase the value. It sounds like I need to let users
+</I>&gt;<i> remove the limit on the number of results, for both &quot;Live query&quot; and
+</I>&gt;<i> stored queries.
+</I>
+I think this is a good idea.
+
+&gt;<i> Did you try using stored queries to filter the index list while
+</I>&gt;<i> browsing. If you choose the &quot;Index, List Contents Of My Documents&quot;
+</I>&gt;<i> menu, this will list all your documents. This list can be filtered
+</I>&gt;<i> with a stored query, using the combo box next to the Previous and Next
+</I>&gt;<i> buttons. In this case, the query's maximum number of results doesn't
+</I>&gt;<i> apply. This should allow you to get the complete list of documents
+</I>&gt;<i> matching the query.
+</I>
+Yes, I just found out how to use the stored query feature with 'My 
+Documents'. It seems inconsistent, because first I tried it with 
+opening 'My Documents' and running the stored query out of the 'v 
+Stored Queries' Subwindow. Only later did I see that you have to 
+use select the stored query from a drop down menu, instead of just 
+running it.
+
+(I know you described how to do it in complete here, but I came to 
+the first line and was already all over pinot instead of reading 
+the whole paragraph, but it still shows that the GUI is too 
+complex).
+
+&gt;<i> Standalone, as in a separate program ? This can be done.
+</I>
+Yes, in a separate program. If that happens other programs which 
+use pinot as a backend don't need to implement their own 
+configurator, but can instead run the program.
+
+&gt;<i> Did you find you had to edit the configuration file manually ? For
+</I>&gt;<i> what setting ? Ideally, users shouldn't have to. If you let me know
+</I>&gt;<i> what setting should be made editable, I can add it to the preferences
+</I>&gt;<i> dialog.
+</I>
+No, I had not, but I opened it, because I wanted to see all options 
+in case I had not made the best out of the configuration or the gui 
+did not show everything. As said, I'm heavy influenced after using 
+tracker. (But I don't think tracker had a command to reread the 
+configuration file and you had to use the configurator for the 
+daemon to recognize the changed options at runtime.)
+
+&gt;<i> Okay, that's fair enough. Only queries coming though the D-Bus
+</I>&gt;<i> interface are handled by the daemon; queries run through the Pinot UI
+</I>&gt;<i> are handled there.
+</I>
+Thank you for that information, it helps me to understand how pinot 
+works much better.
+
+&gt;<i> In what case did you have to wait for several minutes ?
+</I>
+I used catfish to request everything in my &quot;dir:/docs&quot; (42k indexed 
+files) and the connection timed out with the following message on 
+the console after some seconds:
+
+&quot;Debug: org.freedesktop.DBus.Error.NoReply: Did not receive a 
+reply. Possible causes include: the remote application did not send 
+a reply, the message bus security policy blocked the reply, the 
+reply timeout expired, or the network connection was broken.&quot;
+
+after the message was displayed, the cpu was still busy for some seconds.
+
+For a more thorough test of search times, see below.
+
+&gt;<i> I'd be interested to know what kind of query takes that long, and how
+</I>&gt;<i> many results out of your 400k this query brought back. Do you have
+</I>&gt;<i> that information ?
+</I>&gt;<i> I think what you suggest may be possible, I'll have to look into it.
+</I>
+As I now watched the gif animation, I made some tests with the 
+following command:
+
+time pinot-search --max &lt;x&gt; xapian ~/.pinot/daemon &quot;dir:/docs&quot; &gt; /dev/zero
+
+The machine was more or less idle and had enough free ram. As said 
+above, /docs has around 42k indexed files.
+
+I have to note, that times can vary greatly and can double or half 
+for the small result numbers. I didn't made a complete test with 
+several iterations and computing the average, but the numbers 
+should still give some hints:
+
+max 10 results:
+
+real	0m0.210s
+user	0m0.130s
+sys	0m0.010s
+
+max 100 results:
+
+real	0m0.274s
+user	0m0.210s
+sys	0m0.007s
+
+max 1k results:
+
+real	0m1.288s
+user	0m0.953s
+sys	0m0.050s
+
+max 10k results:
+
+real	0m10.241s
+user	0m7.380s
+sys	0m0.297s
+
+max 100k results:
+
+real	1m17.522s
+user	1m6.226s
+sys	0m1.557s
+
+I made a second test and piped the result of the 100k result and it 
+returned everything as wanted.
+
+As you can see, waiting for all results takes over a minute. Giving 
+some faster intermediate response (except the busy lights) can help 
+a lot. Intermediate results could be for example partial results 
+(good) or numbers of results still to fetch (bad, because the user 
+has still to wait a minute before he can proceed and maybe the 
+first results had already what he wanted or he changed his mind, 
+because the query was stupid).
+
+&gt;<i> The browse+filter method described above was actually designed to help
+</I>&gt;<i> with this. Let me know what you think of it.
+</I>
+As I said above, I think it's to complex and hidden. The user has 
+to use nonintuitive and long ways to make such queries and to walk 
+through them (the 100 results per page limit).
+
+As the user already needs to select the searchengine/location in 
+the 'Search Engines' Tab, before he can really use the Live Query 
+or stored queries, He should not need to discern betwen stored 
+queries in the list and the drop down list, just because the second 
+removes the limit.
+
+There should also be a way to use the ['add filter or range'] 
+[+add] in the Live Query to build more complex queries on the fly, 
+which could then be stored as stored queries.
+
+Sidenote: Choosing the searchengine itself should be visible all 
+the time, but it takes too much spaces if i want too, maybe a 
+dropdown list (but that would possibly disable multiselection, so I 
+don't know)? Right now I have to open/close the list of 
+searchengines some times, because the used search engine changes, 
+which is not visible, if it is not open. But if I don't close it, 
+it wastes a lot of space the time I don't need it.
+
+&gt;<i> Okay, I will look into simplifying those.
+</I>
+A more descriptive help dialog for pinot-search with the complete 
+syntax would already help a lot instead of only examples. It would 
+lessen the barrier for developers/scripters/users to write their 
+own backends or test if everything works right.
+
+&gt;<i> The stats shown in the status window can be had on the command-line,
+</I>&gt;<i> using dbus-send. The 2nd screencast at
+</I>&gt;<i> <A HREF="http://pinot.berlios.de/screenshots.html">http://pinot.berlios.de/screenshots.html</A> shows how this is done, even
+</I>&gt;<i> though the version the screencast was generated with only returned the
+</I>&gt;<i> number of crawled documents and the number of documents in the index.
+</I>&gt;<i> See how the GetStatistics method is used at
+</I>&gt;<i> <A HREF="http://pinot.berlios.de/documentation.html">http://pinot.berlios.de/documentation.html</A>
+</I>&gt;<i> I agree this could definitely be improved. What other interaction did
+</I>&gt;<i> you have in mind ?
+</I>
+Right now, I don't have other interactions in my mind.
+
+Maybe showing the configuration on the fly, incase the user wants 
+to make sure, he configured everything right (helps if you are 
+already on the console and don't want to switch). Because the 
+console program can just dump the formatted configuration file, it 
+takes less time to read through everything instead of opening the 
+configurator and walking through the tabs.
+
+&gt;<i> Thanks for taking the time to email us with these suggestions. This
+</I>&gt;<i> kind of feedback is exactly what I am after. Let me know if the above
+</I>&gt;<i> makes sense or if I have missed anything.
+</I>
+Your program is great, so I enjoyed the time working the stuff out. 
+My mail is already long enough and I don't know what to write 
+anymore. If there is something else I will send another mail.
+
+John
+
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000108.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+	<LI>Next message: <A HREF="000112.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#110">[ date ]</a>
+              <a href="thread.html#110">[ thread ]</a>
+              <a href="subject.html#110">[ subject ]</a>
+              <a href="author.html#110">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

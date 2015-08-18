@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot running and indexing but not search
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20running%20and%20indexing%20but%20not%20search&In-Reply-To=%3C47382BDC.6000403%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000063.html">
+   <LINK REL="Next"  HREF="000077.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot running and indexing but not search</H1>
+    <B>Cam Bazz</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20running%20and%20indexing%20but%20not%20search&In-Reply-To=%3C47382BDC.6000403%40gmail.com%3E"
+       TITLE="[Pinot-discuss] pinot running and indexing but not search">cambazz at gmail.com
+       </A><BR>
+    <I>Mon Nov 12 11:33:00 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000063.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+        <LI>Next message: <A HREF="000077.html">[Pinot-discuss] pinot running and indexing but not search
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#76">[ date ]</a>
+              <a href="thread.html#76">[ thread ]</a>
+              <a href="subject.html#76">[ subject ]</a>
+              <a href="author.html#76">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I just installed pinot and requirements in my opensuse system. I have a
+directory called /home/00pdf and configured pinot to index that
+directory. looking at pinot-dbus-daemon.log I see no problems. However
+my searchs return 0 results.
+
+when I issue a command like:
+
+delve -r 1 -d ~/.pinot/index
+
+I am geting:
+
+Error: DocNotFoundError: Document 1 not found.
+
+but when I
+
+delve -r 1 -d ~/.pinot/daemon
+
+I am geting:
+
+Term List for record #1: 1 59059 6 717 D20071110 Hlocalhost L M200711
+P1-59059-717-6.pdf S1 S59059 S6 S717 Spdf Tapplication/pdf
+<A HREF="Ufile:///home/00_ISBN/1-59059-717-6.pdf">Ufile:///home/00_ISBN/1-59059-717-6.pdf</A> X-MetaSE-Doc XDIR:/ XDIR:/home
+XDIR:/home/00_ISBN XEXT:pdf XLABEL:SOURCE2 Y2007 pdf
+
+searching with pinot-search xapian also does not return any results. How
+can I verify if everything is working right?
+
+Any ideas/recomendations are greatly appreciated.
+
+Best Regards,
+-Cam B.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000063.html">[Pinot-discuss] Can't compile 0.80
+</A></li>
+	<LI>Next message: <A HREF="000077.html">[Pinot-discuss] pinot running and indexing but not search
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#76">[ date ]</a>
+              <a href="thread.html#76">[ thread ]</a>
+              <a href="subject.html#76">[ subject ]</a>
+              <a href="author.html#76">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

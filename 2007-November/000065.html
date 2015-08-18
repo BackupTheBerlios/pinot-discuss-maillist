@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C6538c8c80711040203w4b916a91peb506b5b53f019b4%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000064.html">
+   <LINK REL="Next"  HREF="000067.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C6538c8c80711040203w4b916a91peb506b5b53f019b4%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Index huuuge">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Sun Nov  4 11:03:41 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000064.html">[Pinot-discuss] Index huuuge
+</A></li>
+        <LI>Next message: <A HREF="000067.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#65">[ date ]</a>
+              <a href="thread.html#65">[ thread ]</a>
+              <a href="subject.html#65">[ subject ]</a>
+              <a href="author.html#65">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andreas,
+
+On 11/4/07, Andreas Wagner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">A.Wagner at stud.uni-frankfurt.de</A>&gt; wrote:
+&gt;<i> The patch applies and compiles.
+</I>&gt;<i> I had to work around some complaint by archlinux's install routine:
+</I>&gt;<i> ...
+</I>&gt;<i> Error on file &quot;pinot.desktop&quot;: Failed to validate the created desktop file
+</I>&gt;<i> make[2]: *** [install-data-local] Error 1
+</I>&gt;<i>
+</I>&gt;<i> (the same goes for pinot-dbus-daemon.desktop.)
+</I>&gt;<i>
+</I>Okay. Is this with desktop-file-install &gt; 0.12 ?
+I'll update the desktop files.
+
+&gt;<i> Other than that, pinot is running fine and just indexing my documents right
+</I>&gt;<i> now... Well, to be honest, pinot-dbus-daemon is indexing while the UI has
+</I>&gt;<i> just crashed. :(
+</I>&gt;<i>
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> .pinot]$ pinot
+</I>&gt;<i>
+</I>&gt;<i> glibmm-ERROR **:
+</I>&gt;<i> unhandled exception (type unknown) in signal handler
+</I>&gt;<i>
+</I>&gt;<i> aborting...
+</I>&gt;<i> Abgebrochen
+</I>&gt;<i>
+</I>&gt;<i> What I did was: launching it ('pinot' on cmdline), going to preferences,
+</I>&gt;<i> looking at the directories, 'OK', looking at the stats (no dbus-daemon
+</I>&gt;<i> running yet), re-opening prefs, removing the to-be-indexed-directory, 'OK',
+</I>&gt;<i> re-open preferences, add the directory again, 'OK', open stats - which didn't
+</I>&gt;<i> happen. instead the gui disappeared altogether because of the crash.
+</I>&gt;<i> Re-launching pinot/gui seems to work tho. Status bar says can't open index
+</I>&gt;<i> /home/wagner/.pinot/index, but the status window shows no errors and is
+</I>&gt;<i> updated periodically.
+</I>&gt;<i>
+</I>You may want to exit the UI and delete .pinot/index/flintlock to get rid of the
+&quot;can't open index&quot; message. I'll add that to the FAQ.
+
+The crash you experienced is a known problem. We have seen it happen
+on some systems. What version of dbus and dbus-glib does ArchLinux have ?
+If Gabriel is reading this, he can probably tell us what versions of the above
+he installed to get rid of the crash...
+
+&gt;<i> On 01 Nov 2007, Fabrice Colin wrote:
+</I>&gt;<i> &gt; Okay. This seems slow, but I admit there's a lot of room for optimizations
+</I>&gt;<i> &gt; in first time indexing. What's your system like in terms of CPU and RAM ?
+</I>&gt;<i>
+</I>&gt;<i> I have an athlon64 3000 with one Gig RAM. I noticed on indexing that RAM
+</I>&gt;<i> does fill up (even a bit into swapspace) and periodically (not so often, tho,
+</I>&gt;<i> returns to ~50%, but I suppose that's normal. (I've seen in Recoll that they
+</I>&gt;<i> offer a config option to specify after how many MB data gets flushed to disk
+</I>&gt;<i> -- or just leave that up to xapian (I suppose that's what pinot is doint as well).)
+</I>&gt;<i>
+</I>You're right.
+Flushing is not directly configurable in Pinot. The environment variable
+XAPIAN_FLUSH_THRESHOLD can be set to the number of documents
+after which Xapian should flush changes to the index. The default value is
+set to 10000 I believe.
+pinot-dbus-daemon explicitely flushes the index once it has crawled a
+directory (directory configured in Preferences, Indexing).
+
+&gt;<i> All of the above is for --enable-debug=yes. RAM/Swap usage is much better
+</I>&gt;<i> now, however! While Swap is being used (I have a kernel with low
+</I>&gt;<i> swappiness), this is half a gig and Ram is only ever at most about half filled.
+</I>&gt;<i>
+</I>&gt;<i> Oops. Right now I have several errors in the status window, all of which like
+</I>&gt;<i> this:
+</I>&gt;<i> Couldn't retrieve document - <A HREF="file:///path/to/some_doc?ment_with_qu?stionmarks.html">file:///path/to/some_doc?ment_with_qu?stionmarks.html</A>
+</I>&gt;<i> (the names are with umlauts or apostrophes and I can't figure out the
+</I>&gt;<i> filename encoding. Normally I have utf-8, but then 'ls' wouldn't throw these
+</I>&gt;<i> questionmarks at me. mvconv doesn't want to change a thing about those
+</I>&gt;<i> filename...)
+</I>&gt;<i>
+</I>Ah good catch. I'll look into this.
+
+&gt;<i> It has finished indexing after some 20 minutes (forgot to time it and had to
+</I>&gt;<i> leave before it had finished) now and here's the du:
+</I>&gt;<i> ...
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> ~]$ du -hsc ~/.pinot/daemon/*
+</I>&gt;<i> ...
+</I>&gt;<i> 168M    /home/wagner/.pinot/daemon/spelling.DB
+</I>&gt;<i> 4,0K    /home/wagner/.pinot/daemon/spelling.baseA
+</I>&gt;<i> 4,0K    /home/wagner/.pinot/daemon/spelling.baseB
+</I>&gt;<i> ...
+</I>&gt;<i> 464M    insgesamt
+</I>&gt;<i>
+</I>&gt;<i> Looks better now, innit?
+</I>&gt;<i>
+</I>Yes it does ! If I am not mistaken, your first try was with Xapian
+1.0.3, right ?
+That version had a bug which prevented zlib compression from working.
+This probably explains why now your index is so much smaller.
+
+Thanks for your feedback, it's very much appreciated. Let us know
+if you run into any other issue.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000064.html">[Pinot-discuss] Index huuuge
+</A></li>
+	<LI>Next message: <A HREF="000067.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#65">[ date ]</a>
+              <a href="thread.html#65">[ thread ]</a>
+              <a href="subject.html#65">[ subject ]</a>
+              <a href="author.html#65">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

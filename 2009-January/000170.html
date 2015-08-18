@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090127120509.73a9f436%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000169.html">
+   <LINK REL="Next"  HREF="000172.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090127120509.73a9f436%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Tue Jan 27 12:05:09 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000169.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000172.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#170">[ date ]</a>
+              <a href="thread.html#170">[ thread ]</a>
+              <a href="subject.html#170">[ subject ]</a>
+              <a href="author.html#170">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> &gt; Made a single test with r1513 and except 5 files everything got
+</I>&gt;<i> &gt; indexed. Symptoms are as above.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Are these 5 files mentioned in the first or second (debug mode) log ?
+</I>
+All files/directories can be found after
+
+&quot;Exiting...&quot;
+&quot;XapianDatabaseFactory::closeAll:closing /home/jwerden/.pinot/daemon&quot;
+
+in the first log.
+
+Files are found in the consecutive lines
+
+WorkerThread::emitSignal: signaling end of thread 157
+LanguageDetector::guessLanguage: starting
+LanguageDetector::guessLanguage: language guessing took 0 ms
+XapianIndex::scanDocument: language 
+FilterWrapper::filterDocument: done with <A HREF="file:///home/jwerden/test(/a(/b(/c(/d">file:///home/jwerden/test(/a(/b(/c(/d</A>)?)?)?)?/filename status 0
+IndexingThread::doWork: couldn't index <A HREF="file:///home/jwerden/test/.../filename">file:///home/jwerden/test/.../filename</A>
+
+and all directories with (last lines in log)
+
+WorkerThread::emitSignal: signaling end of thread 161
+DirectoryScannerThread::scanEntry: entering /home/jwerden/test/a/b/c/d
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c/d
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test
+DirectoryScannerThread::flushUpdates: flushing updates
+
+I had to make a new test because I didn't preserve the first one made
+with r1513. (But the pattern of lost files is the same.)
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000169.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000172.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#170">[ date ]</a>
+              <a href="thread.html#170">[ thread ]</a>
+              <a href="subject.html#170">[ subject ]</a>
+              <a href="author.html#170">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

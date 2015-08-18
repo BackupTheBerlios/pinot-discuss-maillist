@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] some test results
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20some%20test%20results&In-Reply-To=%3C20090228164017.2e12c672%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000204.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] some test results</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20some%20test%20results&In-Reply-To=%3C20090228164017.2e12c672%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] some test results">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Feb 28 16:40:17 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000204.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#205">[ date ]</a>
+              <a href="thread.html#205">[ thread ]</a>
+              <a href="subject.html#205">[ subject ]</a>
+              <a href="author.html#205">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Scanned a bigger part of my filesystem and got thrashed again. I
+tried to find out what happened, made some tests and these are the
+results:
+
+checking html/image files:
+- memory usage was always below 20 MB
+
+checking txt files:
+- memory usage went slowly up from 14 MB to 70 MB over the course of
+  all 4400 rfc's
+
+checking pdf files:
+- The worst offender was a pdf file which left 140 MB lying around
+  after I scanned it alone and would run out of memory in memcheck.
+  Other files weren't that bad, but memory usage increased steadily
+  over time and didn't went down after the daemon was finished. Doing a
+  memcheck on some of them yielded nothing new.
+
+zip files:
+- Ate more memory than txt files, but didn't delve to deep as pdfs were
+  much worse.
+
+There are a lot more file types which I could have checked but these are
+the ones that I encountered a lot short before pinot ran out of memory.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000204.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#205">[ date ]</a>
+              <a href="thread.html#205">[ thread ]</a>
+              <a href="subject.html#205">[ subject ]</a>
+              <a href="author.html#205">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

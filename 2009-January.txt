@@ -1,0 +1,2662 @@
+From jwerden at hotpop.com  Sat Jan  3 02:49:40 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 3 Jan 2009 02:49:40 +0100
+Subject: [Pinot-discuss] pinot follows selfreferencing directory links
+Message-ID: <20090103024940.16dcb0c4@desktop.workplace>
+
+Hi Fabrice,
+
+today I came across the problem that pinot follows directory links
+which point to the directory they reside in. Pinot does not recognize
+that it already was there and starts to go down all directories to
+scan their file content, follows the directories, finds the link, goes
+down all directories to scan all files in the directory again and...
+
+It does so for some 20 times until it is done.
+
+Worse - if the selfreferencing directory contains another
+selfreferencing directory, it will recurse that link down, too.
+
+Example:
+
+Retrieved
+file:///xxx/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/uclibc/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/gcc/uclibc/4.2.1/include/linux/a.out.h
+in 0 ms
+
+I didn't notice the bug until now, because I decided only yesterday to
+reindex everything but this time everything except the system files
+(which is a lot more than last time).
+
+It looks like it scanned the whole day only the same directory.
+Right now it scanned it 10 times and everytime the subdirectory another
+10-20 times. The log is ~180k lines long for maybe 200-500 files.
+history-daemon is around 200 MB large and daemon/ around 2.1 GB.
+
+But the really bad thing will happen if pinot stumbles across the
+several kernels I unpacked and all the build environnments. It will
+take weeks and hundreds of gigabyte to index a few files. I have these
+kinds of links scattered across my whole filesystem and it's too
+time-consuming to find them all and tell pinot only to search 'save'
+file directories. It's also ineffective because I would have to recheck
+everything if I change something and another directory link appears.
+
+Do you have any patch to fix the problem? I will gladly take, apply
+and retest.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sat Jan  3 10:31:45 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 3 Jan 2009 16:31:45 +0700
+Subject: [Pinot-discuss] pinot follows selfreferencing directory links
+In-Reply-To: <20090103024940.16dcb0c4@desktop.workplace>
+References: <20090103024940.16dcb0c4@desktop.workplace>
+Message-ID: <6538c8c80901030131xbcbbefpb050d3375ae16f23@mail.gmail.com>
+
+Hi John,
+
+On Sat, Jan 3, 2009 at 8:49 AM, John Werden <jwerden at hotpop.com> wrote:
+> ...
+> Do you have any patch to fix the problem? I will gladly take, apply
+> and retest.
+>
+I am currently traveling. I will get back to you in the next couple of days.
+Thanks for reporting this.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Tue Jan  6 17:26:24 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 7 Jan 2009 00:26:24 +0800
+Subject: [Pinot-discuss] pinot follows selfreferencing directory links
+In-Reply-To: <6538c8c80901030131xbcbbefpb050d3375ae16f23@mail.gmail.com>
+References: <20090103024940.16dcb0c4@desktop.workplace>
+	<6538c8c80901030131xbcbbefpb050d3375ae16f23@mail.gmail.com>
+Message-ID: <6538c8c80901060826o1a547232vfbd8f068581c2f6c@mail.gmail.com>
+
+Hi John,
+
+I have checked in a tentative fix for this. Details are here :
+http://svn.berlios.de/wsvn/pinot/trunk/?rev=1466&sc=1
+
+Backporting it to 0.89 will take me a while, but maybe you could try
+the current pre-0.90 code ? Options are :
+- getting the 0.90 beta 3 tarball from http://colinf.chez.com/pinot/
+- or, getting the latest from SVN as described at
+http://pinot.berlios.de/download.html
+You may also be interested in other changes I made following your
+suggestions some weeks ago (eg smoother status window, separate
+preferences, non-invasive spelling corrections).
+
+I recommend running the daemon with the "-r/--reindex" parameter.
+
+I will let you know once I have a patch that applies cleanly to 0.89.
+
+Best regards,
+
+Fabrice
+
+
+From jwerden at hotpop.com  Wed Jan  7 22:11:44 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Wed, 7 Jan 2009 22:11:44 +0100
+Subject: [Pinot-discuss] pinot follows selfreferencing directory links
+In-Reply-To: <6538c8c80901051921i51a70c50yc291f6353514f8e1@mail.gmail.com>
+References: <20090103024940.16dcb0c4@desktop.workplace>
+	<6538c8c80901030131xbcbbefpb050d3375ae16f23@mail.gmail.com>
+	<6538c8c80901051921i51a70c50yc291f6353514f8e1@mail.gmail.com>
+Message-ID: <20090107221144.747401e7@desktop.workplace>
+
+On Tue, 6 Jan 2009 11:21:27 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> I have been working on a fix for this and should be able to send you a
+> patch for 0.89 either today or tomorrow.
+> 
+> Fabrice
+
+Ok
+
+John
+
+
+
+From jwerden at hotpop.com  Thu Jan  8 16:49:26 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 8 Jan 2009 16:49:26 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta3
+Message-ID: <20090108164926.7af4085c@desktop.workplace>
+
+Hi Fabrice,
+
+I built pinot from your pinot-0.90.beta3.tar.gz and gave it a testrun.
+
+The test results:
+
+(1) Pinot does not recurse into the same directory anymore. I tested it
+with the directory it failed at. Do you want me to run a special test
+to check if it does not skip anything? The output looked sane to me,
+but if you want to test anything, I'm ready to do it.
+
+(2) Pinot fails to recognize an interrupted index at restart:
+
+$ rm ~/.pinot -rf
+$ pinot              # configure everything
+$ pinot-dbus-daemon
+Ctrl+c
+$ pinot-dbus-daemon
+
+gives the following logfile:
+
+FilterFactory::loadFilters: /home/jwerden/.pinot/filters is not a directory
+ModuleFactory::loadModules: /home/jwerden/.pinot/backends is not a directory
+Statement <SELECT Language FROM QueryHistory LIMIT 1;> failed: no such column: Language
+Couldn't get battery state: The name org.freedesktop.PowerManagement was not provided by any .service files
+Couldn't get battery state: The name org.freedesktop.PowerManagement was not provided by any .service files
+Couldn't get battery state: The name org.gnome.PowerManager was not
+provided by any .service files
+Skipping /home/jwerden: it has already been crawled
+Scanned /home/jwerden in 9 ms
+
+(3) I tried to build the package from svn (1466) but failed. The
+problem was that linking was done without -lcurl/-lneon:
+
+./autogen.sh
+[...]
+g++ -DHAVE_CONFIG_H -I. -I..    -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam     -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -MT pinot-label.o -MD -MP -MF .deps/pinot-label.Tpo -c -o pinot-label.o pinot-label.cpp
+mv -f .deps/pinot-label.Tpo .deps/pinot-label.Po
+/bin/sh ../libtool --tag=CXX   --mode=link g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam     -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic  -o pinot-label pinot-label.o -L../Utils -lIndex -lUtils -lBasicUtils -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0  
+  -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0   -ldbus-glib-1 -ldbus-1 -lgobject-2.0 -lglib-2.0   -pthread -lgthread-2.0 -lrt -lglib-2.0   -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0
+libtool: link: g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -DUSE_CURL -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic -o pinot-label pinot-label.o -pthread  -L/home/jwerden/build/pinot/trunk/Utils /home/jwerden/build/pinot/trunk/IndexSearch/.libs/libIndex.a /home/jwerden/build/
+ pinot/trunk/Utils/.libs/libUtils.a /home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a -lgio-2.0 -lgmodule-2.0 -ldbus-glib-1 -ldbus-1 -lgthread-2.0 -lrt -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0 -pthread
+/home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a(TimeConverter.o): In function `TimeConverter::fromTimestamp(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/jwerden/build/pinot/trunk/Utils/TimeConverter.cpp:169: undefined reference to `curl_getdate'
+collect2: ld returned 1 exit status
+make[2]: *** [pinot-label] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/trunk/IndexSearch'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/jwerden/build/pinot/trunk'
+make: *** [all] Error 2
+
+
+./autogen.sh --with-http=neon:
+[...]
+g++ -DHAVE_CONFIG_H -I. -I..    -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon      -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -MT pinot-label.o -MD -MP -MF .deps/pinot-label.Tpo -c -o pinot-label.o pinot-label.cpp
+mv -f .deps/pinot-label.Tpo .deps/pinot-label.Po
+/bin/sh ../libtool --tag=CXX   --mode=link g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon      -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include     -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic  -o pinot-label pinot-label.o -L../Utils -lIndex -lUtils -lBasicUtils -lgio-2.0 -lgobject-2.0 -lgmo
+ dule-2.0 -lglib-2.0   -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0   -ldbus-glib-1 -ldbus-1 -lgobject-2.0 -lglib-2.0   -pthread -lgthread-2.0 -lrt -lglib-2.0   -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0
+libtool: link: g++ -fvisibility=hidden -I../Utils -I../Tokenize -I../Tokenize/filters -I../Collect -I../IndexSearch/cjkv -I../IndexSearch/Google -I../IndexSearch/xesam -I/usr/include/neon -DUSE_NEON -DUSE_SSL -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DUSE_GIO -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -DHAVE_DBUS -DHAVE_BOOST_SPIRIT -fPIC -g -O2 -DNDEBUG -rdynamic -o pinot-label pinot-label.o -pthread  -L/home/jwerden/build/pinot/trunk/Utils /home/jwerden/build/pinot/trunk/IndexSearch/.libs/libIndex.a 
+ /home/jwerden/build/pinot/trunk/Utils/.libs/libUtils.a /home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a -lgio-2.0 -lgmodule-2.0 -ldbus-glib-1 -ldbus-1 -lgthread-2.0 -lrt -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0 -pthread
+/home/jwerden/build/pinot/trunk/Utils/.libs/libBasicUtils.a(TimeConverter.o): In function `TimeConverter::fromTimestamp(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/jwerden/build/pinot/trunk/Utils/TimeConverter.cpp:166: undefined reference to `ne_rfc1123_parse'
+collect2: ld returned 1 exit status
+make[2]: *** [pinot-label] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/trunk/IndexSearch'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/jwerden/build/pinot/trunk'
+make: *** [all] Error 2
+
+I don't know if this is my failure and I misunderstood the build
+process or if it was a real error.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Fri Jan  9 13:01:51 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 9 Jan 2009 20:01:51 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta3
+In-Reply-To: <20090108164926.7af4085c@desktop.workplace>
+References: <20090108164926.7af4085c@desktop.workplace>
+Message-ID: <6538c8c80901090401t133622d1ma7b15174626523de@mail.gmail.com>
+
+Hi John,
+
+On Thu, Jan 8, 2009 at 11:49 PM, John Werden <jwerden at hotpop.com> wrote:
+> I built pinot from your pinot-0.90.beta3.tar.gz and gave it a testrun.
+>
+> The test results:
+>
+> (1) Pinot does not recurse into the same directory anymore. I tested it
+> with the directory it failed at. Do you want me to run a special test
+> to check if it does not skip anything? The output looked sane to me,
+> but if you want to test anything, I'm ready to do it.
+>
+Great. There should be a message along the line of "Skipping /a/b/c:
+..." in your log file for each symlink that has been skipped. Apart
+from that, you could browse your My Documents index to see if anything
+is amiss.
+
+> (2) Pinot fails to recognize an interrupted index at restart:
+>
+> $ rm ~/.pinot -rf
+> $ pinot              # configure everything
+> $ pinot-dbus-daemon
+> Ctrl+c
+> $ pinot-dbus-daemon
+>
+> gives the following logfile:
+> ...
+> Skipping /home/jwerden: it has already been crawled
+> Scanned /home/jwerden in 9 ms
+>
+Hmm I ran into the same issue, and thought I fixed it. I will take another look.
+
+> (3) I tried to build the package from svn (1466) but failed. The
+> problem was that linking was done without -lcurl/-lneon:
+> ...
+> I don't know if this is my failure and I misunderstood the build
+> process or if it was a real error.
+>
+My fault here. I am aware of this, have a fix but haven't committed it yet.
+
+I'll get back to you. Thanks !
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sat Jan 10 00:43:30 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 10 Jan 2009 00:43:30 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta3
+In-Reply-To: <6538c8c80901090401t133622d1ma7b15174626523de@mail.gmail.com>
+References: <20090108164926.7af4085c@desktop.workplace>
+	<6538c8c80901090401t133622d1ma7b15174626523de@mail.gmail.com>
+Message-ID: <20090110004330.04f5f639@desktop.workplace>
+
+On Fri, 9 Jan 2009 20:01:51 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Thu, Jan 8, 2009 at 11:49 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > I built pinot from your pinot-0.90.beta3.tar.gz and gave it a
+> > testrun.
+> >
+> > The test results:
+> >
+> > (1) Pinot does not recurse into the same directory anymore. I
+> > tested it with the directory it failed at. Do you want me to run a
+> > special test to check if it does not skip anything? The output
+> > looked sane to me, but if you want to test anything, I'm ready to
+> > do it.
+> >
+> Great. There should be a message along the line of "Skipping /a/b/c:
+> ..." in your log file for each symlink that has been skipped. Apart
+> from that, you could browse your My Documents index to see if anything
+> is amiss.
+
+Yes, I get several of these messages. Number of indexed files seems
+fine (difference between all files/directories and symlinks).
+
+Only problem which exists is that the names of symlinks won't get
+stored. A search for a file which is a symlink will fail.
+
+> > (2) Pinot fails to recognize an interrupted index at restart:
+> >
+> > $ rm ~/.pinot -rf
+> > $ pinot              # configure everything
+> > $ pinot-dbus-daemon
+> > Ctrl+c
+> > $ pinot-dbus-daemon
+> >
+> > gives the following logfile:
+> > ...
+> > Skipping /home/jwerden: it has already been crawled
+> > Scanned /home/jwerden in 9 ms
+> >
+> Hmm I ran into the same issue, and thought I fixed it. I will take
+> another look.
+
+Thank you. This problem didn't appear with 0.89, looks like a
+regression for me, too.
+
+> > (3) I tried to build the package from svn (1466) but failed. The
+> > problem was that linking was done without -lcurl/-lneon:
+> > ...
+> > I don't know if this is my failure and I misunderstood the build
+> > process or if it was a real error.
+> >
+> My fault here. I am aware of this, have a fix but haven't committed
+> it yet.
+
+Ok
+
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sun Jan 11 05:34:24 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 11 Jan 2009 12:34:24 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta3
+In-Reply-To: <20090110004330.04f5f639@desktop.workplace>
+References: <20090108164926.7af4085c@desktop.workplace>
+	<6538c8c80901090401t133622d1ma7b15174626523de@mail.gmail.com>
+	<20090110004330.04f5f639@desktop.workplace>
+Message-ID: <6538c8c80901102034l43a0a985xd13e9b2622bf2406@mail.gmail.com>
+
+Hi John,
+
+On Sat, Jan 10, 2009 at 7:43 AM, John Werden <jwerden at hotpop.com> wrote:
+> On Fri, 9 Jan 2009 20:01:51 +0800 "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+>> Great. There should be a message along the line of "Skipping /a/b/c:
+>> ..." in your log file for each symlink that has been skipped. Apart
+>> from that, you could browse your My Documents index to see if anything
+>> is amiss.
+>
+> Yes, I get several of these messages. Number of indexed files seems
+> fine (difference between all files/directories and symlinks).
+>
+> Only problem which exists is that the names of symlinks won't get
+> stored. A search for a file which is a symlink will fail.
+>
+Agreed. This was missing in beta 3.
+
+I have uploaded beta 4 at http://colinf.chez.com/pinot which should
+fix the problems you reported.
+Reindex your documents. Skipped symlinks will be indexed on their own,
+and can be found by searching for "type:inode/symlink".
+
+Let us know how it goes for you. Thanks !
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sun Jan 11 10:46:54 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sun, 11 Jan 2009 10:46:54 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+Message-ID: <20090111104654.45039cce@desktop.workplace>
+
+Hi Fabrice!
+
+the test results for beta4:
+
+what works:
+
+- indexing symlinks works
+- searching symlinks with type:inode/symlink works
+- the build error (-lcurl/-lneon) does not exist anymore
+- terminating the daemon while indexing does not mislead a new instance
+  to think that everything got already indexed.
+
+what failed:
+
+- make install (beta4/svn 1478) if I use it to overwrite an existing
+  installation:
+
+ln: creating symbolic link `/home/jwerden/bin/pinot-prefs': File exists
+make[2]: *** [install-data-local] Error 1
+make[2]: Leaving directory `/home/jwerden/build/pinot/pinot-0.89'
+make[1]: *** [install-am] Error 2
+make[1]: Leaving directory `/home/jwerden/build/pinot/pinot-0.89'
+make: *** [install-recursive] Error 1
+
+manually removing the link in the destination directory solved the
+problem.
+
+- Logfile problems:
+
+(did exist in .88(!)/.89(?), but did not spot in beta3)
+
+(1) Garbage in logfile:
+
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset 
+indows-1252HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+HTML parser doesn't support charset windows-1252
+
+(2) Rotated output:
+
+Quitting...
+Exiting...
+Scanned /jwerden/bin in 57539 ms
+
+- Number of files indexed in "My Documents" sometimes to small
+
+After I tested several times if the daemon can handle kill/start while
+indexing, I found out that the number of indexed files reported and
+listed by pinot was sometimes less than the number of files which needs
+to get indexed after indexing was done. This varied from test to test,
+where a test was a complete reindex from blank state with several
+interruptions.
+
+
+Hope the information helped. I will gladly test more, if you need more
+information (especially the last 2 points).
+
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sun Jan 11 11:59:46 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 11 Jan 2009 18:59:46 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <20090111104654.45039cce@desktop.workplace>
+References: <20090111104654.45039cce@desktop.workplace>
+Message-ID: <6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+
+Hi John,
+
+On Sun, Jan 11, 2009 at 5:46 PM, John Werden <jwerden at hotpop.com> wrote:
+> what failed:
+>
+> - make install (beta4/svn 1478) if I use it to overwrite an existing
+>  installation:
+>
+Thanks ! Fixed in SVN r1480.
+
+> - Logfile problems:
+>
+> (did exist in .88(!)/.89(?), but did not spot in beta3)
+>
+> (1) Garbage in logfile:
+>
+> HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset
+> indows-1252HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset windows-1252
+> HTML parser doesn't support charset windows-1252
+>
+> (2) Rotated output:
+>
+> Quitting...
+> Exiting...
+> Scanned /jwerden/bin in 57539 ms
+>
+I wouldn't worry about those two. Threads are left to write to the log
+file without any synchronization on purpose, and as a result messages
+might get mixed up.
+
+> - Number of files indexed in "My Documents" sometimes to small
+>
+> After I tested several times if the daemon can handle kill/start while
+> indexing, I found out that the number of indexed files reported and
+> listed by pinot was sometimes less than the number of files which needs
+> to get indexed after indexing was done. This varied from test to test,
+> where a test was a complete reindex from blank state with several
+> interruptions.
+>
+> Hope the information helped. I will gladly test more, if you need more
+> information (especially the last 2 points).
+>
+Yes it did, thanks.
+
+For this last issue, did you get the figure from the number of indexed
+documents shown in the UI, when browsing an index, or as displayed by
+the status window ?
+If you are looking at it right after the daemon finishes the initial
+indexing run, it may be a bit off if the daemon hasn't yet flushed
+everything to disk.
+The latest README mentions a 'pinot-stats' alias. The second figure
+this command returns should be the exact number of documents in your
+My Documents index.
+If that doesn't show the number you expect, you could generate a list
+of all indexed files and see if anything obvious is missing. There are
+two ways :
+- browse the index and export each page using the Options, Export List menu
+- run the pinot-enum-index.sh script to get the whole list of files in
+~/.pinot/daemon/urls.txt :
+   $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+  Get this script from SVN r1479, it's got a minor fix.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sun Jan 11 16:41:48 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sun, 11 Jan 2009 16:41:48 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+Message-ID: <20090111164148.1323f56f@desktop.workplace>
+
+On Sun, 11 Jan 2009 18:59:46 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Sun, Jan 11, 2009 at 5:46 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > what failed:
+> >
+> > - make install (beta4/svn 1478) if I use it to overwrite an existing
+> >  installation:
+> >
+> Thanks ! Fixed in SVN r1480.
+
+Yes, works now.
+
+> > - Logfile problems:
+> >
+> > (did exist in .88(!)/.89(?), but did not spot in beta3)
+> >
+> > (1) Garbage in logfile:
+> >
+> > HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset
+> > indows-1252HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset windows-1252
+> > HTML parser doesn't support charset windows-1252
+> >
+> > (2) Rotated output:
+> >
+> > Quitting...
+> > Exiting...
+> > Scanned /jwerden/bin in 57539 ms
+> >
+> I wouldn't worry about those two. Threads are left to write to the log
+> file without any synchronization on purpose, and as a result messages
+> might get mixed up.
+
+Ok
+ 
+> > - Number of files indexed in "My Documents" sometimes to small
+> >
+> > After I tested several times if the daemon can handle kill/start
+> > while indexing, I found out that the number of indexed files
+> > reported and listed by pinot was sometimes less than the number of
+> > files which needs to get indexed after indexing was done. This
+> > varied from test to test, where a test was a complete reindex from
+> > blank state with several interruptions.
+> >
+
+> For this last issue, did you get the figure from the number of indexed
+> documents shown in the UI, when browsing an index, or as displayed by
+> the status window ?
+
+I used Options -> List Contents of -> My Documents.
+
+> If you are looking at it right after the daemon finishes the initial
+> indexing run, it may be a bit off if the daemon hasn't yet flushed
+> everything to disk.
+
+I checked it after I killed the daemon.
+
+> The latest README mentions a 'pinot-stats' alias. The second figure
+
+The latest README is only in the beta4.tar.gz, not in the repository.
+
+Are there othere differences between the repo and the tar.gz? Sometimes
+I built from the repo, sometimes from the beta. Don't want to see any
+strange effects because of this.
+
+> this command returns should be the exact number of documents in your
+> My Documents index.
+
+Same numbers as with pinot client.
+
+> If that doesn't show the number you expect, you could generate a list
+> of all indexed files and see if anything obvious is missing. There are
+> two ways :
+> - browse the index and export each page using the Options, Export
+> List menu
+> - run the pinot-enum-index.sh script to get the whole list of files in
+> ~/.pinot/daemon/urls.txt :
+>    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+>   Get this script from SVN r1479, it's got a minor fix.
+
+Did it using the shell script, number is the same - around a third of
+all files got not indexed. The missing files seems to be from random
+folders after I made some random checks and glimpsed over the whole
+thing (But some folders weren't indexed at all).
+
+A better check would force me to write a script with some string
+operations which I'm not really hot for right now. I will write it
+later if you really need it.
+
+
+John
+
+
+
+From fabrice.colin at gmail.com  Mon Jan 12 16:12:11 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 12 Jan 2009 23:12:11 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <20090111164148.1323f56f@desktop.workplace>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+Message-ID: <6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+
+Hi John,
+
+On Sun, Jan 11, 2009 at 11:41 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Sun, 11 Jan 2009 18:59:46 +0800
+> "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+>> For this last issue, did you get the figure from the number of indexed
+>> documents shown in the UI, when browsing an index, or as displayed by
+>> the status window ?
+>
+> I used Options -> List Contents of -> My Documents.
+>
+>> If you are looking at it right after the daemon finishes the initial
+>> indexing run, it may be a bit off if the daemon hasn't yet flushed
+>> everything to disk.
+>
+> I checked it after I killed the daemon.
+>
+OK. It should be the right number then.
+
+>> The latest README mentions a 'pinot-stats' alias. The second figure
+>
+> The latest README is only in the beta4.tar.gz, not in the repository.
+>
+You're right. I have the bad habit of doing that. I'll try and make
+sure the betas I issue reflect better what's in SVN.
+
+> Are there othere differences between the repo and the tar.gz? Sometimes
+> I built from the repo, sometimes from the beta. Don't want to see any
+> strange effects because of this.
+>
+In beta 4, only README and friends, and some unrelated changes to the UI code.
+
+>> this command returns should be the exact number of documents in your
+>> My Documents index.
+>
+> Same numbers as with pinot client.
+>
+Okay.
+
+>> If that doesn't show the number you expect, you could generate a list
+>> of all indexed files and see if anything obvious is missing. There are
+>> two ways :
+>> - browse the index and export each page using the Options, Export
+>> List menu
+>> - run the pinot-enum-index.sh script to get the whole list of files in
+>> ~/.pinot/daemon/urls.txt :
+>>    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+>>   Get this script from SVN r1479, it's got a minor fix.
+>
+> Did it using the shell script, number is the same - around a third of
+> all files got not indexed. The missing files seems to be from random
+> folders after I made some random checks and glimpsed over the whole
+> thing (But some folders weren't indexed at all).
+>
+> A better check would force me to write a script with some string
+> operations which I'm not really hot for right now. I will write it
+> later if you really need it.
+>
+You could compare the urls.txt file the script generates with the
+output of "find -L", I suppose. If you sort both files, viewing the
+differences in diff, or better meld, is not too painful.
+I did that just now and the only missing files were looping symlinks
+and blacklisted files (ie matching a pattern defined in Preferences,
+Indexing tab). Note that the script will output one line for each mbox
+message.
+
+I uploaded beta 5. It's synced with SVN r1485, except for NEWS, TODO,
+the ChangeLog's, po's and man pages.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Tue Jan 13 00:56:11 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 13 Jan 2009 00:56:11 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+Message-ID: <20090113005611.66082fd5@desktop.workplace>
+
+On Mon, 12 Jan 2009 23:12:11 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> >> If that doesn't show the number you expect, you could generate a
+> >> list of all indexed files and see if anything obvious is missing.
+> >> There are two ways :
+> >> - browse the index and export each page using the Options, Export
+> >> List menu
+> >> - run the pinot-enum-index.sh script to get the whole list of
+> >> files in ~/.pinot/daemon/urls.txt :
+> >>    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+> >>   Get this script from SVN r1479, it's got a minor fix.
+> >
+> > Did it using the shell script, number is the same - around a third
+> > of all files got not indexed. The missing files seems to be from
+> > random folders after I made some random checks and glimpsed over
+> > the whole thing (But some folders weren't indexed at all).
+> >
+> > A better check would force me to write a script with some string
+> > operations which I'm not really hot for right now. I will write it
+> > later if you really need it.
+> >
+> You could compare the urls.txt file the script generates with the
+> output of "find -L", I suppose. If you sort both files, viewing the
+> differences in diff, or better meld, is not too painful.
+
+I already did something similar. The only problem with the result is
+that you can't see which directories got completely thrown away and
+which not. Creating a script for a more advanced analysis feels too
+much like a hassle if it is not really needed.
+
+> I did that just now and the only missing files were looping symlinks
+> and blacklisted files (ie matching a pattern defined in Preferences,
+> Indexing tab). Note that the script will output one line for each mbox
+> message.
+
+I removed all blacklist entries prior to testing and mbox isn't part
+of the test.
+
+Maybe pinot runs not stable enough for me. The daemon segfaulted one
+time after Ctrl+c but this shouldn't put the database integrity itself
+at risk(?)
+
+> I uploaded beta 5. It's synced with SVN r1485, except for NEWS, TODO,
+> the ChangeLog's, po's and man pages.
+
+Ok, I will upgrade, but I have no reason to index everything as long as
+the problem persists for me, because the dataloss happens if the
+daemon is terminated while indexing and I want to shut my system down
+once in a while.
+
+Lets see what happens...
+
+John
+
+
+
+From jwerden at hotpop.com  Tue Jan 13 04:17:13 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 13 Jan 2009 04:17:13 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+Message-ID: <20090113041713.1e368312@desktop.workplace>
+
+Hi Fabrice,
+
+With beta5 the described problem still persists. If pinot is done
+scanning the files the index will be incomplete if you terminated and
+restarted the daemon while indexing. The number of indexed files won't
+be total - first pass.
+
+Sometimes pinot will tell me after restarting the daemon that the
+previous instance died prematurely, but this is not a trigger for the
+problem.
+
+I don't know if it is part of the problem or an intentional change, but
+the logfile only shows a little part of all indexed files if I do a
+scan without interrupting. around 2/3 of the files aren't listed.
+
+Another message I got one time after I killed the daemon after it
+finished an interrupted scan was:
+
+Quitting...
+Exiting...
+Couldn't open read-only database Couldn't open read-only database
+
+Some numbers (single testcase):
+(1) indexed documents without interrupting: 3540
+(2) indexed documents before interrupt: 369
+(3) indexed documents after interrupt/completed scan: 3334
+
+The numbers for 2/3 vary from test to test.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Tue Jan 13 14:11:29 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 13 Jan 2009 21:11:29 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <20090113005611.66082fd5@desktop.workplace>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+	<20090113005611.66082fd5@desktop.workplace>
+Message-ID: <6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+
+Hi John,
+
+On Tue, Jan 13, 2009 at 7:56 AM, John Werden <jwerden at hotpop.com> wrote:
+> On Mon, 12 Jan 2009 23:12:11 +0800
+> "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+>> You could compare the urls.txt file the script generates with the
+>> output of "find -L", I suppose. If you sort both files, viewing the
+>> differences in diff, or better meld, is not too painful.
+>
+> I already did something similar. The only problem with the result is
+> that you can't see which directories got completely thrown away and
+> which not. Creating a script for a more advanced analysis feels too
+> much like a hassle if it is not really needed.
+>
+Try the (quick and dirty) shell code at the end of this email. Save it
+to pinot-check-file.sh, chmod it appropriately, then run :
+$ find -L ~/Documents/ -exec scripts/bash/pinot-check-file.sh {} \;
+This should only output files that can't be found in My Documents.
+
+> I removed all blacklist entries prior to testing and mbox isn't part
+> of the test.
+>
+Let's hope you don't run into issues when indexing files that are
+normally blacklisted.
+
+> Ok, I will upgrade, but I have no reason to index everything as long as
+> the problem persists for me, because the dataloss happens if the
+> daemon is terminated while indexing and I want to shut my system down
+> once in a while.
+>
+This sounds like a bug that needs fixing... If you can make the daemon
+crash on Control-C, a full gdb backtrace would be useful. I would also
+like to find out which of your files are not indexed and why...
+
+Thanks for the time you spend investigating, your help is much appreciated.
+
+Fabrice
+
+#!/bin/bash
+# Run this with find, eg find -L ~/Documents/ -exec pinot-check-file.sh {} \;
+if [ $# == 0 ]; then
+  echo "Usage: $0 <index>"
+  exit 1
+fi
+
+WHICH_SED=`which sed`
+if [ $? != 0 ]; then
+  echo "Couldn't find sed. Is the sed package installed ?"
+  exit 1
+fi
+WHICH_PI=`which pinot-index`
+if [ $? != 0 ]; then
+  echo "Couldn't find sed. Is the pinot package installed ?"
+  exit 1
+fi
+
+for FILE in "$@" ;
+do
+  NO_SLASH_FILE=`echo $FILE | sed -e "s/\(.*\)\/$/\1/g"`
+  pinot-index --check --db ~/.pinot/daemon/ "file://$NO_SLASH_FILE"
+>/dev/null 2>&1 \;
+  if [ $? != 0 ]; then
+    echo $NO_SLASH_FILE
+  fi
+done
+
+exit 0
+
+
+From fabrice.colin at gmail.com  Tue Jan 13 14:22:23 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 13 Jan 2009 21:22:23 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090113041713.1e368312@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+Message-ID: <6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+
+Hi John,
+
+On Tue, Jan 13, 2009 at 11:17 AM, John Werden <jwerden at hotpop.com> wrote:
+> With beta5 the described problem still persists. If pinot is done
+> scanning the files the index will be incomplete if you terminated and
+> restarted the daemon while indexing. The number of indexed files won't
+> be total - first pass.
+>
+> Sometimes pinot will tell me after restarting the daemon that the
+> previous instance died prematurely, but this is not a trigger for the
+> problem.
+>
+The previous instance must have crashed when it was interrupted. We'd
+need to find out why.
+
+> I don't know if it is part of the problem or an intentional change, but
+> the logfile only shows a little part of all indexed files if I do a
+> scan without interrupting. around 2/3 of the files aren't listed.
+>
+> Another message I got one time after I killed the daemon after it
+> finished an interrupted scan was:
+>
+> Quitting...
+> Exiting...
+> Couldn't open read-only database Couldn't open read-only database
+>
+> Some numbers (single testcase):
+> (1) indexed documents without interrupting: 3540
+> (2) indexed documents before interrupt: 369
+> (3) indexed documents after interrupt/completed scan: 3334
+>
+> The numbers for 2/3 vary from test to test.
+>
+Oooh... From one test run to the next, is the last file mentioned in
+the log the same, or are they all from the same directory ?
+I have been playing with inline indexing, ie getting the crawler to
+index files as they are found without spawning a new indexing thread.
+It's enabled in beta <= 5. I found that sometimes a bad external
+filter could stall everything and stop crawling and indexing.
+Typically the last indexed file would be the same from one run to the
+next, and was the file directly before the one for which the faulty
+filter would be run.
+If the log seems to indicate it is this issue, try setting
+PINOT_DELEGATE_INDEXING=Y in your environment before restarting the
+daemon with -r/--reindex.
+
+Running the script I provided in reply to your previous post will help
+finding which files were not indexed.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Tue Jan 13 17:15:01 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 13 Jan 2009 17:15:01 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+	<20090113005611.66082fd5@desktop.workplace>
+	<6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+Message-ID: <20090113171501.00fea4eb@desktop.workplace>
+
+On Tue, 13 Jan 2009 21:11:29 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Tue, Jan 13, 2009 at 7:56 AM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > On Mon, 12 Jan 2009 23:12:11 +0800
+> > "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+> >> You could compare the urls.txt file the script generates with the
+> >> output of "find -L", I suppose. If you sort both files, viewing the
+> >> differences in diff, or better meld, is not too painful.
+> >
+> > I already did something similar. The only problem with the result is
+> > that you can't see which directories got completely thrown away and
+> > which not. Creating a script for a more advanced analysis feels too
+> > much like a hassle if it is not really needed.
+> >
+> Try the (quick and dirty) shell code at the end of this email. Save it
+> to pinot-check-file.sh, chmod it appropriately, then run :
+> $ find -L ~/Documents/ -exec scripts/bash/pinot-check-file.sh {} \;
+> This should only output files that can't be found in My Documents.
+
+Thank you, will use it as needed.
+
+> > I removed all blacklist entries prior to testing and mbox isn't part
+> > of the test.
+> >
+> Let's hope you don't run into issues when indexing files that are
+> normally blacklisted.
+
+It would only hide problems, not solve them. Doing that implicitly says
+that I have to watch how I name files.
+
+> > Ok, I will upgrade, but I have no reason to index everything as
+> > long as the problem persists for me, because the dataloss happens
+> > if the daemon is terminated while indexing and I want to shut my
+> > system down once in a while.
+> >
+> This sounds like a bug that needs fixing... If you can make the daemon
+> crash on Control-C, a full gdb backtrace would be useful. I would also
+> like to find out which of your files are not indexed and why...
+> 
+> Thanks for the time you spend investigating, your help is much
+> appreciated.
+> 
+> Fabrice
+> 
+> #!/bin/bash
+> # Run this with find, eg find -L ~/Documents/ -exec
+> pinot-check-file.sh {} \; if [ $# == 0 ]; then
+>   echo "Usage: $0 <index>"
+>   exit 1
+> fi
+> 
+> WHICH_SED=`which sed`
+> if [ $? != 0 ]; then
+>   echo "Couldn't find sed. Is the sed package installed ?"
+>   exit 1
+> fi
+> WHICH_PI=`which pinot-index`
+> if [ $? != 0 ]; then
+>   echo "Couldn't find sed. Is the pinot package installed ?"
+>   exit 1
+> fi
+> 
+> for FILE in "$@" ;
+> do
+>   NO_SLASH_FILE=`echo $FILE | sed -e "s/\(.*\)\/$/\1/g"`
+>   pinot-index --check --db ~/.pinot/daemon/ "file://$NO_SLASH_FILE"
+> >/dev/null 2>&1 \;
+>   if [ $? != 0 ]; then
+>     echo $NO_SLASH_FILE
+>   fi
+> done
+> 
+> exit 0
+
+Thank you for the script.
+
+John
+
+
+
+From jwerden at hotpop.com  Tue Jan 13 17:03:18 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 13 Jan 2009 17:03:18 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+Message-ID: <20090113170318.526b143c@desktop.workplace>
+
+On Tue, 13 Jan 2009 21:22:23 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Tue, Jan 13, 2009 at 11:17 AM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > With beta5 the described problem still persists. If pinot is done
+> > scanning the files the index will be incomplete if you terminated
+> > and restarted the daemon while indexing. The number of indexed
+> > files won't be total - first pass.
+> >
+> > Sometimes pinot will tell me after restarting the daemon that the
+> > previous instance died prematurely, but this is not a trigger for
+> > the problem.
+> >
+> The previous instance must have crashed when it was interrupted. We'd
+> need to find out why.
+
+It's hard to catch in gdb, but if I have a chance, I will post a
+backtrace.
+
+> > I don't know if it is part of the problem or an intentional change,
+> > but the logfile only shows a little part of all indexed files if I
+> > do a scan without interrupting. around 2/3 of the files aren't
+> > listed.
+> >
+> > Another message I got one time after I killed the daemon after it
+> > finished an interrupted scan was:
+> >
+> > Quitting...
+> > Exiting...
+> > Couldn't open read-only database Couldn't open read-only database
+> >
+> > Some numbers (single testcase):
+> > (1) indexed documents without interrupting: 3540
+> > (2) indexed documents before interrupt: 369
+> > (3) indexed documents after interrupt/completed scan: 3334
+> >
+> > The numbers for 2/3 vary from test to test.
+> >
+> Oooh... From one test run to the next, is the last file mentioned in
+> the log the same, or are they all from the same directory ?
+
+A full scan with or with interrupting?
+
+John
+
+
+
+From fabrice.colin at gmail.com  Wed Jan 14 13:13:35 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 14 Jan 2009 20:13:35 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <20090113171501.00fea4eb@desktop.workplace>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+	<20090113005611.66082fd5@desktop.workplace>
+	<6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+	<20090113171501.00fea4eb@desktop.workplace>
+Message-ID: <6538c8c80901140413w7dc721e5hfd939761d3ae0359@mail.gmail.com>
+
+On Wed, Jan 14, 2009 at 12:15 AM, John Werden <jwerden at hotpop.com> wrote:
+> On Tue, 13 Jan 2009 21:11:29 +0800
+> "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+>> On Tue, Jan 13, 2009 at 7:56 AM, John Werden <jwerden at hotpop.com>
+>> wrote:
+>> > I removed all blacklist entries prior to testing and mbox isn't part
+>> > of the test.
+>> >
+>> Let's hope you don't run into issues when indexing files that are
+>> normally blacklisted.
+>
+> It would only hide problems, not solve them. Doing that implicitly says
+> that I have to watch how I name files.
+>
+Not by default. The default list is tight enough to reject files most
+people have no interest in indexing and/or files frrom which pinot
+cannot extract anything meaningful (archives, videos, backup files
+etc...). I'd be surprised the list matched any of your text-based
+documents.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Wed Jan 14 13:18:35 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 14 Jan 2009 20:18:35 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090113170318.526b143c@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+Message-ID: <6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+
+On Wed, Jan 14, 2009 at 12:03 AM, John Werden <jwerden at hotpop.com> wrote:
+> On Tue, 13 Jan 2009 21:22:23 +0800
+> "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+>> The previous instance must have crashed when it was interrupted. We'd
+>> need to find out why.
+>
+> It's hard to catch in gdb, but if I have a chance, I will post a
+> backtrace.
+>
+Ok. Thanks.
+
+>> Oooh... From one test run to the next, is the last file mentioned in
+>> the log the same, or are they all from the same directory ?
+>
+> A full scan with or with interrupting?
+>
+A full uninterrupted scan.
+One example of this I remember was a file called "README.RPM" that
+would wrongly be identified as a rpm package. Rpm would treat it as a
+package manifest and choke on it.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Thu Jan 15 11:03:51 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 15 Jan 2009 11:03:51 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+	<20090113005611.66082fd5@desktop.workplace>
+	<6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+Message-ID: <20090115110351.4fa27298@desktop.workplace>
+
+> #!/bin/bash
+> # Run this with find, eg find -L ~/Documents/ -exec
+> pinot-check-file.sh {} \; if [ $# == 0 ]; then
+>   echo "Usage: $0 <index>"
+>   exit 1
+> fi
+> 
+> WHICH_SED=`which sed`
+> if [ $? != 0 ]; then
+>   echo "Couldn't find sed. Is the sed package installed ?"
+>   exit 1
+> fi
+> WHICH_PI=`which pinot-index`
+> if [ $? != 0 ]; then
+>   echo "Couldn't find sed. Is the pinot package installed ?"
+>   exit 1
+> fi
+> 
+> for FILE in "$@" ;
+> do
+>   NO_SLASH_FILE=`echo $FILE | sed -e "s/\(.*\)\/$/\1/g"`
+>   pinot-index --check --db ~/.pinot/daemon/ "file://$NO_SLASH_FILE"
+> >/dev/null 2>&1 \;
+>   if [ $? != 0 ]; then
+>     echo $NO_SLASH_FILE
+>   fi
+> done
+> 
+> exit 0
+
+It has to be find -P. find -L follows links (something which pinot
+doesn't do) which leads to false positives.
+
+
+
+From jwerden at hotpop.com  Thu Jan 15 11:50:31 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 15 Jan 2009 11:50:31 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+	<6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+Message-ID: <20090115115031.7f9dd46a@desktop.workplace>
+
+On Wed, 14 Jan 2009 20:18:35 +0800
+"Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+
+> >> Oooh... From one test run to the next, is the last file mentioned
+> >> in the log the same, or are they all from the same directory ?
+> >
+> > A full scan with or with interrupting?
+> >
+> A full uninterrupted scan.
+> One example of this I remember was a file called "README.RPM" that
+> would wrongly be identified as a rpm package. Rpm would treat it as a
+> package manifest and choke on it.
+> 
+> Fabrice
+
+Did it 4 times. The first time I rm'd .pinot and started from scratch,
+the other 3 times I used --reindex. The last file mentioned wasn't the
+same in any case, but the /include directory had a lot of entries
+at the end of the logfile. Problem is that the /include directory has
+1400 files, so it would be surprising if it didn't.
+
+What is weird is that the daemon stopped sometimes adding new lines to
+the logfile without any reason. Using the script you provided in
+https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html
+didn't show any untracked files. There was also no change of directory
+after the daemon resumed to log files.
+
+Did you change anything or was the reason that pinot only showed ~1400
+files (always the same number of lines except for garbled output) in
+its logfile part of a bug?
+
+John
+
+
+
+From jwerden at hotpop.com  Thu Jan 15 12:04:32 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 15 Jan 2009 12:04:32 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090115115031.7f9dd46a@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+	<6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+	<20090115115031.7f9dd46a@desktop.workplace>
+Message-ID: <20090115120432.2cbe1793@desktop.workplace>
+
+On Thu, 15 Jan 2009 11:50:31 +0100
+John Werden <jwerden at hotpop.com> wrote:
+> What is weird is that the daemon stopped sometimes adding new lines to
+> the logfile without any reason. Using the script you provided in
+> https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html
+> didn't show any untracked files. There was also no change of directory
+> after the daemon resumed to log files.
+
+Sorry, wrong wording. I meant that the daemon stopped writing output to
+the logfile for several seconds without any reason.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Fri Jan 16 15:43:44 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 16 Jan 2009 22:43:44 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta4
+In-Reply-To: <20090115110351.4fa27298@desktop.workplace>
+References: <20090111104654.45039cce@desktop.workplace>
+	<6538c8c80901110259l6f9a55e5wd6bcd8fd8aae276d@mail.gmail.com>
+	<20090111164148.1323f56f@desktop.workplace>
+	<6538c8c80901120712y487719ady301755a839facf1@mail.gmail.com>
+	<20090113005611.66082fd5@desktop.workplace>
+	<6538c8c80901130511o2ef14621p47094e3ba6047396@mail.gmail.com>
+	<20090115110351.4fa27298@desktop.workplace>
+Message-ID: <6538c8c80901160643k5e1e709aydd67ad34374b9c19@mail.gmail.com>
+
+On Thu, Jan 15, 2009 at 6:03 PM, John Werden <jwerden at hotpop.com> wrote:
+> It has to be find -P. find -L follows links (something which pinot
+> doesn't do) which leads to false positives.
+>
+Pinot does follow symlinks, not just all of them :-)
+Create a symlink that points to some place outside of the locations
+defined for indexing in Preferences, and this symlink will be
+followed.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Fri Jan 16 15:54:34 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 16 Jan 2009 22:54:34 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090115115031.7f9dd46a@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+	<6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+	<20090115115031.7f9dd46a@desktop.workplace>
+Message-ID: <6538c8c80901160654p519a77e7med8032924d9ee838@mail.gmail.com>
+
+Hi John,
+
+On Thu, Jan 15, 2009 at 6:50 PM, John Werden <jwerden at hotpop.com> wrote:
+> Did it 4 times. The first time I rm'd .pinot and started from scratch,
+> the other 3 times I used --reindex. The last file mentioned wasn't the
+> same in any case, but the /include directory had a lot of entries
+> at the end of the logfile. Problem is that the /include directory has
+> 1400 files, so it would be surprising if it didn't.
+>
+> What is weird is that the daemon stopped sometimes adding new lines to
+> the logfile without any reason. Using the script you provided in
+> https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html
+> didn't show any untracked files. There was also no change of directory
+> after the daemon resumed to log files.
+>
+> Sorry, wrong wording. I meant that the daemon stopped writing output to
+> the logfile for several seconds without any reason.
+>
+Beta 5 indexes files as they are found by default, and the daemon may
+therefore stop writing anything to the log if busy indexing a large
+file. I wasn't happy with this, so I reverted to the previous
+functioning in revision 1477. I have uploaded beta 6 (r1495) to the
+usual address if you want to give it a try.
+
+> Did you change anything or was the reason that pinot only showed ~1400
+> files (always the same number of lines except for garbled output) in
+> its logfile part of a bug?
+>
+Sorry John, I am not sure I understand.
+
+Did you find that all files were indexed as expected ? Or are some of
+them missing ?
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sat Jan 17 02:24:04 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 17 Jan 2009 02:24:04 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <6538c8c80901160654p519a77e7med8032924d9ee838@mail.gmail.com>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+	<6538c8c80901140418m1b30f92cy52d3c0f5c37ae628@mail.gmail.com>
+	<20090115115031.7f9dd46a@desktop.workplace>
+	<6538c8c80901160654p519a77e7med8032924d9ee838@mail.gmail.com>
+Message-ID: <20090117022404.2c198c4a@desktop.workplace>
+
+On Fri, 16 Jan 2009 22:54:34 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Thu, Jan 15, 2009 at 6:50 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > Did it 4 times. The first time I rm'd .pinot and started from
+> > scratch, the other 3 times I used --reindex. The last file
+> > mentioned wasn't the same in any case, but the /include directory
+> > had a lot of entries at the end of the logfile. Problem is that
+> > the /include directory has 1400 files, so it would be surprising if
+> > it didn't.
+> >
+> > What is weird is that the daemon stopped sometimes adding new lines
+> > to the logfile without any reason. Using the script you provided in
+> > https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html
+> > didn't show any untracked files. There was also no change of
+> > directory after the daemon resumed to log files.
+> >
+> > Sorry, wrong wording. I meant that the daemon stopped writing
+> > output to the logfile for several seconds without any reason.
+> >
+> Beta 5 indexes files as they are found by default, and the daemon may
+> therefore stop writing anything to the log if busy indexing a large
+> file. I wasn't happy with this, so I reverted to the previous
+> functioning in revision 1477. I have uploaded beta 6 (r1495) to the
+> usual address if you want to give it a try.
+
+Thank you, I will give it a try.
+
+> > Did you change anything or was the reason that pinot only showed
+> > ~1400 files (always the same number of lines except for garbled
+> > output) in its logfile part of a bug?
+> >
+> Sorry John, I am not sure I understand.
+> 
+> Did you find that all files were indexed as expected ? Or are some of
+> them missing ?
+
+Everything got indexed, but only ~1400 of 3540 files are mentioned in
+the logfile, thats why I'm confused.
+
+John
+
+
+
+From jwerden at hotpop.com  Sat Jan 17 05:25:24 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 17 Jan 2009 05:25:24 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090113170318.526b143c@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+Message-ID: <20090117052524.13d4e17d@desktop.workplace>
+
+On Tue, 13 Jan 2009 17:03:18 +0100
+John Werden <jwerden at hotpop.com> wrote:
+
+> On Tue, 13 Jan 2009 21:22:23 +0800
+> "Fabrice Colin" <fabrice.colin at gmail.com> wrote:
+> 
+> It's hard to catch in gdb, but if I have a chance, I will post a
+> backtrace.
+
+Here a backtrace from the daemon as of svn 1495.
+
+happens if you Ctrl+c a running daemon from the console.
+
+Used the resulting core dump with gdb to generate it.
+
+John
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: core.bt
+Type: application/octet-stream
+Size: 8534 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090117/2751c369/attachment.obj>
+
+From fabrice.colin at gmail.com  Wed Jan 21 14:16:35 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 21 Jan 2009 21:16:35 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta5
+In-Reply-To: <20090117052524.13d4e17d@desktop.workplace>
+References: <20090113041713.1e368312@desktop.workplace>
+	<6538c8c80901130522s7d273248q76425b9e4b1d141c@mail.gmail.com>
+	<20090113170318.526b143c@desktop.workplace>
+	<20090117052524.13d4e17d@desktop.workplace>
+Message-ID: <6538c8c80901210516o7c406dfbud89c707d149c3cc8@mail.gmail.com>
+
+Hi John,
+
+On Sat, Jan 17, 2009 at 12:25 PM, John Werden <jwerden at hotpop.com> wrote:
+> Here a backtrace from the daemon as of svn 1495.
+>
+> happens if you Ctrl+c a running daemon from the console.
+>
+> Used the resulting core dump with gdb to generate it.
+>
+I don't experience this on my box, but looking at your backtrace and
+investigating a bit made me realize the backend doesn't close
+everything correctly at exit time.
+I made some changes in SVN r1500 that may help with this issue. That
+went into beta 7 (tarball at the usual location).
+
+Fabrice
+
+
+From jwerden at hotpop.com  Wed Jan 21 19:02:03 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Wed, 21 Jan 2009 19:02:03 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+Message-ID: <20090121190203.3331350b@desktop.workplace>
+
+The testresults (r1500):
+
+- Couldn't get it to crash anymore at exit.
+- Still loses data if interrupted while indexing.
+- Sometimes I get 'Bad index /home/jwerden/.pinot/daemon' if I terminate
+  while indexing, but it's not necessary to trigger the data loss.
+- Other problem (don't know if already reported, didn't find it in the
+  TODO): If I first initialize pinot without setting any directory to
+  index, later adding the directory won't work. --reindex does
+  nothing in this case.
+- The log may tell that pinot is done scanning, but the scan still
+  continues (100% cpu usage and a lot of 'Retrieved ...' in the log).
+
+I removed the .desktop(?) file needed by dbus to start the daemon for
+better manual testing. Don't know if this changes anything.
+
+I found out that my distribution compiled sqlite3 without
+--enable-threads-override-locks, recompiled it with. Should I also set
+the --enable-cross-thread-connections?
+
+John
+
+
+
+From fabrice.colin at gmail.com  Thu Jan 22 02:53:12 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 22 Jan 2009 09:53:12 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090121190203.3331350b@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+Message-ID: <6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+
+Hi John,
+
+On Thu, Jan 22, 2009 at 2:02 AM, John Werden <jwerden at hotpop.com> wrote:
+> The testresults (r1500):
+>
+> - Couldn't get it to crash anymore at exit.
+>
+That's good.
+
+> - Still loses data if interrupted while indexing.
+>
+I thought the tests you ran with pinot-enum-index/find showed that
+everything was in the index ? Sorry for the confusion. Did you find
+out what files are not there ?
+
+> - Sometimes I get 'Bad index /home/jwerden/.pinot/daemon' if I terminate
+>  while indexing, but it's not necessary to trigger the data loss.
+>
+You get this if you open the UI after having terminated the daemon,
+right ? The UI opens the daemon's index in read-only mode and cannot
+fix it if a stale lock file exists. That said, I was hoping the index
+is now always closed properly and no stale lock file would be left
+around...
+
+> - Other problem (don't know if already reported, didn't find it in the
+>  TODO): If I first initialize pinot without setting any directory to
+>  index, later adding the directory won't work. --reindex does
+>  nothing in this case.
+>
+Hmm okay I will look into that.
+
+> - The log may tell that pinot is done scanning, but the scan still
+>  continues (100% cpu usage and a lot of 'Retrieved ...' in the log).
+>
+The scan (ie crawling) may be finished, but the actual indexing may
+still run for a while.
+
+> I removed the .desktop(?) file needed by dbus to start the daemon for
+> better manual testing. Don't know if this changes anything.
+>
+Depending on what Desktop Environment you use, there should be a
+Session configuration panel that lets you selectively enable/disable
+services such as Pinot's daemon.
+
+> I found out that my distribution compiled sqlite3 without
+> --enable-threads-override-locks, recompiled it with. Should I also set
+> the --enable-cross-thread-connections?
+>
+Yes, I think that's safer. Could you drop an email to the package's
+maintainer to recommend he uses these flags ?
+
+Fabrice
+
+
+From jwerden at hotpop.com  Thu Jan 22 06:34:43 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 22 Jan 2009 06:34:43 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+Message-ID: <20090122063443.06d47f10@desktop.workplace>
+
+On Thu, 22 Jan 2009 09:53:12 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Thu, Jan 22, 2009 at 2:02 AM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > The testresults (r1500):
+> >
+> > - Couldn't get it to crash anymore at exit.
+> >
+> That's good.
+> 
+> > - Still loses data if interrupted while indexing.
+> >
+> I thought the tests you ran with pinot-enum-index/find showed that
+> everything was in the index ? Sorry for the confusion. Did you find
+> out what files are not there ?
+
+Where did I mention that? Now I'm confused :D
+
+I know I used the script one time, but only to find out if there was a
+problem with a full uninterrupted scan, because the log shows only
+'Retrieved' for around a third of the files in the directory tree. My
+Documents shows all files and the script proved that all files got
+indexed.
+
+> > - Sometimes I get 'Bad index /home/jwerden/.pinot/daemon' if I
+> > terminate while indexing, but it's not necessary to trigger the
+> > data loss.
+> >
+> You get this if you open the UI after having terminated the daemon,
+> right ? The UI opens the daemon's index in read-only mode and cannot
+> fix it if a stale lock file exists. That said, I was hoping the index
+> is now always closed properly and no stale lock file would be left
+> around...
+
+No, this error appears at the end of the logfile used by the daemon if
+I terminate it while indexing.
+
+> > - Other problem (don't know if already reported, didn't find it in
+> > the TODO): If I first initialize pinot without setting any
+> > directory to index, later adding the directory won't work.
+> > --reindex does nothing in this case.
+> >
+> Hmm okay I will look into that.
+
+Thank you.
+ 
+> > - The log may tell that pinot is done scanning, but the scan still
+> >  continues (100% cpu usage and a lot of 'Retrieved ...' in the log).
+> >
+> The scan (ie crawling) may be finished, but the actual indexing may
+> still run for a while.
+
+Ok. Misunderstood that part.
+
+> > I removed the .desktop(?) file needed by dbus to start the daemon
+> > for better manual testing. Don't know if this changes anything.
+> >
+> Depending on what Desktop Environment you use, there should be a
+> Session configuration panel that lets you selectively enable/disable
+> services such as Pinot's daemon.
+
+Good to know, thank you.
+
+> > I found out that my distribution compiled sqlite3 without
+> > --enable-threads-override-locks, recompiled it with. Should I also
+> > set the --enable-cross-thread-connections?
+> >
+> Yes, I think that's safer. Could you drop an email to the package's
+> maintainer to recommend he uses these flags ?
+
+I will send the maintainer a note. Recompiled it myself with the flag
+set, but made no difference. (But I don't have a multicore system.)
+
+John
+
+
+
+From fabrice.colin at gmail.com  Thu Jan 22 15:44:38 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 22 Jan 2009 22:44:38 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090122063443.06d47f10@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+Message-ID: <6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+
+Hello John,
+
+On Thu, Jan 22, 2009 at 1:34 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Thu, 22 Jan 2009 09:53:12 +0800
+> Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> I thought the tests you ran with pinot-enum-index/find showed that
+>> everything was in the index ? Sorry for the confusion. Did you find
+>> out what files are not there ?
+>
+> Where did I mention that? Now I'm confused :D
+>
+> I know I used the script one time, but only to find out if there was a
+> problem with a full uninterrupted scan, because the log shows only
+> 'Retrieved' for around a third of the files in the directory tree. My
+> Documents shows all files and the script proved that all files got
+> indexed.
+>
+OK. What's the issue with "lost data" that you came across when
+interrupting the daemon ?
+
+>> You get this if you open the UI after having terminated the daemon,
+>> right ? The UI opens the daemon's index in read-only mode and cannot
+>> fix it if a stale lock file exists. That said, I was hoping the index
+>> is now always closed properly and no stale lock file would be left
+>> around...
+>
+> No, this error appears at the end of the logfile used by the daemon if
+> I terminate it while indexing.
+>
+Ah I see. Can you post the log messages between "Quitting..." and the
+end of file when this error is logged ?
+
+>> Yes, I think that's safer. Could you drop an email to the package's
+>> maintainer to recommend he uses these flags ?
+>
+> I will send the maintainer a note. Recompiled it myself with the flag
+> set, but made no difference. (But I don't have a multicore system.)
+>
+That's good because I can only test on multicore systems these days :-)
+
+I think I have fixed the problem with preferences not taking effect on
+a first run (4th item in your list). Can you give beta 8 a try ?
+
+Thanks !
+
+Fabrice
+
+
+From jwerden at hotpop.com  Fri Jan 23 14:26:29 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Fri, 23 Jan 2009 14:26:29 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+Message-ID: <20090123142629.67f6ea83@desktop.workplace>
+
+On Thu, 22 Jan 2009 22:44:38 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hello John,
+> 
+> On Thu, Jan 22, 2009 at 1:34 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > On Thu, 22 Jan 2009 09:53:12 +0800
+> > Fabrice Colin <fabrice.colin at gmail.com> wrote:
+> >> I thought the tests you ran with pinot-enum-index/find showed that
+> >> everything was in the index ? Sorry for the confusion. Did you find
+> >> out what files are not there ?
+> >
+> > Where did I mention that? Now I'm confused :D
+> >
+> > I know I used the script one time, but only to find out if there
+> > was a problem with a full uninterrupted scan, because the log shows
+> > only 'Retrieved' for around a third of the files in the directory
+> > tree. My Documents shows all files and the script proved that all
+> > files got indexed.
+> >
+> OK. What's the issue with "lost data" that you came across when
+> interrupting the daemon ?
+
+There are 2 issues:
+
+The first issue is that the database won't be complete after a full
+scan if I interrupted the scan and continued it later.
+
+The logfile is a different issue: 0.89 logged all files it encountered,
+pinot 0.90 only around a third of them.
+
+I don't know if both issues are related. I'm sorry if I made it seem
+like they are.
+
+> >> You get this if you open the UI after having terminated the daemon,
+> >> right ? The UI opens the daemon's index in read-only mode and
+> >> cannot fix it if a stale lock file exists. That said, I was hoping
+> >> the index is now always closed properly and no stale lock file
+> >> would be left around...
+> >
+> > No, this error appears at the end of the logfile used by the daemon
+> > if I terminate it while indexing.
+> >
+> Ah I see. Can you post the log messages between "Quitting..." and the
+> end of file when this error is logged ?
+
+Looks everytime different and sometimes there are no other messages
+after Quitting except:
+
+Exiting...
+Bad index /home/jwerden/.pinot/daemon
+
+(error one or several times)
+
+And there are other times when there are messages between and after
+Quitting/Exiting and the error does not appear.
+
+> >> Yes, I think that's safer. Could you drop an email to the package's
+> >> maintainer to recommend he uses these flags ?
+> >
+> > I will send the maintainer a note. Recompiled it myself with the
+> > flag set, but made no difference. (But I don't have a multicore
+> > system.)
+> >
+> That's good because I can only test on multicore systems these
+> days :-)
+> 
+> I think I have fixed the problem with preferences not taking effect on
+> a first run (4th item in your list). Can you give beta 8 a try ?
+
+Ok, will do.
+
+John
+
+
+
+From jwerden at hotpop.com  Fri Jan 23 20:12:18 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Fri, 23 Jan 2009 20:12:18 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090123142629.67f6ea83@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+Message-ID: <20090123201218.1c19a6fd@desktop.workplace>
+
+On Fri, 23 Jan 2009 14:26:29 +0100
+John Werden <jwerden at hotpop.com> wrote:
+
+> The logfile is a different issue: 0.89 logged all files it
+> encountered, pinot 0.90 only around a third of them.
+
+Scrap that problem, I couldn't have found this issue in 0.89 as
+it loves recursion *facepalm*. Looks like my imagination ran wild.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sat Jan 24 03:31:45 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 24 Jan 2009 10:31:45 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090123142629.67f6ea83@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+Message-ID: <6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+
+Hi John,
+
+On Fri, Jan 23, 2009 at 9:26 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Thu, 22 Jan 2009 22:44:38 +0800
+> Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> OK. What's the issue with "lost data" that you came across when
+>> interrupting the daemon ?
+>
+> There are 2 issues:
+>
+> The first issue is that the database won't be complete after a full
+> scan if I interrupted the scan and continued it later.
+>
+You need to find out what files are missing. Then we can start digging deeper.
+
+>> Ah I see. Can you post the log messages between "Quitting..." and the
+>> end of file when this error is logged ?
+>
+> Looks everytime different and sometimes there are no other messages
+> after Quitting except:
+>
+> Exiting...
+> Bad index /home/jwerden/.pinot/daemon
+>
+> (error one or several times)
+>
+> And there are other times when there are messages between and after
+> Quitting/Exiting and the error does not appear.
+>
+Actually this message could have been better phrased. It makes it
+sound like the index is corrupted, whereas in fact it just means it
+couldn't be open, eg because the application is exiting and indexes
+were closed by the main thread.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sat Jan 24 08:47:07 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 24 Jan 2009 08:47:07 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+Message-ID: <20090124084707.4d07a20e@desktop.workplace>
+
+On Sat, 24 Jan 2009 10:31:45 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Fri, Jan 23, 2009 at 9:26 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > On Thu, 22 Jan 2009 22:44:38 +0800
+> > Fabrice Colin <fabrice.colin at gmail.com> wrote:
+> >> OK. What's the issue with "lost data" that you came across when
+> >> interrupting the daemon ?
+> >
+> > There are 2 issues:
+> >
+> > The first issue is that the database won't be complete after a full
+> > scan if I interrupted the scan and continued it later.
+> >
+> You need to find out what files are missing. Then we can start
+> digging deeper.
+
+There are several problems with finding out which files are missing:
+- I don't know which files got dropped if I interrupted, because the
+  logfile does only show a subset of all encountered files.
+- I don't know at which point the demon resumes and which files it
+  skips because it already indexed them.
+- Because the logfile has sometimes garbled output I can't do
+  any automated tests.
+- The logfile shows only an error if it fails to scan a file instead of
+  the filename and the error.
+
+So I don't know if the daemon loses files if it terminates or if it
+resumes or at both points.
+
+Looks like I have to check the source and do some log output fixing for
+the first point :D
+
+> >> Ah I see. Can you post the log messages between "Quitting..." and
+> >> the end of file when this error is logged ?
+> >
+> > Looks everytime different and sometimes there are no other messages
+> > after Quitting except:
+> >
+> > Exiting...
+> > Bad index /home/jwerden/.pinot/daemon
+> >
+> > (error one or several times)
+> >
+> > And there are other times when there are messages between and after
+> > Quitting/Exiting and the error does not appear.
+> >
+> Actually this message could have been better phrased. It makes it
+> sound like the index is corrupted, whereas in fact it just means it
+> couldn't be open, eg because the application is exiting and indexes
+> were closed by the main thread.
+
+Didn't think it was corrupted, but didn't know if it showed a bug
+either :D
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sat Jan 24 09:03:41 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 24 Jan 2009 16:03:41 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090124084707.4d07a20e@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+Message-ID: <6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+
+H John,
+
+On Sat, Jan 24, 2009 at 3:47 PM, John Werden <jwerden at hotpop.com> wrote:
+> There are several problems with finding out which files are missing:
+> - I don't know which files got dropped if I interrupted, because the
+>  logfile does only show a subset of all encountered files.
+> - I don't know at which point the demon resumes and which files it
+>  skips because it already indexed them.
+> - Because the logfile has sometimes garbled output I can't do
+>  any automated tests.
+> - The logfile shows only an error if it fails to scan a file instead of
+>  the filename and the error.
+>
+> So I don't know if the daemon loses files if it terminates or if it
+> resumes or at both points.
+>
+Let's focus on whether it actually loses anything for the time being.
+
+> Looks like I have to check the source and do some log output fixing for
+> the first point :D
+>
+No need to do any of this. After you have interrupted one instance
+mid-way, start another one (without -r/--reindex) and let it finish
+indexing. Once the log shows it's not indexing any more, send it a
+SIGINT to get it to close and flush all changes to the disk. Then run
+something like :
+$ find -L /path/to/indexable/location -exec pinot-check-file.sh {} \;
+
+The output will list each file from /path/to/indexable/location that's
+not in My Documents. Of course, that will include black-listed files
+and files skipped symlinks may have lead to.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sat Jan 24 13:50:28 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sat, 24 Jan 2009 13:50:28 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+Message-ID: <20090124135028.7a9cc40a@desktop.workplace>
+
+On Sat, 24 Jan 2009 16:03:41 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> H John,
+> 
+> On Sat, Jan 24, 2009 at 3:47 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > There are several problems with finding out which files are missing:
+> > - I don't know which files got dropped if I interrupted, because the
+> >  logfile does only show a subset of all encountered files.
+> > - I don't know at which point the demon resumes and which files it
+> >  skips because it already indexed them.
+> > - Because the logfile has sometimes garbled output I can't do
+> >  any automated tests.
+> > - The logfile shows only an error if it fails to scan a file
+> > instead of the filename and the error.
+> >
+> > So I don't know if the daemon loses files if it terminates or if it
+> > resumes or at both points.
+> >
+> Let's focus on whether it actually loses anything for the time being.
+> 
+> > Looks like I have to check the source and do some log output fixing
+> > for the first point :D
+> >
+> No need to do any of this. After you have interrupted one instance
+> mid-way, start another one (without -r/--reindex) and let it finish
+> indexing. Once the log shows it's not indexing any more, send it a
+> SIGINT to get it to close and flush all changes to the disk. Then run
+> something like :
+> $ find -L /path/to/indexable/location -exec pinot-check-file.sh {} \;
+> 
+> The output will list each file from /path/to/indexable/location that's
+> not in My Documents. Of course, that will include black-listed files
+> and files skipped symlinks may have lead to.
+
+Did that and it lost data. Tested with svn 1509.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Sat Jan 24 13:54:00 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 24 Jan 2009 20:54:00 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090124135028.7a9cc40a@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+Message-ID: <6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+
+Hi John,
+
+On Sat, Jan 24, 2009 at 8:50 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Sat, 24 Jan 2009 16:03:41 +0800
+> Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> The output will list each file from /path/to/indexable/location that's
+>> not in My Documents. Of course, that will include black-listed files
+>> and files skipped symlinks may have lead to.
+>
+> Did that and it lost data. Tested with svn 1509.
+>
+Could you be a bit more specific ? I am afraid that without any
+detail, it's going to be hard to do anything.
+
+For instance, were those files not indexed referred to in the log of
+the interrupted instance ? Does the log of the second instance mention
+them at all ?
+Are they all of the same MIME type(s) ? In the same directory ? Behind
+a symlink ? etc...
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sun Jan 25 09:28:46 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sun, 25 Jan 2009 09:28:46 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+Message-ID: <20090125092846.584d0563@desktop.workplace>
+
+On Sat, 24 Jan 2009 20:54:00 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Sat, Jan 24, 2009 at 8:50 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > On Sat, 24 Jan 2009 16:03:41 +0800
+> > Fabrice Colin <fabrice.colin at gmail.com> wrote:
+> >> The output will list each file from /path/to/indexable/location
+> >> that's not in My Documents. Of course, that will include
+> >> black-listed files and files skipped symlinks may have lead to.
+> >
+> > Did that and it lost data. Tested with svn 1509.
+> >
+> Could you be a bit more specific ? I am afraid that without any
+> detail, it's going to be hard to do anything.
+> 
+> For instance, were those files not indexed referred to in the log of
+> the interrupted instance ? Does the log of the second instance mention
+> them at all ?
+
+There are 3 issues with the standard log:
+- The output can be garbled (mingling several lines together)
+- it does not list all files
+- it does not list which files pinot failed to scan, only that an
+  error occurred.
+
+Which makes efficient debugging using (automated/scripted) checks hard.
+I will try to get all information using ./configure --enable-debug, as
+it seems to print a lot more complete information, but this will take
+some time. (Doing the work by hand is not efficient as pinot can lose
+several hundreds of files.)
+
+> Are they all of the same MIME type(s) ? In the same directory ? Behind
+> a symlink ? etc...
+
+Using the provided script it looks most times like a continuous list of
+files as you would expect from du -a, but directories are not necessary
+completely listed.
+
+I will do more complete tests to get some definite results. Hope I can
+post some results in the next hours (don't want to take it too long, I
+want to do other things, too :D)
+
+John
+
+
+
+From jwerden at hotpop.com  Sun Jan 25 16:36:54 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sun, 25 Jan 2009 16:36:54 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090125092846.584d0563@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901211753j61e70026x7684a6844ede42f7@mail.gmail.com>
+	<20090122063443.06d47f10@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+Message-ID: <20090125163654.181d4682@desktop.workplace>
+
+On Sun, 25 Jan 2009 09:28:46 +0100
+John Werden <jwerden at hotpop.com> wrote:
+
+> I will do more complete tests to get some definite results. Hope I can
+> post some results in the next hours (don't want to take it too long, I
+> want to do other things, too :D)
+
+Ok, here some results. I did 4 tests, one without interruption, 3 with
+interruption at different times (10 seconds, 2 minutes, 5 minutes). I
+compiled pinot from svn r1509.
+
+The test procedure was as follows:
+1) $ rm .pinot -rf
+2) $ pinot # initialize without any file patterns and labels
+3) $ pinot-dbus-daemon
+4) Interrupt after the given time
+5) - create backup of .pinot
+   - $ find -P /home/jwerden/test -exec pinot-check-file.sh {} \; > pinot_<time>_1.missing
+6) $ pinot-dbus-daemon
+7) if done, interrupt daemon
+8) - create backup of .pinot
+   - $ find -P /home/jwerden/test -exec pinot-check-file.sh {} \; > pinot_<time>_2.missing
+   - $ lua comp.lua pinot_<time>_1.missing \
+                    pinot_<time>_2.missing \
+                    pinot_<time>_exclusive.1 \
+                    pinot_<time>_exclusive.2 \
+                    pinot_<time>_shared
+
+<time> gets replaced with 10sec, 2min, 5min.
+
+comp.lua takes 2 input files and finds out which files are only listed
+in file 1, which in file 2 and which ones are listed in both.
+
+For the test without interruption steps 5 to 9 are omitted.
+
+test results:
+
+without interruption:
+indexed files: 3543
+missing files: 0
+
+after 10 seconds:
+missing files at (5): 3427
+missing files at (8): 177
+files not missing at (5), but at (8): 0
+
+after 2 minutes:
+missing files at (5): 3185
+missing files at (8): 1368
+files not missing at (5), but at (8): 0
+
+after 5 minutes (short before done):
+missing files at (5): 1507
+missing files at (8): 1331
+files not missing at (5), but at (8): 0
+
+
+To find out if the problem is related to hard/softlinks I made some
+simple tests in another directory. I used the pinot GUI client to find
+out how many files got indexed. The directory contains a flat hierarchy
+of directories which in turn contain most likely only images. I didn't
+take any backups of the database from the tests.
+
+full scan without interrupt: 15021
+first try (short time until break): 15018
+second try (not as short): 14858
+third try (even longer): 15018
+
+I cannot guarantee that there are only image files in the directories or
+only specific MIME types, but I know there are no hard/soft links at
+all.
+
+From these results I can conclude the following:
+- The problem is not related to hard/soft links.
+- The problem does not need deep directory hierarchies to appear.
+- The daemon does not lose files it already got before termination.
+
+I cannot conclude:
+- The problem is unrelated to the file type.
+
+I could do a lot more testing, but I need your opinion first because
+the tests take _time_ and you know much better what to test and what
+not.
+
+If you want to get more information about the MIME types of the fetched
+files I need to know what you exactly want and how to retrieve the
+information. Best is a fast script which takes a file as input which
+contains a list of files which should get checked for the MIME type.
+
+I have the complete backups of the first 4 tests if you want me to
+retrieve more information from them.
+
+Sidenote: The shell script you provided leads to false positives if a
+file name contains multiple spaces in a row. But that problem didn't
+change anything because the test case did not include any files with
+spaces.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Mon Jan 26 15:39:51 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 26 Jan 2009 22:39:51 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090125163654.181d4682@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+Message-ID: <6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+
+Hi John,
+
+Happy Lunar New Year !
+
+On Sun, Jan 25, 2009 at 11:36 PM, John Werden <jwerden at hotpop.com> wrote:
+> ...
+> I could do a lot more testing, but I need your opinion first because
+> the tests take _time_ and you know much better what to test and what
+> not.
+>
+> If you want to get more information about the MIME types of the fetched
+> files I need to know what you exactly want and how to retrieve the
+> information. Best is a fast script which takes a file as input which
+> contains a list of files which should get checked for the MIME type.
+>
+> I have the complete backups of the first 4 tests if you want me to
+> retrieve more information from them.
+>
+After the interrupt at step 4, could you run these commands :
+$ sqlite3 ~/.pinot/history-daemon "select Url from ActionQueue;"
+$ sqlite3 ~/.pinot/history-daemon "select Url, Status from
+CrawlHistory where Status!='CRAWLED';"
+Are your missing files in the generated output ?
+
+I thought about this for a while yesterday and realized that the
+daemon suffers from two issues :
+- actions queued by a previous instance of the daemon are cleared and
+the corresponding files would never get indexed
+- nothing is done about files the interrupted instance had no time to
+index before exit
+I have checked in changes in revisions 1511 and 1512 that should fix
+these two issues.
+
+If you find most, and hopefully all, missing files in the output
+obtained by running the commands above, could you try the latest trunk
+code ?
+
+Thanks for your help with this.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Mon Jan 26 18:53:02 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Mon, 26 Jan 2009 18:53:02 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901220644p45e3d865jb3b81e62c8feeb79@mail.gmail.com>
+	<20090123142629.67f6ea83@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+	<6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+Message-ID: <20090126185302.43efa13a@desktop.workplace>
+
+On Mon, 26 Jan 2009 22:39:51 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> Happy Lunar New Year !
+> 
+> On Sun, Jan 25, 2009 at 11:36 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > ...
+> > I could do a lot more testing, but I need your opinion first because
+> > the tests take _time_ and you know much better what to test and what
+> > not.
+> >
+> > If you want to get more information about the MIME types of the
+> > fetched files I need to know what you exactly want and how to
+> > retrieve the information. Best is a fast script which takes a file
+> > as input which contains a list of files which should get checked
+> > for the MIME type.
+> >
+> > I have the complete backups of the first 4 tests if you want me to
+> > retrieve more information from them.
+> >
+> After the interrupt at step 4, could you run these commands :
+> $ sqlite3 ~/.pinot/history-daemon "select Url from ActionQueue;"
+> $ sqlite3 ~/.pinot/history-daemon "select Url, Status from
+> CrawlHistory where Status!='CRAWLED';"
+> Are your missing files in the generated output ?
+
+Yes all of them are. Only 5-10 files in every test case are missing at
+the end and not in the action queue. One of them is always 
+/home/jwerden/test and the others are in the same subdirectory tree (for
+example /home/jwerden/test/a). The subdirectory is in this case
+missing from the index, too (/home/jwerden/test/a).
+
+> I thought about this for a while yesterday and realized that the
+> daemon suffers from two issues :
+> - actions queued by a previous instance of the daemon are cleared and
+> the corresponding files would never get indexed
+> - nothing is done about files the interrupted instance had no time to
+> index before exit
+> I have checked in changes in revisions 1511 and 1512 that should fix
+> these two issues.
+> 
+> If you find most, and hopefully all, missing files in the output
+> obtained by running the commands above, could you try the latest trunk
+> code ?
+
+Made a single test with r1513 and except 5 files everything got
+indexed. Symptoms are as above.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Tue Jan 27 04:15:16 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 27 Jan 2009 11:15:16 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090126185302.43efa13a@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+	<6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+	<20090126185302.43efa13a@desktop.workplace>
+Message-ID: <6538c8c80901261915u64c4e3e0i3e91ba3d60a83ac@mail.gmail.com>
+
+On Tue, Jan 27, 2009 at 1:53 AM, John Werden <jwerden at hotpop.com> wrote:
+> On Mon, 26 Jan 2009 22:39:51 +0800
+> Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> After the interrupt at step 4, could you run these commands :
+>> $ sqlite3 ~/.pinot/history-daemon "select Url from ActionQueue;"
+>> $ sqlite3 ~/.pinot/history-daemon "select Url, Status from
+>> CrawlHistory where Status!='CRAWLED';"
+>> Are your missing files in the generated output ?
+>
+> Yes all of them are. Only 5-10 files in every test case are missing at
+> the end and not in the action queue. One of them is always
+> /home/jwerden/test and the others are in the same subdirectory tree (for
+> example /home/jwerden/test/a). The subdirectory is in this case
+> missing from the index, too (/home/jwerden/test/a).
+>
+>> I thought about this for a while yesterday and realized that the
+>> daemon suffers from two issues :
+>> - actions queued by a previous instance of the daemon are cleared and
+>> the corresponding files would never get indexed
+>> - nothing is done about files the interrupted instance had no time to
+>> index before exit
+>> I have checked in changes in revisions 1511 and 1512 that should fix
+>> these two issues.
+>>
+>> If you find most, and hopefully all, missing files in the output
+>> obtained by running the commands above, could you try the latest trunk
+>> code ?
+>
+> Made a single test with r1513 and except 5 files everything got
+> indexed. Symptoms are as above.
+>
+Are these 5 files mentioned in the first or second (debug mode) log ?
+
+I was planning to release 0.90 before the end of January. If we can't
+identify and fix this in the next couple of days, I will probably go
+ahead and wait until 0.91 for a complete fix.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Tue Jan 27 12:05:09 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 27 Jan 2009 12:05:09 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901261915u64c4e3e0i3e91ba3d60a83ac@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901231831k21486199hc9859c2c90037d3d@mail.gmail.com>
+	<20090124084707.4d07a20e@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+	<6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+	<20090126185302.43efa13a@desktop.workplace>
+	<6538c8c80901261915u64c4e3e0i3e91ba3d60a83ac@mail.gmail.com>
+Message-ID: <20090127120509.73a9f436@desktop.workplace>
+
+> > Made a single test with r1513 and except 5 files everything got
+> > indexed. Symptoms are as above.
+> >
+> Are these 5 files mentioned in the first or second (debug mode) log ?
+
+All files/directories can be found after
+
+"Exiting..."
+"XapianDatabaseFactory::closeAll:closing /home/jwerden/.pinot/daemon"
+
+in the first log.
+
+Files are found in the consecutive lines
+
+WorkerThread::emitSignal: signaling end of thread 157
+LanguageDetector::guessLanguage: starting
+LanguageDetector::guessLanguage: language guessing took 0 ms
+XapianIndex::scanDocument: language 
+FilterWrapper::filterDocument: done with file:///home/jwerden/test(/a(/b(/c(/d)?)?)?)?/filename status 0
+IndexingThread::doWork: couldn't index file:///home/jwerden/test/.../filename
+
+and all directories with (last lines in log)
+
+WorkerThread::emitSignal: signaling end of thread 161
+DirectoryScannerThread::scanEntry: entering /home/jwerden/test/a/b/c/d
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c/d
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a
+DirectoryScannerThread::scanEntry: leaving /home/jwerden/test
+DirectoryScannerThread::flushUpdates: flushing updates
+
+I had to make a new test because I didn't preserve the first one made
+with r1513. (But the pattern of lost files is the same.)
+
+John
+
+
+
+From fabrice.colin at gmail.com  Thu Jan 29 13:03:38 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 29 Jan 2009 20:03:38 +0800
+Subject: [Pinot-discuss] Pinot 0.90
+Message-ID: <6538c8c80901290403v6daa4363qd4f37ab330b62247@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.90 is available :
+http://pinotdev.blogspot.com/2009/01/pinot-090.html
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Fri Jan 30 14:21:28 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 30 Jan 2009 21:21:28 +0800
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <20090127120509.73a9f436@desktop.workplace>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+	<6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+	<20090126185302.43efa13a@desktop.workplace>
+	<6538c8c80901261915u64c4e3e0i3e91ba3d60a83ac@mail.gmail.com>
+	<20090127120509.73a9f436@desktop.workplace>
+Message-ID: <6538c8c80901300521v2e899b6bs3cbf9003fe62be89@mail.gmail.com>
+
+Hi John,
+
+On Tue, Jan 27, 2009 at 7:05 PM, John Werden <jwerden at hotpop.com> wrote:
+> All files/directories can be found after
+>
+> "Exiting..."
+> "XapianDatabaseFactory::closeAll:closing /home/jwerden/.pinot/daemon"
+>
+> in the first log.
+>
+> Files are found in the consecutive lines
+>
+> WorkerThread::emitSignal: signaling end of thread 157
+> LanguageDetector::guessLanguage: starting
+> LanguageDetector::guessLanguage: language guessing took 0 ms
+> XapianIndex::scanDocument: language
+> FilterWrapper::filterDocument: done with file:///home/jwerden/test(/a(/b(/c(/d)?)?)?)?/filename status 0
+> IndexingThread::doWork: couldn't index file:///home/jwerden/test/.../filename
+>
+> and all directories with (last lines in log)
+>
+> WorkerThread::emitSignal: signaling end of thread 161
+> DirectoryScannerThread::scanEntry: entering /home/jwerden/test/a/b/c/d
+> DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c/d
+> DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b/c
+> DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a/b
+> DirectoryScannerThread::scanEntry: leaving /home/jwerden/test/a
+> DirectoryScannerThread::scanEntry: leaving /home/jwerden/test
+> DirectoryScannerThread::flushUpdates: flushing updates
+>
+Sorry for the late reply.
+Are you saying the missing documents are the files that were being
+looked at when the interruption happened, and the directories these
+files are in ?
+
+Fabrice
+
+
+From jwerden at hotpop.com  Fri Jan 30 20:12:01 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Fri, 30 Jan 2009 20:12:01 +0100
+Subject: [Pinot-discuss] first test pinot 0.90 beta7
+In-Reply-To: <6538c8c80901300521v2e899b6bs3cbf9003fe62be89@mail.gmail.com>
+References: <20090121190203.3331350b@desktop.workplace>
+	<6538c8c80901240003q44c1755bi7eaec582fa416df7@mail.gmail.com>
+	<20090124135028.7a9cc40a@desktop.workplace>
+	<6538c8c80901240454v30620021m7071478a7bb17c6f@mail.gmail.com>
+	<20090125092846.584d0563@desktop.workplace>
+	<20090125163654.181d4682@desktop.workplace>
+	<6538c8c80901260639w3f9a663cs64a9c1bfe88ab8a5@mail.gmail.com>
+	<20090126185302.43efa13a@desktop.workplace>
+	<6538c8c80901261915u64c4e3e0i3e91ba3d60a83ac@mail.gmail.com>
+	<20090127120509.73a9f436@desktop.workplace>
+	<6538c8c80901300521v2e899b6bs3cbf9003fe62be89@mail.gmail.com>
+Message-ID: <20090130201201.4c9b767e@desktop.workplace>
+
+> Sorry for the late reply.
+
+no problem
+
+> Are you saying the missing documents are the files that were being
+> looked at when the interruption happened, and the directories these
+> files are in ?
+
+Exactly
+
+John
+
+
+

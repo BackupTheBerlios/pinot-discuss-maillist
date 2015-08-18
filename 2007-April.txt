@@ -1,0 +1,15 @@
+From fabrice.colin at gmail.com  Sat Apr 28 05:19:43 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 28 Apr 2007 11:19:43 +0800
+Subject: [Pinot-discuss] Pinot 0.72
+Message-ID: <6538c8c80704272019p4f7c6f69t23c6464750f5b804@mail.gmail.com>
+
+Version 0.72 is out. The NEWS file has the details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_2/NEWS?op=file&rev=0&sc=0
+
+Also worth noting is that a package for ArchLinux is available, thanks
+to Eric Belanger .
+
+Fabrice
+
+

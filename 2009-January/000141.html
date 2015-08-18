@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C6538c8c80901130522s7d273248q76425b9e4b1d141c%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000139.html">
+   <LINK REL="Next"  HREF="000143.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta5</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C6538c8c80901130522s7d273248q76425b9e4b1d141c%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta5">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Tue Jan 13 14:22:23 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000139.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+        <LI>Next message: <A HREF="000143.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Tue, Jan 13, 2009 at 11:17 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> With beta5 the described problem still persists. If pinot is done
+</I>&gt;<i> scanning the files the index will be incomplete if you terminated and
+</I>&gt;<i> restarted the daemon while indexing. The number of indexed files won't
+</I>&gt;<i> be total - first pass.
+</I>&gt;<i>
+</I>&gt;<i> Sometimes pinot will tell me after restarting the daemon that the
+</I>&gt;<i> previous instance died prematurely, but this is not a trigger for the
+</I>&gt;<i> problem.
+</I>&gt;<i>
+</I>The previous instance must have crashed when it was interrupted. We'd
+need to find out why.
+
+&gt;<i> I don't know if it is part of the problem or an intentional change, but
+</I>&gt;<i> the logfile only shows a little part of all indexed files if I do a
+</I>&gt;<i> scan without interrupting. around 2/3 of the files aren't listed.
+</I>&gt;<i>
+</I>&gt;<i> Another message I got one time after I killed the daemon after it
+</I>&gt;<i> finished an interrupted scan was:
+</I>&gt;<i>
+</I>&gt;<i> Quitting...
+</I>&gt;<i> Exiting...
+</I>&gt;<i> Couldn't open read-only database Couldn't open read-only database
+</I>&gt;<i>
+</I>&gt;<i> Some numbers (single testcase):
+</I>&gt;<i> (1) indexed documents without interrupting: 3540
+</I>&gt;<i> (2) indexed documents before interrupt: 369
+</I>&gt;<i> (3) indexed documents after interrupt/completed scan: 3334
+</I>&gt;<i>
+</I>&gt;<i> The numbers for 2/3 vary from test to test.
+</I>&gt;<i>
+</I>Oooh... From one test run to the next, is the last file mentioned in
+the log the same, or are they all from the same directory ?
+I have been playing with inline indexing, ie getting the crawler to
+index files as they are found without spawning a new indexing thread.
+It's enabled in beta &lt;= 5. I found that sometimes a bad external
+filter could stall everything and stop crawling and indexing.
+Typically the last indexed file would be the same from one run to the
+next, and was the file directly before the one for which the faulty
+filter would be run.
+If the log seems to indicate it is this issue, try setting
+PINOT_DELEGATE_INDEXING=Y in your environment before restarting the
+daemon with -r/--reindex.
+
+Running the script I provided in reply to your previous post will help
+finding which files were not indexed.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000139.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+	<LI>Next message: <A HREF="000143.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

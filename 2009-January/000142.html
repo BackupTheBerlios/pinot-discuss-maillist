@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090113171501.00fea4eb%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000140.html">
+   <LINK REL="Next"  HREF="000144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090113171501.00fea4eb%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">jwerden at hotpop.com
+       </A><BR>
+    <I>Tue Jan 13 17:15:01 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000140.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+        <LI>Next message: <A HREF="000144.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#142">[ date ]</a>
+              <a href="thread.html#142">[ thread ]</a>
+              <a href="subject.html#142">[ subject ]</a>
+              <a href="author.html#142">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, 13 Jan 2009 21:11:29 +0800
+&quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Tue, Jan 13, 2009 at 7:56 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; On Mon, 12 Jan 2009 23:12:11 +0800
+</I>&gt;<i> &gt; &quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; You could compare the urls.txt file the script generates with the
+</I>&gt;<i> &gt;&gt; output of &quot;find -L&quot;, I suppose. If you sort both files, viewing the
+</I>&gt;<i> &gt;&gt; differences in diff, or better meld, is not too painful.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I already did something similar. The only problem with the result is
+</I>&gt;<i> &gt; that you can't see which directories got completely thrown away and
+</I>&gt;<i> &gt; which not. Creating a script for a more advanced analysis feels too
+</I>&gt;<i> &gt; much like a hassle if it is not really needed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Try the (quick and dirty) shell code at the end of this email. Save it
+</I>&gt;<i> to pinot-check-file.sh, chmod it appropriately, then run :
+</I>&gt;<i> $ find -L ~/Documents/ -exec scripts/bash/pinot-check-file.sh {} \;
+</I>&gt;<i> This should only output files that can't be found in My Documents.
+</I>
+Thank you, will use it as needed.
+
+&gt;<i> &gt; I removed all blacklist entries prior to testing and mbox isn't part
+</I>&gt;<i> &gt; of the test.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Let's hope you don't run into issues when indexing files that are
+</I>&gt;<i> normally blacklisted.
+</I>
+It would only hide problems, not solve them. Doing that implicitly says
+that I have to watch how I name files.
+
+&gt;<i> &gt; Ok, I will upgrade, but I have no reason to index everything as
+</I>&gt;<i> &gt; long as the problem persists for me, because the dataloss happens
+</I>&gt;<i> &gt; if the daemon is terminated while indexing and I want to shut my
+</I>&gt;<i> &gt; system down once in a while.
+</I>&gt;<i> &gt;
+</I>&gt;<i> This sounds like a bug that needs fixing... If you can make the daemon
+</I>&gt;<i> crash on Control-C, a full gdb backtrace would be useful. I would also
+</I>&gt;<i> like to find out which of your files are not indexed and why...
+</I>&gt;<i> 
+</I>&gt;<i> Thanks for the time you spend investigating, your help is much
+</I>&gt;<i> appreciated.
+</I>&gt;<i> 
+</I>&gt;<i> Fabrice
+</I>&gt;<i> 
+</I>&gt;<i> #!/bin/bash
+</I>&gt;<i> # Run this with find, eg find -L ~/Documents/ -exec
+</I>&gt;<i> pinot-check-file.sh {} \; if [ $# == 0 ]; then
+</I>&gt;<i>   echo &quot;Usage: $0 &lt;index&gt;&quot;
+</I>&gt;<i>   exit 1
+</I>&gt;<i> fi
+</I>&gt;<i> 
+</I>&gt;<i> WHICH_SED=`which sed`
+</I>&gt;<i> if [ $? != 0 ]; then
+</I>&gt;<i>   echo &quot;Couldn't find sed. Is the sed package installed ?&quot;
+</I>&gt;<i>   exit 1
+</I>&gt;<i> fi
+</I>&gt;<i> WHICH_PI=`which pinot-index`
+</I>&gt;<i> if [ $? != 0 ]; then
+</I>&gt;<i>   echo &quot;Couldn't find sed. Is the pinot package installed ?&quot;
+</I>&gt;<i>   exit 1
+</I>&gt;<i> fi
+</I>&gt;<i> 
+</I>&gt;<i> for FILE in &quot;$@&quot; ;
+</I>&gt;<i> do
+</I>&gt;<i>   NO_SLASH_FILE=`echo $FILE | sed -e &quot;s/\(.*\)\/$/\1/g&quot;`
+</I>&gt;<i>   pinot-index --check --db ~/.pinot/daemon/ &quot;<A HREF="file://$NO_SLASH_FILE">file://$NO_SLASH_FILE</A>&quot;
+</I>&gt;<i> &gt;/dev/null 2&gt;&amp;1 \;
+</I>&gt;<i>   if [ $? != 0 ]; then
+</I>&gt;<i>     echo $NO_SLASH_FILE
+</I>&gt;<i>   fi
+</I>&gt;<i> done
+</I>&gt;<i> 
+</I>&gt;<i> exit 0
+</I>
+Thank you for the script.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000140.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+	<LI>Next message: <A HREF="000144.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#142">[ date ]</a>
+              <a href="thread.html#142">[ thread ]</a>
+              <a href="subject.html#142">[ subject ]</a>
+              <a href="author.html#142">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

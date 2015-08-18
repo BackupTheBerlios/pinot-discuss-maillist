@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C6538c8c80710290438u58067786q7e07e4bcf965e8cc%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000054.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C6538c8c80710290438u58067786q7e07e4bcf965e8cc%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Index huuuge">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Mon Oct 29 12:38:03 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000054.html">[Pinot-discuss] Index huuuge
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#55">[ date ]</a>
+              <a href="thread.html#55">[ thread ]</a>
+              <a href="subject.html#55">[ subject ]</a>
+              <a href="author.html#55">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Andreas,
+
+On 10/29/07, Andreas Wagner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">A.Wagner at stud.uni-frankfurt.de</A>&gt; wrote:
+&gt;<i> today I wanted to try pinot, have added my documents folder to be
+</I>&gt;<i> indexed and let pinot do its thing. The folder has some 3100 files,
+</I>&gt;<i> most of them pdf files. It is 1.5Gb. But after some time of heavy
+</I>&gt;<i> indexing, I had to kill pinot-daemon because my home dir was short
+</I>&gt;<i> of being full. The index occupied 1.6Gb at that time and the gui
+</I>&gt;<i> said it had some 2.600 files indexed.
+</I>&gt;<i>
+</I>&gt;<i> Is that space usage normal?
+</I>&gt;<i>
+</I>Are you using Pinot 0.76 with Xapian 1.0.3 ? On Arch Linux ? ;-)
+
+Can you email the output of &quot;du -hsc ~/.pinot/daemon/*&quot; ?
+
+First off, you may want to have a look at the indexing scheme used in v0.76.
+It's documented at <A HREF="http://www.xapian.org/docs/termgenerator.html">http://www.xapian.org/docs/termgenerator.html</A>
+Note that stemming applies only to documents for which Pinot was able to
+detect the language. Pinot also builds a spelling database, which can add up
+quite a bit to the size of the index.
+
+The size of the index depends on the nature of the documents corpus. Say,
+if all documents cover the same topic and are in the same language, they will
+share a lot of terms and that should result in a smaller index.
+
+With taking all these into consideration, I am surprised that your
+index is bigger
+than the source documents. That's not something I have seen so far... To give
+you an idea, I have a 700Mb index based on 40k documents, totaling 9Gb
+of data. 250Mb is taken by the spelling database.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000054.html">[Pinot-discuss] Index huuuge
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#55">[ date ]</a>
+              <a href="thread.html#55">[ thread ]</a>
+              <a href="subject.html#55">[ subject ]</a>
+              <a href="author.html#55">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090122063443.06d47f10%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000155.html">
+   <LINK REL="Next"  HREF="000157.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090122063443.06d47f10%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Thu Jan 22 06:34:43 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000155.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000157.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#156">[ date ]</a>
+              <a href="thread.html#156">[ thread ]</a>
+              <a href="subject.html#156">[ subject ]</a>
+              <a href="author.html#156">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, 22 Jan 2009 09:53:12 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Jan 22, 2009 at 2:02 AM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; The testresults (r1500):
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; - Couldn't get it to crash anymore at exit.
+</I>&gt;<i> &gt;
+</I>&gt;<i> That's good.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; - Still loses data if interrupted while indexing.
+</I>&gt;<i> &gt;
+</I>&gt;<i> I thought the tests you ran with pinot-enum-index/find showed that
+</I>&gt;<i> everything was in the index ? Sorry for the confusion. Did you find
+</I>&gt;<i> out what files are not there ?
+</I>
+Where did I mention that? Now I'm confused :D
+
+I know I used the script one time, but only to find out if there was a
+problem with a full uninterrupted scan, because the log shows only
+'Retrieved' for around a third of the files in the directory tree. My
+Documents shows all files and the script proved that all files got
+indexed.
+
+&gt;<i> &gt; - Sometimes I get 'Bad index /home/jwerden/.pinot/daemon' if I
+</I>&gt;<i> &gt; terminate while indexing, but it's not necessary to trigger the
+</I>&gt;<i> &gt; data loss.
+</I>&gt;<i> &gt;
+</I>&gt;<i> You get this if you open the UI after having terminated the daemon,
+</I>&gt;<i> right ? The UI opens the daemon's index in read-only mode and cannot
+</I>&gt;<i> fix it if a stale lock file exists. That said, I was hoping the index
+</I>&gt;<i> is now always closed properly and no stale lock file would be left
+</I>&gt;<i> around...
+</I>
+No, this error appears at the end of the logfile used by the daemon if
+I terminate it while indexing.
+
+&gt;<i> &gt; - Other problem (don't know if already reported, didn't find it in
+</I>&gt;<i> &gt; the TODO): If I first initialize pinot without setting any
+</I>&gt;<i> &gt; directory to index, later adding the directory won't work.
+</I>&gt;<i> &gt; --reindex does nothing in this case.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Hmm okay I will look into that.
+</I>
+Thank you.
+ 
+&gt;<i> &gt; - The log may tell that pinot is done scanning, but the scan still
+</I>&gt;<i> &gt;  continues (100% cpu usage and a lot of 'Retrieved ...' in the log).
+</I>&gt;<i> &gt;
+</I>&gt;<i> The scan (ie crawling) may be finished, but the actual indexing may
+</I>&gt;<i> still run for a while.
+</I>
+Ok. Misunderstood that part.
+
+&gt;<i> &gt; I removed the .desktop(?) file needed by dbus to start the daemon
+</I>&gt;<i> &gt; for better manual testing. Don't know if this changes anything.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Depending on what Desktop Environment you use, there should be a
+</I>&gt;<i> Session configuration panel that lets you selectively enable/disable
+</I>&gt;<i> services such as Pinot's daemon.
+</I>
+Good to know, thank you.
+
+&gt;<i> &gt; I found out that my distribution compiled sqlite3 without
+</I>&gt;<i> &gt; --enable-threads-override-locks, recompiled it with. Should I also
+</I>&gt;<i> &gt; set the --enable-cross-thread-connections?
+</I>&gt;<i> &gt;
+</I>&gt;<i> Yes, I think that's safer. Could you drop an email to the package's
+</I>&gt;<i> maintainer to recommend he uses these flags ?
+</I>
+I will send the maintainer a note. Recompiled it myself with the flag
+set, but made no difference. (But I don't have a multicore system.)
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000155.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000157.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#156">[ date ]</a>
+              <a href="thread.html#156">[ thread ]</a>
+              <a href="subject.html#156">[ subject ]</a>
+              <a href="author.html#156">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

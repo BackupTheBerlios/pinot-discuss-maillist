@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C6538c8c80901120712y487719ady301755a839facf1%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000136.html">
+   <LINK REL="Next"  HREF="000138.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C6538c8c80901120712y487719ady301755a839facf1%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Mon Jan 12 16:12:11 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000136.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+        <LI>Next message: <A HREF="000138.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#137">[ date ]</a>
+              <a href="thread.html#137">[ thread ]</a>
+              <a href="subject.html#137">[ subject ]</a>
+              <a href="author.html#137">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Sun, Jan 11, 2009 at 11:41 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+&gt;<i> On Sun, 11 Jan 2009 18:59:46 +0800
+</I>&gt;<i> &quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> For this last issue, did you get the figure from the number of indexed
+</I>&gt;&gt;<i> documents shown in the UI, when browsing an index, or as displayed by
+</I>&gt;&gt;<i> the status window ?
+</I>&gt;<i>
+</I>&gt;<i> I used Options -&gt; List Contents of -&gt; My Documents.
+</I>&gt;<i>
+</I>&gt;&gt;<i> If you are looking at it right after the daemon finishes the initial
+</I>&gt;&gt;<i> indexing run, it may be a bit off if the daemon hasn't yet flushed
+</I>&gt;&gt;<i> everything to disk.
+</I>&gt;<i>
+</I>&gt;<i> I checked it after I killed the daemon.
+</I>&gt;<i>
+</I>OK. It should be the right number then.
+
+&gt;&gt;<i> The latest README mentions a 'pinot-stats' alias. The second figure
+</I>&gt;<i>
+</I>&gt;<i> The latest README is only in the beta4.tar.gz, not in the repository.
+</I>&gt;<i>
+</I>You're right. I have the bad habit of doing that. I'll try and make
+sure the betas I issue reflect better what's in SVN.
+
+&gt;<i> Are there othere differences between the repo and the tar.gz? Sometimes
+</I>&gt;<i> I built from the repo, sometimes from the beta. Don't want to see any
+</I>&gt;<i> strange effects because of this.
+</I>&gt;<i>
+</I>In beta 4, only README and friends, and some unrelated changes to the UI code.
+
+&gt;&gt;<i> this command returns should be the exact number of documents in your
+</I>&gt;&gt;<i> My Documents index.
+</I>&gt;<i>
+</I>&gt;<i> Same numbers as with pinot client.
+</I>&gt;<i>
+</I>Okay.
+
+&gt;&gt;<i> If that doesn't show the number you expect, you could generate a list
+</I>&gt;&gt;<i> of all indexed files and see if anything obvious is missing. There are
+</I>&gt;&gt;<i> two ways :
+</I>&gt;&gt;<i> - browse the index and export each page using the Options, Export
+</I>&gt;&gt;<i> List menu
+</I>&gt;&gt;<i> - run the pinot-enum-index.sh script to get the whole list of files in
+</I>&gt;&gt;<i> ~/.pinot/daemon/urls.txt :
+</I>&gt;&gt;<i>    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+</I>&gt;&gt;<i>   Get this script from SVN r1479, it's got a minor fix.
+</I>&gt;<i>
+</I>&gt;<i> Did it using the shell script, number is the same - around a third of
+</I>&gt;<i> all files got not indexed. The missing files seems to be from random
+</I>&gt;<i> folders after I made some random checks and glimpsed over the whole
+</I>&gt;<i> thing (But some folders weren't indexed at all).
+</I>&gt;<i>
+</I>&gt;<i> A better check would force me to write a script with some string
+</I>&gt;<i> operations which I'm not really hot for right now. I will write it
+</I>&gt;<i> later if you really need it.
+</I>&gt;<i>
+</I>You could compare the urls.txt file the script generates with the
+output of &quot;find -L&quot;, I suppose. If you sort both files, viewing the
+differences in diff, or better meld, is not too painful.
+I did that just now and the only missing files were looping symlinks
+and blacklisted files (ie matching a pattern defined in Preferences,
+Indexing tab). Note that the script will output one line for each mbox
+message.
+
+I uploaded beta 5. It's synced with SVN r1485, except for NEWS, TODO,
+the ChangeLog's, po's and man pages.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000136.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+	<LI>Next message: <A HREF="000138.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#137">[ date ]</a>
+              <a href="thread.html#137">[ thread ]</a>
+              <a href="subject.html#137">[ subject ]</a>
+              <a href="author.html#137">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

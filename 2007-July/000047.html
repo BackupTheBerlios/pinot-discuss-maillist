@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Configuring viewer applications
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-July/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Configuring%20viewer%20applications&In-Reply-To=%3C789822.85412.qm%40web57614.mail.re1.yahoo.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000046.html">
+   <LINK REL="Next"  HREF="000048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Configuring viewer applications</H1>
+    <B>lee marks</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Configuring%20viewer%20applications&In-Reply-To=%3C789822.85412.qm%40web57614.mail.re1.yahoo.com%3E"
+       TITLE="[Pinot-discuss] Configuring viewer applications">ana_cata_hylo at yahoo.com
+       </A><BR>
+    <I>Mon Jul 30 00:16:04 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000046.html">[Pinot-discuss] Configuring viewer applications
+</A></li>
+        <LI>Next message: <A HREF="000048.html">[Pinot-discuss] Configuring viewer applications
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice,
+
+Thanks for your help on this!
+
+&gt;<i> Pinot relies on shared-mime-info to determine which application can
+</I>&gt;<i> handle which MIME type. In practice, this means that the
+</I>&gt;<i> first .desktop file specified for a given file type
+</I>&gt;<i> in /usr/share/applications/mimeinfo.cache is used. For instance, on my
+</I>&gt;<i> system mimeinfo.cache has this entry :
+</I>&gt;<i> 
+</I>&gt;<i> application/msword=openoffice.org-1.9-writer.desktop;fedora-abiword.desktop;
+</I>&gt;<i> 
+</I>&gt;<i> Pinot will use the application defined in
+</I>&gt;<i> openoffice.org-1.9-writer.desktop, located in /usr/share/applications,
+</I>&gt;<i> to open all documents of type &quot;application/msword&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> What entry does your mimeinfo.cache have for
+</I>&gt;<i> &quot;application/postscript&quot; ? 
+</I>
+Yes I have a mimeinfo.cache in /usr/share/applications but it does not contain an entry for 'application/postscript'. I have setup such
+associations using Thunar but I noticed that it stores them in ~/.local/share/applications rather than in the system-wide directory.
+
+So what I did is to integrate these local settings into the system wide mime-info.cache and then restart XFCE. This fixes the problem and pinot
+now brings up the applications I want.  Still it would be nice to have pinot check the users' local settings before looking in the global cache, perhaps that could be added in a future release.
+
+&gt;<i> By the way, what distro do you use ?
+</I>
+I'm using ArchLinux (the latest release 2007.05 aka &quot;Duke&quot;).
+
+Thanks again
+Lee
+
+
+
+
+
+       
+____________________________________________________________________________________
+Sick sense of humor? Visit Yahoo! TV's 
+Comedy with an Edge to see what's on, when. 
+<A HREF="http://tv.yahoo.com/collections/222">http://tv.yahoo.com/collections/222</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000046.html">[Pinot-discuss] Configuring viewer applications
+</A></li>
+	<LI>Next message: <A HREF="000048.html">[Pinot-discuss] Configuring viewer applications
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

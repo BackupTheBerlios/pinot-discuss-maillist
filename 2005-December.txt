@@ -1,0 +1,11 @@
+From fabrice.colin at gmail.com  Sat Dec 10 12:38:16 2005
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 10 Dec 2005 19:38:16 +0800
+Subject: [Pinot-discuss] First public release
+Message-ID: <6538c8c80512100338g13f6b6fdg187f8b9b284042c3@mail.gmail.com>
+
+Source and binaries for v0.30 are available from the download page.
+
+Fabrice
+
+

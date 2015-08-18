@@ -1,0 +1,89 @@
+From fabrice.colin at gmail.com  Fri Apr 10 11:54:21 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Fri, 10 Apr 2009 17:54:21 +0800
+Subject: [Pinot-discuss] Pinot 0.92
+Message-ID: <6538c8c80904100254g1881a82bu87ef75439ad2784d@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.92 is out :
+
+http://pinotdev.blogspot.com/2009/04/pinot-092.html
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Mon Apr 13 13:40:57 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 13 Apr 2009 19:40:57 +0800
+Subject: [Pinot-discuss] Pinot 0.93
+Message-ID: <6538c8c80904130440u347db04ana57dff949d914e55@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.93 is out :
+
+http://pinotdev.blogspot.com/2009/04/pinot-093.html
+
+If you upgraded to 0.92, please upgrade to 0.93.
+
+Fabrice
+
+
+From rglujing at 126.com  Tue Apr 28 08:48:10 2009
+From: rglujing at 126.com (rglujing)
+Date: Tue, 28 Apr 2009 14:48:10 +0800 (CST)
+Subject: [Pinot-discuss] =?gbk?b?MjAwOcTqMDTUwjI4yNUg0MfG2rb+IDE0yrEyN7fW?=
+ =?gbk?b?MjXD6yDX1LavsaO05rLduOU=?=
+Message-ID: <26573167.686511240901290243.JavaMail.coremail@bj126app87.126.com>
+
+hello,
+     I installed pinot-0.93 on my PC, it works well. But when i  installed it to a SDK(based on linux) ,it can not support Sherlock Description plugins,
+I don't know why,should i install firefox or some other mozilla suite?
+
+best regards
+             jing.lu
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090428/2c218fd8/attachment.html>
+
+From rglujing at 126.com  Tue Apr 28 10:15:07 2009
+From: rglujing at 126.com (rglujing)
+Date: Tue, 28 Apr 2009 16:15:07 +0800 (CST)
+Subject: [Pinot-discuss] Sherlock question
+Message-ID: <9265726.736001240906507414.JavaMail.coremail@bj126app43.126.com>
+
+hello all,
+     I am sorry to ask question so quickly, and now i solved this : I need to install boost-devel ,so /usr/include/boost/spirit/*.hpp can be found. 
+    Thank you anyway!
+
+best regards,
+                   jing.lu
+
+
+
+--
+
+???????????
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090428/4655cebd/attachment.html>
+
+From fabrice.colin at gmail.com  Tue Apr 28 11:13:49 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 28 Apr 2009 17:13:49 +0800
+Subject: [Pinot-discuss] Sherlock question
+In-Reply-To: <9265726.736001240906507414.JavaMail.coremail@bj126app43.126.com>
+References: <9265726.736001240906507414.JavaMail.coremail@bj126app43.126.com>
+Message-ID: <6538c8c80904280213u52ba9937v6d2f3473f5a76bd0@mail.gmail.com>
+
+On 4/28/09, rglujing <rglujing at 126.com> wrote:
+>      I am sorry to ask question so quickly, and now i solved this : I need
+> to install boost-devel ,so /usr/include/boost/spirit/*.hpp can be found.
+>
+That's right.
+Glad you found out what you were missing.
+
+Fabrice
+
+

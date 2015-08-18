@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090113005611.66082fd5%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000137.html">
+   <LINK REL="Next"  HREF="000140.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta4</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta4&In-Reply-To=%3C20090113005611.66082fd5%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta4">jwerden at hotpop.com
+       </A><BR>
+    <I>Tue Jan 13 00:56:11 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000137.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+        <LI>Next message: <A HREF="000140.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#138">[ date ]</a>
+              <a href="thread.html#138">[ thread ]</a>
+              <a href="subject.html#138">[ subject ]</a>
+              <a href="author.html#138">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 12 Jan 2009 23:12:11 +0800
+&quot;Fabrice Colin&quot; &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> &gt;&gt; If that doesn't show the number you expect, you could generate a
+</I>&gt;<i> &gt;&gt; list of all indexed files and see if anything obvious is missing.
+</I>&gt;<i> &gt;&gt; There are two ways :
+</I>&gt;<i> &gt;&gt; - browse the index and export each page using the Options, Export
+</I>&gt;<i> &gt;&gt; List menu
+</I>&gt;<i> &gt;&gt; - run the pinot-enum-index.sh script to get the whole list of
+</I>&gt;<i> &gt;&gt; files in ~/.pinot/daemon/urls.txt :
+</I>&gt;<i> &gt;&gt;    $ ./scripts/bash/pinot-enum-index.sh ~/.pinot/daemon
+</I>&gt;<i> &gt;&gt;   Get this script from SVN r1479, it's got a minor fix.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Did it using the shell script, number is the same - around a third
+</I>&gt;<i> &gt; of all files got not indexed. The missing files seems to be from
+</I>&gt;<i> &gt; random folders after I made some random checks and glimpsed over
+</I>&gt;<i> &gt; the whole thing (But some folders weren't indexed at all).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; A better check would force me to write a script with some string
+</I>&gt;<i> &gt; operations which I'm not really hot for right now. I will write it
+</I>&gt;<i> &gt; later if you really need it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> You could compare the urls.txt file the script generates with the
+</I>&gt;<i> output of &quot;find -L&quot;, I suppose. If you sort both files, viewing the
+</I>&gt;<i> differences in diff, or better meld, is not too painful.
+</I>
+I already did something similar. The only problem with the result is
+that you can't see which directories got completely thrown away and
+which not. Creating a script for a more advanced analysis feels too
+much like a hassle if it is not really needed.
+
+&gt;<i> I did that just now and the only missing files were looping symlinks
+</I>&gt;<i> and blacklisted files (ie matching a pattern defined in Preferences,
+</I>&gt;<i> Indexing tab). Note that the script will output one line for each mbox
+</I>&gt;<i> message.
+</I>
+I removed all blacklist entries prior to testing and mbox isn't part
+of the test.
+
+Maybe pinot runs not stable enough for me. The daemon segfaulted one
+time after Ctrl+c but this shouldn't put the database integrity itself
+at risk(?)
+
+&gt;<i> I uploaded beta 5. It's synced with SVN r1485, except for NEWS, TODO,
+</I>&gt;<i> the ChangeLog's, po's and man pages.
+</I>
+Ok, I will upgrade, but I have no reason to index everything as long as
+the problem persists for me, because the dataloss happens if the
+daemon is terminated while indexing and I want to shut my system down
+once in a while.
+
+Lets see what happens...
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000137.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+	<LI>Next message: <A HREF="000140.html">[Pinot-discuss] first test pinot 0.90 beta4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#138">[ date ]</a>
+              <a href="thread.html#138">[ thread ]</a>
+              <a href="subject.html#138">[ subject ]</a>
+              <a href="author.html#138">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

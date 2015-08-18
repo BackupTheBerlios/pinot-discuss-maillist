@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.89
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.89&In-Reply-To=%3C20081101160443.45eff63f%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000121.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.89</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.89&In-Reply-To=%3C20081101160443.45eff63f%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] pinot 0.89">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Nov  1 16:04:43 CET 2008</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000121.html">[Pinot-discuss] pinot 0.89
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice,
+
+I tried pinot 0.89 and got 2 bugs.
+
+First is, that the program dies after some time with unknown cause, I
+used gdb to get some kind of backtrace:
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">xxx at xxx</A> ~]$ gdb --args pinot-dbus-daemon -r -p 19
+GNU gdb 6.8
+Copyright (C) 2008 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later
+&lt;<A HREF="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</A>&gt; This is free software: you are free
+to change and redistribute it. There is NO WARRANTY, to the extent
+permitted by law.  Type &quot;show copying&quot; and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;x86_64-unknown-linux-gnu&quot;...
+(no debugging symbols found)
+(gdb) r
+Starting program: /usr/bin/pinot-dbus-daemon -r -p 19
+... &lt;lot of lines with new thread/thread exited&gt;
+[Thread 0x43511950 (LWP 21656) exited]
+[Thread 0x4250f950 (LWP 21655) exited]
+[New Thread 0x4250f950 (LWP 21710)]
+[Thread 0x4250f950 (LWP 21710) exited]
+[New Thread 0x4250f950 (LWP 21764)]
+[New Thread 0x43511950 (LWP 21766)]
+[New Thread 0x43d12950 (LWP 21769)]
+[Thread 0x4250f950 (LWP 21764) exited]
+[New Thread 0x4250f950 (LWP 21828)]
+[New Thread 0x44d14950 (LWP 21886)]
+[Thread 0x43d12950 (LWP 21769) exited]
+[Thread 0x4250f950 (LWP 21828) exited]
+[New Thread 0x4250f950 (LWP 21948)]
+[Thread 0x4250f950 (LWP 21948) exited]
+[New Thread 0x4250f950 (LWP 22003)]
+[Thread 0x4250f950 (LWP 22003) exited]
+[New Thread 0x4250f950 (LWP 22054)]
+[New Thread 0x43d12950 (LWP 22105)]
+[New Thread 0x40cad950 (LWP 22160)]
+[New Thread 0x42d10950 (LWP 22218)]
+[New Thread 0x44513950 (LWP 22275)]
+[New Thread 0x45515950 (LWP 22333)]
+[New Thread 0x45d16950 (LWP 22421)]
+[New Thread 0x46517950 (LWP 22477)]
+
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x43511950 (LWP 21766)]
+0x00007ffcdbbdbea6 in XapianDatabase::recordToProps ()
+from /usr/lib/pinot/backends/libxapianbackend.so (gdb) bt
+#0  0x00007ffcdbbdbea6 in XapianDatabase::recordToProps ()
+from /usr/lib/pinot/backends/libxapianbackend.so #1  0x00007ffcdbbe620c
+in XapianIndex::getDocumentInfo ()
+from /usr/lib/pinot/backends/libxapianbackend.so #2  0x00000000004994ef
+in ?? () #3  0x00000000004a0267 in ?? () #4  0x00000000004a3441 in ?? ()
+#5  0x00000000004a345d in ?? ()
+#6  0x00000000004a3480 in ?? ()
+#7  0x00007ffcdf8128b2 in call_thread_entry_slot ()
+from /usr/lib/libglibmm-2.4.so.1 #8  0x00007ffcdf131ce4 in
+g_thread_create_proxy () from /usr/lib/libglib-2.0.so.0 #9
+0x00007ffcddff6fe7 in start_thread () from /lib/libpthread.so.0 #10
+0x00007ffcdd5c523d in clone () from /lib/libc.so.6 #11
+0x0000000000000000 in ?? ()
+
+I only recorded this specific segfault, could be more bugs lingering
+around.
+
+-------------
+
+The second problem is that pinot suddenly starts to eat up all memory
+while scanning. Because the logfile only shows completed/aborted scans,
+I'm not able to find out which file made pinot go crazy.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000121.html">[Pinot-discuss] pinot 0.89
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

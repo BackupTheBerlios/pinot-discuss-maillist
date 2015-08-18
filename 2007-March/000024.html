@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-March/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Testing%20pinot%200.70%20on%20Zenwalk%204.4&In-Reply-To=%3C6538c8c80703140648n20501ab7t75b5db3fd0ba7492%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000023.html">
+   <LINK REL="Next"  HREF="000025.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Testing%20pinot%200.70%20on%20Zenwalk%204.4&In-Reply-To=%3C6538c8c80703140648n20501ab7t75b5db3fd0ba7492%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Wed Mar 14 14:48:29 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000023.html">[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+</A></li>
+        <LI>Next message: <A HREF="000025.html">[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#24">[ date ]</a>
+              <a href="thread.html#24">[ thread ]</a>
+              <a href="subject.html#24">[ subject ]</a>
+              <a href="author.html#24">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Erik,
+
+On 3/14/07, Erik Wesselius &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">erik at corporateeurope.org</A>&gt; wrote:
+&gt;<i> I installed the packages from your website and it works super and so far
+</I>&gt;<i> without problems.It is very quick, and finds the things I want to find.
+</I>&gt;<i>
+</I>That's good to hear :-)
+
+&gt;<i> One question: when and for how long the indexing daemon is started up?
+</I>&gt;<i>
+</I>It should be started automatically whenever you login into XFCE. I am not
+running Zenwalk right now, but I think there's a &quot;Startup Programs&quot; panel
+somewhere in the Preferences menu that shows what programs are started
+upon login : pinot-dbus-daemon should be in that list. It will run in the
+background for as long as you stay logged in, or until it is killed, or signaled
+to quit.
+When it starts up, it goes through the locations you have configured for
+indexing and indexes new or modified files. Depending on how many there
+are it will cause some disk activity for a little while.
+
+&gt;<i> I use Thunderbird as mail client and am not sure if I can use the
+</I>&gt;<i> &quot;search mbox&quot; option. If that would also work fine, your program is a
+</I>&gt;<i> perfect solution for me. Thanks a lot!
+</I>&gt;<i>
+</I>Here for instance, my Thunderbird mail boxes are located under
+&quot;/home/fabrice/.thunderbird/zd2u8mz5.default/Mail&quot;.
+The directory is likely to be very similar for you. The easiest is for you to
+create a symlink somewhere else in your home directory, eg :
+$ ln -s /home/fabrice/.thunderbird/zd2u8mz5.default/Mail/ ~/ThunderbirdMail
+then add mail boxes you are interested in to the second list in the Indexing tab
+of the Preferences window, using the Add button.
+Next time the daemon starts up, it should index these mail boxes.
+
+I hope this makes sense. Let us know if you need more information.
+
+Cheers.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000023.html">[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+</A></li>
+	<LI>Next message: <A HREF="000025.html">[Pinot-discuss] Testing pinot 0.70 on Zenwalk 4.4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#24">[ date ]</a>
+              <a href="thread.html#24">[ thread ]</a>
+              <a href="subject.html#24">[ subject ]</a>
+              <a href="author.html#24">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

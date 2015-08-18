@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.88 problems and suggestions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081009155109.40F971059C%40ws1-3.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000111.html">
+   <LINK REL="Next"  HREF="000116.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.88 problems and suggestions</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081009155109.40F971059C%40ws1-3.us4.outblaze.com%3E"
+       TITLE="[Pinot-discuss] pinot 0.88 problems and suggestions">johnny666 at email.com
+       </A><BR>
+    <I>Thu Oct  9 17:51:09 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000111.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+        <LI>Next message: <A HREF="000116.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#113">[ date ]</a>
+              <a href="thread.html#113">[ thread ]</a>
+              <a href="subject.html#113">[ subject ]</a>
+              <a href="author.html#113">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> In the list of directories to index, if the Monitor checkbox is
+</I>&gt;<i> activated for your docs directory, Pinot will attempt to monitor all
+</I>&gt;<i> files in that directory. There's a limit on the number of files a
+</I>&gt;<i> process can watch with inotify, so most probably not all your 400k
+</I>&gt;<i> files will be watched. The Status window won't show any error for this
+</I>&gt;<i> though.
+</I>
+That is ok for me, as I can assume that in the next 1-2 years the kernel will see some improvements in that area. monitoring large quantities of files is still in its infancy under linux.
+
+If I want to change the setting for max watched files, do I need it large enough for pinot to watch all directories or every single file?
+
+A real problem is that the file check on startup takes around 2.5 hours to finish. I know it has to check a lot of files for updates, but I think there is a lot of room for improvements. It may not compare, but a du -a on all the directory trees in question takes only 5 minutes.
+
+&gt;<i> I agree, and will look into changing how alternative spellings are suggested.
+</I>
+Thanks.
+
+&gt;<i> Is that the size of the spelling database at
+</I>&gt;<i> ~/.pinot/daemon/spelling.DB ? What about the whole index ?
+</I>&gt;<i> How much space do your documents take on the disk, altogether ?
+</I>&gt;<i> If your documents collection is static, you could try compacting the
+</I>&gt;<i> index at ~/.pinot/daemon with xapian-compact. See the FAQ
+</I>&gt;<i> (<A HREF="http://svn.berlios.de/wsvn/pinot/trunk/FAQ">http://svn.berlios.de/wsvn/pinot/trunk/FAQ</A>). It will take a long a
+</I>&gt;<i> while to compact such a big index though.
+</I>
+It's the size of the whole index:
+
+213M position.DB
+3.4K position.baseA
+3.4K position.baseB
+331M postlist.DB
+5.1K postlist.baseA
+5.1K postlist.baseB
+ 64M record.DB
+1005 record.baseA
+1005 record.baseB
+141M termlist.DB
+2.2K termlist.baseA
+2.2K termlist.baseB
+ 23M value.DB
+ 365 value.baseA
+ 365 value.baseB
+
+=&gt; 770M
+
+testet xapian-compact on a copy (took maybe 10 minutes):
+
+$ xapian-compact -m daemon2 daemon3
+
+postlist: Reduced by 45.621% 154520K (338704K -&gt; 184184K)
+record: Reduced by 6.62472% 4296K (64848K -&gt; 60552K)
+termlist: Reduced by 7.33255% 10536K (143688K -&gt; 133152K)
+position: Reduced by 2.55269% 5552K (217496K -&gt; 211944K)
+value: Reduced by 7.11268% 1616K (22720K -&gt; 21104K)
+spelling: Size unchanged (0K)
+synonym: Size unchanged (0K)
+
+
+207M position.DB
+  13 position.baseA
+3.3K position.baseB
+180M postlist.DB
+  13 postlist.baseA
+2.9K postlist.baseB
+ 60M record.DB
+  13 record.baseA
+ 965 record.baseB
+131M termlist.DB
+  13 termlist.baseA
+2.1K termlist.baseB
+ 21M value.DB
+  13 value.baseA
+ 348 value.baseB
+
+=&gt; 598M
+
+&gt;<i> - it's not practical to show thousands of results in the results
+</I>&gt;<i> tree/list. The GUI would become sluggish and unresponsive.
+</I>
+I don't think that holds true. I use another program written in gtk2 which shows a log in a table and the log can be several thousand lines long without any problem. The only slowdown which occurs is while the program loads a log, because it first loads the COMPLETE log into the table before it displays anything. If the log in question is 100k lines long, building the table will take a few seconds.
+
+&gt;<i> - for full text searches, usually the desired documents are in the top
+</I>&gt;<i> 10 or 20 results.
+</I>&gt;<i> - search mode is designed for viewing results, comparing results
+</I>&gt;<i> between engines, digging deeper with More Like or Search This For, and
+</I>&gt;<i> indexing results locally
+</I>&gt;<i> - browse mode is designed for exploring the corpus, viewing documents
+</I>&gt;<i> and editing their properties (labels, metadata...)
+</I>
+Ultimately different users have different workstyles. For example, I do broad searches most times and refine my queries with the results to get a better list. For fun I do several searches at the same time in different directions. Most times I have unique searches or just expect (like if you enter something into a form on the interwebs) that the textbox displays all the previous search terms, which I will just select incase I entered that term once before. As I don't know which search queries I will use in the future, I don't store them beforehand.
+
+Sidenote: What the frontend needs is a 'Open Directory' Option, not only the 'Open File' Option (Right Click Menu). I needed it already and its painful to live without it.
+
+&gt;<i> By the way, there's a bug in 0.88 that may have prevented all your
+</I>&gt;<i> plain text and XML files from being fully indexed. 0.89 fixes that but
+</I>&gt;<i> the daemon will automatically rebuild the index. For you that would
+</I>&gt;<i> mean another 2 days... If this is not desirable, you could stop the
+</I>&gt;<i> daemon, upgrade to 0.89 and then, say, touch all those files to update
+</I>&gt;<i> their timestamps. Finally, start the 0.89 daemon manually with the
+</I>&gt;<i> &quot;-i, --ignore-version&quot; parameter. This should ensure only those files
+</I>&gt;<i> are reindexed.
+</I>
+I think the change from 0.88 to 0.89 is too small for me to consider a reindex. If pinot supports more file types, I will do it. Indexing for every little new supported filetype (except pinot automates the process and does it itself) sounds like a waste of time. As pinot allows reindexing of files in query results, I could query all files with for example the same file extension and force a reindex of them in the frontend without a problem if I feel the need.
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000111.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+	<LI>Next message: <A HREF="000116.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#113">[ date ]</a>
+              <a href="thread.html#113">[ thread ]</a>
+              <a href="subject.html#113">[ subject ]</a>
+              <a href="author.html#113">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

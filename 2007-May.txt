@@ -1,0 +1,215 @@
+From fabrice.colin at gmail.com  Thu May 24 03:25:28 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 24 May 2007 09:25:28 +0800
+Subject: [Pinot-discuss] Pinot 0.73
+Message-ID: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+
+Version 0.73 is available.
+It's a bug fix and performance improvement release. The NEWS file has
+the details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_3/NEWS?op=file&rev=0&sc=0
+
+Fabrice
+
+
+From cms0009 at gmail.com  Mon May 28 20:02:37 2007
+From: cms0009 at gmail.com (Rick)
+Date: Mon, 28 May 2007 14:02:37 -0400
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+Message-ID: <200705281402.37718.cms0009@gmail.com>
+
+On Wednesday 23 May 2007 9:25:28 pm Fabrice Colin wrote:
+> Version 0.73 is available.
+> It's a bug fix and performance improvement release. The NEWS file has
+> the details :
+> http://svn.berlios.de/wsvn/pinot/tags/version_0_7_3/NEWS?op=file&rev=0&sc=0
+>
+> Fabrice
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+
+Can Pinot, search meta-tag info, from flac and mp3 and ogg files...?
+so, if I wanted to do a search, on .mp3 files, and find out which music files,
+that where made using "joint stereo", I got find them?
+
+Thanks -
+Rich
+
+
+
+From fabrice.colin at gmail.com  Tue May 29 03:29:05 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 29 May 2007 09:29:05 +0800
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <200705281402.37718.cms0009@gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705281402.37718.cms0009@gmail.com>
+Message-ID: <6538c8c80705281829h6cc655e3l86c5a90e02251fda@mail.gmail.com>
+
+Hi Rick,
+
+On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+> Can Pinot, search meta-tag info, from flac and mp3 and ogg files...?
+> so, if I wanted to do a search, on .mp3 files, and find out which music files,
+> that where made using "joint stereo", I got find them?
+>
+Yes, this is possible. Note that if you are using the packages for Fedora
+Core 6, you will have to install the package pinot-audio-docs.
+Just make sure these flac/mp3/ogg files are in one of the directories you
+configured for indexing in the Preferences dialog. If they aren't already,
+you will have to restart the daemon for the change to take effect.
+The query string "ext:mp3 joint stereo" (without the double quotes) should
+find what you are interested in.
+
+I hope this helps.
+
+Fabrice
+
+
+From cms0009 at gmail.com  Tue May 29 15:51:54 2007
+From: cms0009 at gmail.com (Rick)
+Date: Tue, 29 May 2007 09:51:54 -0400
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <6538c8c80705281829h6cc655e3l86c5a90e02251fda@mail.gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705281402.37718.cms0009@gmail.com>
+	<6538c8c80705281829h6cc655e3l86c5a90e02251fda@mail.gmail.com>
+Message-ID: <200705290951.54758.cms0009@gmail.com>
+
+On Monday 28 May 2007 9:29:05 pm Fabrice Colin wrote:
+> Yes, this is possible. Note that if you are using the packages for Fedora
+> Core 6, you will have to install the package pinot-audio-docs.
+> Just make sure these flac/mp3/ogg files are in one of the directories you
+> configured for indexing in the Preferences dialog. If they aren't already,
+> you will have to restart the daemon for the change to take effect.
+> The query string "ext:mp3 joint stereo" (without the double quotes) should
+> find what you are interested in.
+>
+> I hope this helps.
+>
+> Fabrice
+
+
+Well, using kubuntu 7.04, it would appear they don't offer this package 
+pinot-audio-docs.
+
+Richard
+
+
+
+From fabrice.colin at gmail.com  Tue May 29 16:18:24 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 29 May 2007 22:18:24 +0800
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <200705290951.54758.cms0009@gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705281402.37718.cms0009@gmail.com>
+	<6538c8c80705281829h6cc655e3l86c5a90e02251fda@mail.gmail.com>
+	<200705290951.54758.cms0009@gmail.com>
+Message-ID: <6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>
+
+On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+> On Monday 28 May 2007 9:29:05 pm Fabrice Colin wrote:
+> > Yes, this is possible. Note that if you are using the packages for Fedora
+> > Core 6, you will have to install the package pinot-audio-docs.
+>
+> Well, using kubuntu 7.04, it would appear they don't offer this package
+> pinot-audio-docs.
+>
+pinot-audio-docs only applies to Fedora Core.
+
+On (-/K/X)Ubuntu, there's only one package ("pinot") and that has everything,
+including support for flac/mp3/ogg files.
+
+Fabrice
+
+
+From cms0009 at gmail.com  Tue May 29 17:25:52 2007
+From: cms0009 at gmail.com (Rick)
+Date: Tue, 29 May 2007 11:25:52 -0400
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705290951.54758.cms0009@gmail.com>
+	<6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>
+Message-ID: <200705291125.52881.cms0009@gmail.com>
+
+On Tuesday 29 May 2007 10:18:24 am Fabrice Colin wrote:
+> On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+> > On Monday 28 May 2007 9:29:05 pm Fabrice Colin wrote:
+> > > Yes, this is possible. Note that if you are using the packages for
+> > > Fedora Core 6, you will have to install the package pinot-audio-docs.
+> >
+> > Well, using kubuntu 7.04, it would appear they don't offer this package
+> > pinot-audio-docs.
+>
+> pinot-audio-docs only applies to Fedora Core.
+>
+> On (-/K/X)Ubuntu, there's only one package ("pinot") and that has
+> everything, including support for flac/mp3/ogg files.
+>
+> Fabrice
+
+
+
+Thanks, but it would appear the distro, is version 0.65 and not the latest..
+
+Richard
+
+
+
+From fabrice.colin at gmail.com  Wed May 30 15:41:02 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 30 May 2007 21:41:02 +0800
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <200705291125.52881.cms0009@gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>
+	<200705290951.54758.cms0009@gmail.com>
+	<6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>
+	<200705291125.52881.cms0009@gmail.com>
+Message-ID: <6538c8c80705300641w5b1b2439i6f2213c1834f682@mail.gmail.com>
+
+On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+> Thanks, but it would appear the distro, is version 0.65 and not the latest..
+>
+Gauvain, who packages Pinot for Ubuntu, lacks the time to do regular updates.
+There's apparently a lot of red tape involved.
+If you ask him gently, he may be willing to take a look :-)
+
+Fabrice
+
+
+From visik7 at tin.it  Wed May 30 16:14:44 2007
+From: visik7 at tin.it (visik7)
+Date: Wed, 30 May 2007 16:14:44 +0200
+Subject: [Pinot-discuss] Pinot 0.73
+In-Reply-To: <6538c8c80705300641w5b1b2439i6f2213c1834f682@mail.gmail.com>
+References: <6538c8c80705231825lc240d09xab97bc1ff733d6f0@mail.gmail.com>	<200705290951.54758.cms0009@gmail.com>	<6538c8c80705290718k3626fa58k8fae4c742f957f57@mail.gmail.com>	<200705291125.52881.cms0009@gmail.com>
+	<6538c8c80705300641w5b1b2439i6f2213c1834f682@mail.gmail.com>
+Message-ID: <465D86D4.2040105@tin.it>
+
+Fabrice Colin wrote:
+> On 5/29/07, Rick <cms0009 at gmail.com> wrote:
+>> Thanks, but it would appear the distro, is version 0.65 and not the latest..
+>>
+> Gauvain, who packages Pinot for Ubuntu, lacks the time to do regular updates.
+> There's apparently a lot of red tape involved.
+> If you ask him gently, he may be willing to take a look :-)
+> 
+> Fabrice
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+> 
+
+on gutsy repository there is a package of 0.72
+however 0.73 is not yet packaged
+
+Marco
+
+

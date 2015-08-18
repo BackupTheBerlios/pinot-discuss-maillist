@@ -1,0 +1,136 @@
+From klonuo at gmail.com  Mon Oct 10 20:35:59 2011
+From: klonuo at gmail.com (Klonuo Umom)
+Date: Mon, 10 Oct 2011 20:35:59 +0200
+Subject: [Pinot-discuss] Can't index PDF and DjVu documents
+Message-ID: <CAA-8Ld_ACJJ88Rn3ookQMVmR6Oah_rB36VFMLGLfcWuWLF+F9g@mail.gmail.com>
+
+Hi,
+I'm relatively new to Linux. I used Pinot on previous PC with Ubuntu 11.04
+and everything was as it's supposed to be
+
+Now I installed Ubuntu 11.04 on another PC and Pinot 0.96 from Synaptic. I
+have `pdftotext` and `djvutxt` programs
+In preferences I selected 3 folders for monitoring:
+
+/sympath-to/CHM
+/sympath-to/PDF
+/sympath-to/DJVU
+
+which root is symbolic link, and another folder:
+
+/path-to/PDF
+
+Now I'm almost sure that symbolic links have nothing to do with my problem
+as I didn't have any problems before, but I thought to explain in details
+anyway.
+
+Problem is that Pinot indexes only CHM files.
+When I launch GUI and choose to see indexed documents, only CHM files are
+present.
+I double checked with search for terms present in PDF files and I got no
+results.
+However I noticed that `pdftotext` indexes files with `top` tool or `System
+Monitor` in couple of occasions, like on system start-up, or when I close
+Pinot GUI configuration or on idle I guess
+
+So what can be issue here? Maybe if fails on some file or similar but where
+are already indexed files? Not mentioning DjVu files.
+
+Also I would like to ask another question if you don't mind - as Recoll uses
+same search engine and db I got idea to use both tools in some configuration
+that suites me best.
+
+Currently Recoll indexes my files (same as those set in Pinot)
+Recoll doesn't have index daemon (though I could make incrond action)
+
+Is there some best way of using both indexers without doing things twice?
+
+
+Thanks in advance
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20111010/e296f1b3/attachment.html>
+
+From fabrice.colin at gmail.com  Tue Oct 11 05:06:22 2011
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 11 Oct 2011 11:06:22 +0800
+Subject: [Pinot-discuss] Can't index PDF and DjVu documents
+In-Reply-To: <CAA-8Ld_ACJJ88Rn3ookQMVmR6Oah_rB36VFMLGLfcWuWLF+F9g@mail.gmail.com>
+References: <CAA-8Ld_ACJJ88Rn3ookQMVmR6Oah_rB36VFMLGLfcWuWLF+F9g@mail.gmail.com>
+Message-ID: <CADxN-m+BXTkLJx=XBR4tEG5E+5bQSc4OLTkNpDeJ_6NkY4b=0w@mail.gmail.com>
+
+Hello Klonuo,
+
+On Tue, Oct 11, 2011 at 2:35 AM, Klonuo Umom <klonuo at gmail.com> wrote:
+> I'm relatively new to Linux. I used Pinot on previous PC with Ubuntu 11.04
+> and everything was as it's?supposed?to be
+> Now I installed Ubuntu 11.04 on another PC and Pinot 0.96 from Synaptic. I
+> have `pdftotext` and `djvutxt` programs
+> In preferences I selected 3 folders for monitoring:
+> /sympath-to/CHM
+> /sympath-to/PDF
+> /sympath-to/DJVU
+> which root is symbolic link, and another folder:
+> /path-to/PDF
+> Now I'm almost sure that symbolic links have nothing to do with my problem
+> as I didn't have any problems?before, but I thought to explain in details
+> anyway.
+> Problem is that Pinot indexes only CHM files.
+>
+Is there anything that distinguish your CHM files from your PDF and DJVU files ?
+Permissions, maybe ?
+Note that the actual content of CHM files can't be indexed by current
+releases. A CHM filter is planned for version 0.98.
+
+> When I launch GUI and choose to see indexed documents, only CHM files are
+> present.
+>
+Is this with the List Contents Of, My Documents menu ?
+
+> I double checked with search for terms present in PDF files and I got no
+> results.
+>
+Did you try looking for PDF files specifically ? For instance
+"ext:pdf" will return files with extension ".pdf".
+
+> However I noticed that `pdftotext` indexes files with `top` tool or `System
+> Monitor` in couple of?occasions, like on system start-up, or when I close
+> Pinot GUI configuration or on idle I guess
+> So what can be issue here? Maybe if fails on some file or similar but where
+> are already indexed files? Not mentioning DjVu files.
+>
+Try the following :
+- double check the patterns list in the Indexing tab of Preferences
+doesn't exclude the extensions you are interested in (eg "*.pdf").
+- verify that /etc/pinot/external-filters.xml has entries for
+"application/pdf" and "image/vnd.djvu". You may want to try running
+the corresponding "command" element manually in the shell against any
+of the files you expect to be indexed, and see what the output looks
+like. For instance, "pdftotext -enc UTF-8 -raw PDF_FILE_HERE -"
+- make sure these files are readable for the user account for which
+the Pinot daemon runs.
+- look for suspicious messages or errors in the Options, Status window
+and in the daemon's log at ~/.pinot/pinot-dbus-daemon.log
+
+> Also I would like to ask another question if you don't mind - as Recoll uses
+> same search engine and db I got idea to use both tools in some configuration
+> that suites me best.
+> Currently?Recoll indexes my files (same as those set in Pinot)
+> Recoll doesn't have index?daemon?(though I could make incrond action)
+> Is there some best way of using both indexers without doing things twice?
+>
+Yes, Recoll and Pinot both use Xapian.
+Any Xapian index can be added as an external index to Pinot, using the
+big "+" button at the bottom of the Search Engines pane, so you could
+actually query indexes built with Recoll from the Pinot UI.
+That's as far as it goes; last I heard files were not indexed by
+Recoll in the same manner as in Pinot. Simple free text queries
+against Recoll indexes should work, but those with filters may or may
+not work.
+
+If you think that Pinot misses any feature that Recoll currently has,
+let me know. I could look into implementing it.
+
+Fabrice
+
+

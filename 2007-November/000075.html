@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071109124302.GC6832%40hermes.commontology.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000074.html">
+   <LINK REL="Next"  HREF="000078.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Andreas Wagner</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C20071109124302.GC6832%40hermes.commontology.de%3E"
+       TITLE="[Pinot-discuss] Index huuuge">A.Wagner at stud.uni-frankfurt.de
+       </A><BR>
+    <I>Fri Nov  9 13:43:02 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000074.html">[Pinot-discuss] Index huuuge
+</A></li>
+        <LI>Next message: <A HREF="000078.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+* On 08 Nov 2007, Fabrice Colin wrote:
+&gt;&gt;<i> I had the comp running for another 2 days and when I finally powered off, pinot-dbus-daemon was still using some 
+</I>&gt;&gt;<i> 20% of my RAM -- I suppose it gave away the other 20% without resistence when something else needed it. (But I did 
+</I>&gt;&gt;<i> miss the moment, I must admit.)
+</I>&gt;&gt;<i>
+</I>&gt;<i> This is puzzling. Can you check what version of zlib you have ? Zlib older than 1.2.0 had a memory leak that affects 
+</I>&gt;<i> Xapian.
+</I>
+I've just had the snapshot mentioned in your last mail re-index my stuff. It took roughly 1 hour and now that it's 
+finished, pinot-dbus-daemon's CPU is 0% and MEM is 18.32% (with conky, that is; top says it's 17.9%). (3160 files)
+
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> ~]$ du -hsc .pinot/daemon/*
+4,0K    .pinot/daemon/CACHEDIR.TAG
+0       .pinot/daemon/flintlock
+4,0K    .pinot/daemon/iamflint
+118M    .pinot/daemon/position.DB
+4,0K    .pinot/daemon/position.baseA
+4,0K    .pinot/daemon/position.baseB
+155M    .pinot/daemon/postlist.DB
+4,0K    .pinot/daemon/postlist.baseA
+4,0K    .pinot/daemon/postlist.baseB
+612K    .pinot/daemon/record.DB
+4,0K    .pinot/daemon/record.baseA
+4,0K    .pinot/daemon/record.baseB
+168M    .pinot/daemon/spelling.DB
+4,0K    .pinot/daemon/spelling.baseA
+4,0K    .pinot/daemon/spelling.baseB
+25M     .pinot/daemon/termlist.DB
+4,0K    .pinot/daemon/termlist.baseA
+4,0K    .pinot/daemon/termlist.baseB
+340K    .pinot/daemon/value.DB
+4,0K    .pinot/daemon/value.baseA
+4,0K    .pinot/daemon/value.baseB
+465M    insgesamt
+[<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> ~]$ du -hsc .pinot/*
+4,0K    .pinot/config.xml
+465M    .pinot/daemon
+20K     .pinot/history
+3,3M    .pinot/history-daemon
+48K     .pinot/index
+21M     .pinot/pinot-dbus-daemon.log
+4,0K    .pinot/pinot-dbus-daemon.pid
+76K     .pinot/pinot.log
+489M    insgesamt
+
+zlib is 1.2.3.
+
+No error messages in the stats window this time.
+I have just tried to reproduce the crash but it didn't happen again. I have removed my documents dir from the 
+to-be-indexed-list, re-added it and the stats are back. pinot client was responding normally displaying my documents 
+fine, only pinot-dbus-daemon in the background was busy again. Right now (not more than 3 minutes later), CPU has 
+settled down again, but pinot-dbus-daemon's MEM is 70.70%/69.1% (conky/top) now...
+
+Anything else you want me to check? I'll probably soon try to play a bit with the searching and monitoring parts.
+
+Cheers,
+Andreas
+
+
+-- 
+To know recursion, you must first know recursion.
+
+-- 
+My Public PGP Keys:
+1024 Bit DH/DSS: 0x869F81BA
+768 Bit RSA:     0x1AD97BA5
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000074.html">[Pinot-discuss] Index huuuge
+</A></li>
+	<LI>Next message: <A HREF="000078.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

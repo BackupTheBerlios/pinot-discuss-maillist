@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta7
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090125163654.181d4682%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000165.html">
+   <LINK REL="Next"  HREF="000167.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta7</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta7&In-Reply-To=%3C20090125163654.181d4682%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta7">jwerden at hotpop.com
+       </A><BR>
+    <I>Sun Jan 25 16:36:54 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000165.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000167.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#166">[ date ]</a>
+              <a href="thread.html#166">[ thread ]</a>
+              <a href="subject.html#166">[ subject ]</a>
+              <a href="author.html#166">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 25 Jan 2009 09:28:46 +0100
+John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt; wrote:
+
+&gt;<i> I will do more complete tests to get some definite results. Hope I can
+</I>&gt;<i> post some results in the next hours (don't want to take it too long, I
+</I>&gt;<i> want to do other things, too :D)
+</I>
+Ok, here some results. I did 4 tests, one without interruption, 3 with
+interruption at different times (10 seconds, 2 minutes, 5 minutes). I
+compiled pinot from svn r1509.
+
+The test procedure was as follows:
+1) $ rm .pinot -rf
+2) $ pinot # initialize without any file patterns and labels
+3) $ pinot-dbus-daemon
+4) Interrupt after the given time
+5) - create backup of .pinot
+   - $ find -P /home/jwerden/test -exec pinot-check-file.sh {} \; &gt; pinot_&lt;time&gt;_1.missing
+6) $ pinot-dbus-daemon
+7) if done, interrupt daemon
+8) - create backup of .pinot
+   - $ find -P /home/jwerden/test -exec pinot-check-file.sh {} \; &gt; pinot_&lt;time&gt;_2.missing
+   - $ lua comp.lua pinot_&lt;time&gt;_1.missing \
+                    pinot_&lt;time&gt;_2.missing \
+                    pinot_&lt;time&gt;_exclusive.1 \
+                    pinot_&lt;time&gt;_exclusive.2 \
+                    pinot_&lt;time&gt;_shared
+
+&lt;time&gt; gets replaced with 10sec, 2min, 5min.
+
+comp.lua takes 2 input files and finds out which files are only listed
+in file 1, which in file 2 and which ones are listed in both.
+
+For the test without interruption steps 5 to 9 are omitted.
+
+test results:
+
+without interruption:
+indexed files: 3543
+missing files: 0
+
+after 10 seconds:
+missing files at (5): 3427
+missing files at (8): 177
+files not missing at (5), but at (8): 0
+
+after 2 minutes:
+missing files at (5): 3185
+missing files at (8): 1368
+files not missing at (5), but at (8): 0
+
+after 5 minutes (short before done):
+missing files at (5): 1507
+missing files at (8): 1331
+files not missing at (5), but at (8): 0
+
+
+To find out if the problem is related to hard/softlinks I made some
+simple tests in another directory. I used the pinot GUI client to find
+out how many files got indexed. The directory contains a flat hierarchy
+of directories which in turn contain most likely only images. I didn't
+take any backups of the database from the tests.
+
+full scan without interrupt: 15021
+first try (short time until break): 15018
+second try (not as short): 14858
+third try (even longer): 15018
+
+I cannot guarantee that there are only image files in the directories or
+only specific MIME types, but I know there are no hard/soft links at
+all.
+
+From these results I can conclude the following:
+- The problem is not related to hard/soft links.
+- The problem does not need deep directory hierarchies to appear.
+- The daemon does not lose files it already got before termination.
+
+I cannot conclude:
+- The problem is unrelated to the file type.
+
+I could do a lot more testing, but I need your opinion first because
+the tests take _time_ and you know much better what to test and what
+not.
+
+If you want to get more information about the MIME types of the fetched
+files I need to know what you exactly want and how to retrieve the
+information. Best is a fast script which takes a file as input which
+contains a list of files which should get checked for the MIME type.
+
+I have the complete backups of the first 4 tests if you want me to
+retrieve more information from them.
+
+Sidenote: The shell script you provided leads to false positives if a
+file name contains multiple spaces in a row. But that problem didn't
+change anything because the test case did not include any files with
+spaces.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000165.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000167.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#166">[ date ]</a>
+              <a href="thread.html#166">[ thread ]</a>
+              <a href="subject.html#166">[ subject ]</a>
+              <a href="author.html#166">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

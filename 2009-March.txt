@@ -1,0 +1,587 @@
+From fabrice.colin at gmail.com  Sun Mar  1 08:55:56 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 1 Mar 2009 15:55:56 +0800
+Subject: [Pinot-discuss] high memory usage while indexing
+In-Reply-To: <20090228054757.539631af@desktop.workplace>
+References: <20090207215612.5f670166@desktop.workplace>
+	<6538c8c80902220335p2c574c5dk6d210c34116ab92b@mail.gmail.com>
+	<20090222131140.391534ad@desktop.workplace>
+	<6538c8c80902220409q38eb2ca7q7d9fc39066803238@mail.gmail.com>
+	<6538c8c80902240729h5783da2enb8cd04066e259a1b@mail.gmail.com>
+	<20090225042435.3a50f66c@desktop.workplace>
+	<6538c8c80902250723y4a76d59btb40fe253ea6e8ac8@mail.gmail.com>
+	<20090226115452.3f62d169@desktop.workplace>
+	<6538c8c80902271913s460c606ak95a62735033afaa5@mail.gmail.com>
+	<20090228054757.539631af@desktop.workplace>
+Message-ID: <6538c8c80902282355r7ca1e4a4t3e26d15385431892@mail.gmail.com>
+
+On Sat, Feb 28, 2009 at 12:47 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Sat, 28 Feb 2009 11:13:19 +0800 Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> Is this reproducible easily ?
+>
+> It happens at random every few runs. I don't know how to reproduce it
+> except running it a few times. Do you need specific data? Was the
+> backtrace not enough?
+>
+It's enough to see what happens, but not enough to understand why :-)
+I have made a few changes to the way the index is flushed that could
+help here.
+
+>> It looks like the changes made to the HTML parser brought a big
+>> improvement. I will look into the possibly lost records coming from
+>> the DB history classes. Unless a major problem crops up, I will try to
+>> release 0.91 sometime next week.
+>
+> I will do some testruns on more files, but I think the problem with
+> html parsing is solved. There are more version numbers for other
+> problems :D
+>
+What other problems do you have in mind ?
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sun Mar  1 10:18:41 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 1 Mar 2009 17:18:41 +0800
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <20090228164017.2e12c672@desktop.workplace>
+References: <20090228164017.2e12c672@desktop.workplace>
+Message-ID: <6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+
+On Sat, Feb 28, 2009 at 11:40 PM, John Werden <jwerden at hotpop.com> wrote:
+> Scanned a bigger part of my filesystem and got thrashed again. I
+> tried to find out what happened, made some tests and these are the
+> results:
+>
+> checking html/image files:
+> - memory usage was always below 20 MB
+>
+> checking txt files:
+> - memory usage went slowly up from 14 MB to 70 MB over the course of
+> ?all 4400 rfc's
+>
+> checking pdf files:
+> - The worst offender was a pdf file which left 140 MB lying around
+> ?after I scanned it alone and would run out of memory in memcheck.
+> ?Other files weren't that bad, but memory usage increased steadily
+> ?over time and didn't went down after the daemon was finished. Doing a
+> ?memcheck on some of them yielded nothing new.
+>
+> zip files:
+> - Ate more memory than txt files, but didn't delve to deep as pdfs were
+> ?much worse.
+>
+> There are a lot more file types which I could have checked but these are
+> the ones that I encountered a lot short before pinot ran out of memory.
+>
+As it is, for supported file types, pinot will read files in their
+entirety. When they can be handled directly, they are mmap'ed, but
+when they need conversion through an external program (eg pdf and zip
+files), they may cause a huge memory buffer to be allocated.
+It should be okay to only grab the first 5 Mb for instance, at least
+for file types that are converted directly to plain text.
+I have implemented this change in beta 4, could you give it a try ?
+Note that it's not in SVN yet. The mod is in
+Tokenize/filters/ExternalFilter. I should also change the indexer
+code, but that can be done later.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Sun Mar  1 17:54:05 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Sun, 1 Mar 2009 17:54:05 +0100
+Subject: [Pinot-discuss] high memory usage while indexing
+In-Reply-To: <6538c8c80902282355r7ca1e4a4t3e26d15385431892@mail.gmail.com>
+References: <20090207215612.5f670166@desktop.workplace>
+	<6538c8c80902220335p2c574c5dk6d210c34116ab92b@mail.gmail.com>
+	<20090222131140.391534ad@desktop.workplace>
+	<6538c8c80902220409q38eb2ca7q7d9fc39066803238@mail.gmail.com>
+	<6538c8c80902240729h5783da2enb8cd04066e259a1b@mail.gmail.com>
+	<20090225042435.3a50f66c@desktop.workplace>
+	<6538c8c80902250723y4a76d59btb40fe253ea6e8ac8@mail.gmail.com>
+	<20090226115452.3f62d169@desktop.workplace>
+	<6538c8c80902271913s460c606ak95a62735033afaa5@mail.gmail.com>
+	<20090228054757.539631af@desktop.workplace>
+	<6538c8c80902282355r7ca1e4a4t3e26d15385431892@mail.gmail.com>
+Message-ID: <20090301175405.49df0542@desktop.workplace>
+
+On Sun, 1 Mar 2009 15:55:56 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> On Sat, Feb 28, 2009 at 12:47 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > On Sat, 28 Feb 2009 11:13:19 +0800 Fabrice Colin
+> > <fabrice.colin at gmail.com> wrote:
+> >> Is this reproducible easily ?
+> >
+> > It happens at random every few runs. I don't know how to reproduce
+> > it except running it a few times. Do you need specific data? Was the
+> > backtrace not enough?
+> >
+> It's enough to see what happens, but not enough to understand why :-)
+> I have made a few changes to the way the index is flushed that could
+> help here.
+
+Ok
+
+> >> It looks like the changes made to the HTML parser brought a big
+> >> improvement. I will look into the possibly lost records coming from
+> >> the DB history classes. Unless a major problem crops up, I will
+> >> try to release 0.91 sometime next week.
+> >
+> > I will do some testruns on more files, but I think the problem with
+> > html parsing is solved. There are more version numbers for other
+> > problems :D
+> >
+> What other problems do you have in mind ?
+
+None, the memory problem right now is the important thing for me. I
+encounter other small noncritical bugs on the way, but I want to
+concentrate on one problem and not 10 as it complicates the whole
+reporting.
+
+If the big showstoppers are away, I will probably go after the small
+ones.
+
+John
+
+
+
+From jwerden at hotpop.com  Tue Mar  3 12:52:28 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 3 Mar 2009 12:52:28 +0100
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+Message-ID: <20090303125228.395b73a5@desktop.workplace>
+
+On Sun, 1 Mar 2009 17:18:41 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> As it is, for supported file types, pinot will read files in their
+> entirety. When they can be handled directly, they are mmap'ed, but
+> when they need conversion through an external program (eg pdf and zip
+> files), they may cause a huge memory buffer to be allocated.
+> It should be okay to only grab the first 5 Mb for instance, at least
+> for file types that are converted directly to plain text.
+> I have implemented this change in beta 4, could you give it a try ?
+> Note that it's not in SVN yet. The mod is in
+> Tokenize/filters/ExternalFilter. I should also change the indexer
+> code, but that can be done later.
+> 
+> Fabrice
+
+I gave it a try and memory usage is much more human and my system is
+more responsive. But it's still way too high. Pinot ate 3GB shared and
+700 MB nonshared top. After too much of it went into swap, my system
+didn't become unresponsive, but it was still too much to make a clean
+shutdown, let alone kill all the bigger programs which got swapped out
+with pinot, because 99% cpu usage was in wa.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Tue Mar  3 14:20:57 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Tue, 3 Mar 2009 21:20:57 +0800
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <20090303122117.4bbea307@desktop.workplace>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+	<20090303122117.4bbea307@desktop.workplace>
+Message-ID: <6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+
+Hi John,
+
+On Tue, Mar 3, 2009 at 7:21 PM, John Werden <jwerden at hotpop.com> wrote:
+> I gave it a try and memory usage is much more human and my system is
+> more responsive. But it's still way too high. Pinot ate 3GB shared and
+> 700 MB nonshared top. After too much of it went into swap, my system
+> didn't become unresponsive, but it was still too much to make a clean
+> shutdown, let alone kill all the bigger programs which got swapped out
+> with pinot, because 99% cpu usage was in wa.
+>
+What happened at shutdown ?
+
+I am starting to think you may be trying to index too many documents
+in one go, with too few resources ;-)
+More seriously, if the final index size is around 1.6Gb it may not be
+unrealistic for memory usage to be around 3+ Gb. Did 0.90 (release)
+and older versions take much more ?
+
+I seem to remember your system has 1Gb of memory, and your corpus has
+400k documents. I couldn't find the total on-disk size of your corpus
+in my mail archive, but you would probably be better off staging
+indexing in smaller chunks, restarting the daemon between each stage,
+and running xapian-compact on the final index.
+
+I am not saying I am giving up on this. I do want to keep a lid on
+resource consumption.
+
+Before releasing 0.91, I'll modify the indexing code to only consider
+the first 5Mb. I am thinking I should also add a mean to disable
+automatic index upgrades for cases like yours where reindexing means
+days, and think how indexing could be staged automatically based on
+memory usage.
+
+By the way, did the log file have many messages of the type
+"ExternalFilter::run_command: stopping at " ?
+
+Fabrice
+
+
+From jwerden at hotpop.com  Tue Mar  3 16:55:33 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Tue, 3 Mar 2009 16:55:33 +0100
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+	<20090303122117.4bbea307@desktop.workplace>
+	<6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+Message-ID: <20090303165533.23a9afe0@desktop.workplace>
+
+On Tue, 3 Mar 2009 21:20:57 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> Hi John,
+> 
+> On Tue, Mar 3, 2009 at 7:21 PM, John Werden <jwerden at hotpop.com>
+> wrote:
+> > I gave it a try and memory usage is much more human and my system is
+> > more responsive. But it's still way too high. Pinot ate 3GB shared
+> > and 700 MB nonshared top. After too much of it went into swap, my
+> > system didn't become unresponsive, but it was still too much to
+> > make a clean shutdown, let alone kill all the bigger programs which
+> > got swapped out with pinot, because 99% cpu usage was in wa.
+> >
+> What happened at shutdown ?
+
+Nothing :D Probably the system was so hard working reading from/to disk
+that it just had no time to consider doing nothing instead.
+
+> I am starting to think you may be trying to index too many documents
+> in one go, with too few resources ;-)
+
+Why should it matter how many files I want to index? :-P
+
+"My boyfriend plugged his external hard disk into my system, the leds
+started to blink like crazy and now everything is dead. Can you help me
+fabrice, you know so much about computers and are my best friend."
+*bambi eyes*
+
+> More seriously, if the final index size is around 1.6Gb it may not be
+> unrealistic for memory usage to be around 3+ Gb. Did 0.90 (release)
+> and older versions take much more ?
+
+Yes, but the bug where files where forgotten if the daemon got
+interrupted/oom'd while I was away hid it very well as most of the
+problematic files would get forgotten in one go and probably indexed at
+a much later point in time if that happened at all ;-) (And I have so
+many files I wouldn't probably realize it for a long time)
+
+> I seem to remember your system has 1Gb of memory, and your corpus has
+> 400k documents. I couldn't find the total on-disk size of your corpus
+> in my mail archive, but you would probably be better off staging
+> indexing in smaller chunks, restarting the daemon between each stage,
+> and running xapian-compact on the final index.
+
+Naw, that is too much work. If it can't work in the background without
+my monitoring, it's completely useless (and dangerous).
+
+There is also the problem that I didn't tell it to index everything in
+this test. The test ran only over >58k of my documents (pdfs, txt, ps,
+html) in a flat directory hierarchy. The restart interrupted it and
+only 22k got indexed.
+
+But it used already 1.8/0.7 GB after a short time so it's probably not
+bound to the number of documents. Probably 5k large files could be
+enough to get pinot running out of bounds. Do I want to test that?
+Probably not :-D
+
+> I am not saying I am giving up on this. I do want to keep a lid on
+> resource consumption.
+
+I'm not expecting it to work great right now, but it's still a
+background service for desktop users (or did I assume the wrong target
+group/usage method?) which shouldn't interrupt a users work. This
+includes eating up his system ressources if he needs them for other
+things. So I consider pinots goal to behave like one in v1.00.
+
+As a hard bound: if I can't tweak it too use a specific numbers of
+mbyte and set it as low as 50-100 mbyte or tell it to not use memory
+other processes need it's useless for me (even if I had something like
+128 GByte RAM and a 32 core system - and then probably around 2 billion
+files). Maybe I would give it more memory if it is all alone, but if I
+want to use my system it should only use the minimum possible and
+behave nice as it already does in regards to cpu ressources (setting
+itself to 15/idle).
+
+That's also why I'm sending my results (not because I expect 0.91 to
+work awesome, I know pinot is far from ready). As far as I think:
+if it can't be done without using memory other processes need and I
+have to monitor it the whole time, it shouldn't be a background process
+in the first place.
+
+Think of a user whose desktop freezes suddenly because his distribution
+installed pinot for him and activated it by default because it's
+useful. He only needs 5k files with a lot of text and *bang* system
+dead.
+
+> Before releasing 0.91, I'll modify the indexing code to only consider
+> the first 5Mb. I am thinking I should also add a mean to disable
+> automatic index upgrades for cases like yours where reindexing means
+> days, and think how indexing could be staged automatically based on
+> memory usage.
+
+I'm not worried about reindexing, I know I have many files and it
+will take days. And I know the process will probably be refined in the
+future (and improvements in other programs will probably make it
+easier).
+
+Only indexing parts of a document? I don't know if that is good. If it
+is needed to get it running for now, I will go with it.
+
+> By the way, did the log file have many messages of the type
+> "ExternalFilter::run_command: stopping at " ?
+
+The log got killed by an instance which ran automatically later, I
+enabled pinot in my autostart as the first tests made it look stable :-/
+
+
+To make a long story short: if I can't savely use it, even if it is not
+feature complete, I can't use it as it's disruptive. If you think it
+will take a lot more time to fix it up or it isn't for me, I will stay
+back and maybe come back later.
+
+
+long mail :-/
+
+John
+
+
+
+From fabrice.colin at gmail.com  Wed Mar  4 16:15:35 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Wed, 4 Mar 2009 23:15:35 +0800
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <20090303165533.23a9afe0@desktop.workplace>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+	<20090303122117.4bbea307@desktop.workplace>
+	<6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+	<20090303165533.23a9afe0@desktop.workplace>
+Message-ID: <6538c8c80903040715g1648db33o8d800ec516a880e9@mail.gmail.com>
+
+On Tue, Mar 3, 2009 at 11:55 PM, John Werden <jwerden at hotpop.com> wrote:
+> On Tue, 3 Mar 2009 21:20:57 +0800 Fabrice Colin <fabrice.colin at gmail.com> wrote:
+>> I am starting to think you may be trying to index too many documents
+>> in one go, with too few resources ;-)
+>
+> Why should it matter how many files I want to index? :-P
+>
+For one thing, the size of the cache maintained by Xapian depends on
+the number of documents (up to XAPIAN_FLUSH_THRESHOLD) but mainly
+because memory allocations are performed every time a file is
+processed.
+A large number of small files may lead to a large number of small
+buffers, and small buffers are sometimes not reclaimed by the OS.
+There's an explanation of this at
+http://xmlsoft.org/xmlmem.html#Compacting
+Large free buffers of memory between used buffers may not be reclaimed
+by the OS either.
+The STL also maintains a memory pool. You could try exporting the
+environment variable "GLIBCXX_FORCE_NEW" to disable this pool.
+
+> "My boyfriend plugged his external hard disk into my system, the leds
+> started to blink like crazy and now everything is dead. Can you help me
+> fabrice, you know so much about computers and are my best friend."
+> *bambi eyes*
+>
+Your girlfriend shouldn't worry. This won't happen, only because Pinot
+doesn't attempt to automatically index new media when mounted.
+
+>> More seriously, if the final index size is around 1.6Gb it may not be
+>> unrealistic for memory usage to be around 3+ Gb. Did 0.90 (release)
+>> and older versions take much more ?
+>
+> Yes, but the bug where files where forgotten if the daemon got
+> interrupted/oom'd while I was away hid it very well as most of the
+> problematic files would get forgotten in one go and probably indexed at
+> a much later point in time if that happened at all ;-) (And I have so
+> many files I wouldn't probably realize it for a long time)
+>
+Indeed.
+
+>> I seem to remember your system has 1Gb of memory, and your corpus has
+>> 400k documents. I couldn't find the total on-disk size of your corpus
+>> in my mail archive, but you would probably be better off staging
+>> indexing in smaller chunks, restarting the daemon between each stage,
+>> and running xapian-compact on the final index.
+>
+> Naw, that is too much work. If it can't work in the background without
+> my monitoring, it's completely useless (and dangerous).
+>
+> There is also the problem that I didn't tell it to index everything in
+> this test. The test ran only over >58k of my documents (pdfs, txt, ps,
+> html) in a flat directory hierarchy. The restart interrupted it and
+> only 22k got indexed.
+>
+How big were these files on disk, and how big was the resulting index
+(before restart) ?
+
+> But it used already 1.8/0.7 GB after a short time so it's probably not
+> bound to the number of documents. Probably 5k large files could be
+> enough to get pinot running out of bounds. Do I want to test that?
+> Probably not :-D
+>
+Yes, you do ! :-) Otherwise how are we going to get to grip with this ?
+I am not aware of Pinot running "out of bounds".
+
+> I'm not expecting it to work great right now, but it's still a
+> background service for desktop users (or did I assume the wrong target
+> group/usage method?) which shouldn't interrupt a users work. This
+> includes eating up his system ressources if he needs them for other
+> things. So I consider pinots goal to behave like one in v1.00.
+>
+Yes, it's a desktop service, but it's focused on being nice and
+non-disruptive after initial indexing.
+Not much effort has gone into reducing the impact of initial indexing,
+partly because of limited resources (time on my part). One consequence
+is that by default it's not configured to index anything, and requires
+user configuration.
+
+> As a hard bound: if I can't tweak it too use a specific numbers of
+> mbyte and set it as low as 50-100 mbyte or tell it to not use memory
+> other processes need it's useless for me (even if I had something like
+> 128 GByte RAM and a 32 core system - and then probably around 2 billion
+> files). Maybe I would give it more memory if it is all alone, but if I
+> want to use my system it should only use the minimum possible and
+> behave nice as it already does in regards to cpu ressources (setting
+> itself to 15/idle).
+>
+To achieve this, Pinot would have to have its own memory manager. I
+don't have the knowledge, nor the bandwidth, to undertake this kind of
+work.
+
+> That's also why I'm sending my results (not because I expect 0.91 to
+> work awesome, I know pinot is far from ready). As far as I think:
+> if it can't be done without using memory other processes need and I
+> have to monitor it the whole time, it shouldn't be a background process
+> in the first place.
+>
+I don't agree.
+It's the OS job to know what memory other processes need. What we
+could do though is to fix leaks and identify problematic usage
+patterns.
+
+> Think of a user whose desktop freezes suddenly because his distribution
+> installed pinot for him and activated it by default because it's
+> useful. He only needs 5k files with a lot of text and *bang* system
+> dead.
+>
+That's not possible. Activating Pinot won't trigger any indexing.
+Per-user configuration is required.
+
+You need to tell us more about those 5k files you mention. It sounds
+to me like you have a good test case.
+
+> I'm not worried about reindexing, I know I have many files and it
+> will take days. And I know the process will probably be refined in the
+> future (and improvements in other programs will probably make it
+> easier).
+>
+Then why are you worried about indexing ? ;-)
+
+> Only indexing parts of a document? I don't know if that is good. If it
+> is needed to get it running for now, I will go with it.
+>
+It's common practice. That's enough to extract what the document is about.
+
+> To make a long story short: if I can't savely use it, even if it is not
+> feature complete, I can't use it as it's disruptive. If you think it
+> will take a lot more time to fix it up or it isn't for me, I will stay
+> back and maybe come back later.
+>
+You can use it safely as long as you understand the consequences of
+what you tell it to do. Throwing a large number of files to the
+indexer on a system with limited resources has consequences.
+
+I can't promise miracles. I can only promise working with you to the
+best of my abilities and limited time to come up with solutions and
+work-arounds.
+
+Fabrice
+
+
+From jwerden at hotpop.com  Thu Mar  5 11:49:14 2009
+From: jwerden at hotpop.com (John Werden)
+Date: Thu, 5 Mar 2009 11:49:14 +0100
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <6538c8c80903040715g1648db33o8d800ec516a880e9@mail.gmail.com>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+	<20090303122117.4bbea307@desktop.workplace>
+	<6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+	<20090303165533.23a9afe0@desktop.workplace>
+	<6538c8c80903040715g1648db33o8d800ec516a880e9@mail.gmail.com>
+Message-ID: <20090305114914.5b8c3775@desktop.workplace>
+
+On Wed, 4 Mar 2009 23:15:35 +0800
+Fabrice Colin <fabrice.colin at gmail.com> wrote:
+
+> <Wall of text>
+> 
+> Fabrice
+
+I will reply later, but I have too much to do the next days/weeks, so
+don't expect too much.
+
+John
+
+
+
+From fabrice.colin at gmail.com  Thu Mar  5 12:52:18 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 5 Mar 2009 18:52:18 +0700
+Subject: [Pinot-discuss] some test results
+In-Reply-To: <20090305114914.5b8c3775@desktop.workplace>
+References: <20090228164017.2e12c672@desktop.workplace>
+	<6538c8c80903010118m66bb6620hc89ce4da4fc6c759@mail.gmail.com>
+	<20090303122117.4bbea307@desktop.workplace>
+	<6538c8c80903030520t7d6bd8f2tec50fe38f51804ca@mail.gmail.com>
+	<20090303165533.23a9afe0@desktop.workplace>
+	<6538c8c80903040715g1648db33o8d800ec516a880e9@mail.gmail.com>
+	<20090305114914.5b8c3775@desktop.workplace>
+Message-ID: <6538c8c80903050352g548a9ad1m17635d7e038ee088@mail.gmail.com>
+
+On Thu, Mar 5, 2009 at 5:49 PM, John Werden <jwerden at hotpop.com> wrote:
+> I will reply later, but I have too much to do the next days/weeks, so
+> don't expect too much.
+>
+No worries.
+I have some ideas on how to reduce memory usage, but that will have to
+wait for 0.92.
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sat Mar  7 05:36:31 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 7 Mar 2009 12:36:31 +0800
+Subject: [Pinot-discuss] Pinot 0.91
+Message-ID: <6538c8c80903062036v596ff335x8f426d08340372f1@mail.gmail.com>
+
+Dear all,
+
+Pinot 0.91 is out :
+
+http://pinotdev.blogspot.com/2009/03/pinot-091-is-out.html
+
+Fabrice
+
+

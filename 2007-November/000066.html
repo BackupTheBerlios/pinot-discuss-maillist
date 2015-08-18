@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] Index huuuge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C472D9DE0.4020305%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000078.html">
+   <LINK REL="Next"  HREF="000068.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] Index huuuge</H1>
+    <B>Gabriel C</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20Index%20huuuge&In-Reply-To=%3C472D9DE0.4020305%40googlemail.com%3E"
+       TITLE="[Pinot-discuss] Index huuuge">nix.or.die at googlemail.com
+       </A><BR>
+    <I>Sun Nov  4 11:24:32 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000078.html">[Pinot-discuss] Index huuuge
+</A></li>
+        <LI>Next message: <A HREF="000068.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Andreas Wagner wrote:
+&gt;<i> Salut,
+</I>&gt;<i> 
+</I>&gt;<i> The patch applies and compiles.
+</I>&gt;<i> I had to work around some complaint by archlinux's install routine:
+</I>&gt;<i> 
+</I>&gt;<i> /bin/install -c -m 644 UI/icons/48x48/pinot.png 
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/48x48/apps/pinot.png
+</I>&gt;<i> /bin/install -c -m 644 UI/icons/32x32/pinot.png 
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/32x32/apps/pinot.png
+</I>&gt;<i> /bin/install -c -m 644 UI/icons/24x24/pinot.png 
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/24x24/apps/pinot.png
+</I>&gt;<i> /bin/install -c -m 644 UI/icons/22x22/pinot.png 
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/22x22/apps/pinot.png
+</I>&gt;<i> /bin/install -c -m 644 UI/icons/16x16/pinot.png 
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/icons/hicolor/16x16/apps/pinot.png
+</I>&gt;<i> /home/wagner/Temp/abs-local/pinot/pkg/usr/share/applications/pinot.desktop: error: value &quot;pinot.png&quot; for key &quot;Icon&quot; in 
+</I>&gt;<i> group &quot;Desktop Entry&quot; is an icon name with an extension, but there should be no extension as described in the Icon 
+</I>&gt;<i> Theme Specification if the value is not an absolute path
+</I>&gt;<i> Error on file &quot;pinot.desktop&quot;: Failed to validate the created desktop file
+</I>&gt;<i> make[2]: *** [install-data-local] Error 1
+</I>
+Known issue :)
+
+sed -i -e 's/pinot.png/pinot/g' *desktop
+
+&gt;<i> 
+</I>&gt;<i> (the same goes for pinot-dbus-daemon.desktop.)
+</I>&gt;<i> 
+</I>&gt;<i> Other than that, pinot is running fine and just indexing my documents right now...
+</I>&gt;<i> Well, to be honest, pinot-dbus-daemon is indexing while the UI has just crashed. :(
+</I>&gt;<i> 
+</I>&gt;<i> [<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">wagner at apollo</A> .pinot]$ pinot
+</I>&gt;<i> 
+</I>&gt;<i> glibmm-ERROR **:
+</I>&gt;<i> unhandled exception (type unknown) in signal handler
+</I>&gt;<i> 
+</I>&gt;<i> aborting...
+</I>&gt;<i> Abgebrochen
+</I>&gt;<i> 
+</I>&gt;<i> What I did was: launching it ('pinot' on cmdline), going to preferences, looking at the directories, 'OK', looking at 
+</I>&gt;<i> the stats (no dbus-daemon running yet), re-opening prefs, removing the to-be-indexed-directory, 'OK', re-open 
+</I>                ^^^^^^^^^^^^^^^^^^^^^^^
+
+So you don't have dbus-launch running ? ..
+
+&gt;<i> preferences, add the directory again, 'OK', open stats - which didn't happen. instead the gui disappeared altogether 
+</I>&gt;<i> because of the crash.
+</I>&gt;<i> Re-launching pinot/gui seems to work tho. Status bar says can't open index /home/wagner/.pinot/index, but the status 
+</I>&gt;<i> window shows no errors and is updated periodically.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> To be verbose, here are my version numbers again:
+</I>&gt;<i> 
+</I>&gt;<i> glibc: 2.7
+</I>&gt;<i> gcc: 4.2.2
+</I>&gt;<i> xapian-core: 1.0.4
+</I>&gt;<i> libsigc++: 2.1.1
+</I>&gt;<i> glibmm: 2.14.1
+</I>&gt;<i> gtkmm: 2.12.1
+</I>
+Dbus / glib2 / gtk version ? and are you actually running testing packages ?
+
+
+&gt;<i> Cheers,
+</I>&gt;<i> Andreas
+</I>&gt;<i> 
+</I>
+
+Gabriel
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000078.html">[Pinot-discuss] Index huuuge
+</A></li>
+	<LI>Next message: <A HREF="000068.html">[Pinot-discuss] Index huuuge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,446 @@
+From javibarroso at gmail.com  Thu Sep  3 17:10:54 2009
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Thu, 3 Sep 2009 17:10:54 +0200
+Subject: [Pinot-discuss] High Memory consume in pinot 0.94
+Message-ID: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+
+Hi,
+
+This morning I activate pinot in my box (debian sid)
+
+Now it was eating my memory,. and I couldn't work:
+
+Mem:   1554880k total,  1520516k used,    34364k free,     2152k buffers
+Swap:  1572856k total,   887856k used,   685000k free,    36572k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+  194 root      15  -5     0    0    0 S    7  0.0   0:06.61
+kswapd0
+
+ 8549 javi      35  15 2411m 1.2g 2360 S    3 81.8  87:04.05 pinot-dbus-daem
+
+$ du -sh .pinot
+134M    .pinot
+
+I'm trying pinot again because a post where I read about better memory
+consume [1]
+
+Regards,
+
+[1] http://pinotdev.blogspot.com/2009/04/pinot-092.html
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment.html>
+
+From javibarroso at gmail.com  Thu Sep  3 17:12:08 2009
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Thu, 3 Sep 2009 17:12:08 +0200
+Subject: [Pinot-discuss] High Memory consume in pinot 0.94
+In-Reply-To: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+References: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+Message-ID: <81c921f30909030812i575631aekf958f930caea304f@mail.gmail.com>
+
+On Thu, Sep 3, 2009 at 5:10 PM, Javier Barroso <javibarroso at gmail.com>wrote:
+
+> Hi,
+>
+> This morning I activate pinot in my box (debian sid)
+>
+> Now it was eating my memory,. and I couldn't work:
+>
+> Mem:   1554880k total,  1520516k used,    34364k free,     2152k buffers
+> Swap:  1572856k total,   887856k used,   685000k free,    36572k cached
+>
+>   PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+>   194 root      15  -5     0    0    0 S    7  0.0   0:06.61
+> kswapd0
+>
+>  8549 javi      35  15 2411m 1.2g 2360 S    3 81.8  87:04.05
+> pinot-dbus-daem
+>
+> $ du -sh .pinot
+> 134M    .pinot
+>
+
+> I'm trying pinot again because a post where I read about better memory
+> consume [1]
+>
+> Regards,
+>
+> [1] http://pinotdev.blogspot.com/2009/04/pinot-092.html
+>
+> Sorry, I wanted to say du -sh directory indexed == 14 G
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/5bc80758/attachment.html>
+
+From rglujing at 126.com  Fri Sep  4 12:53:41 2009
+From: rglujing at 126.com (rglujing)
+Date: Fri, 4 Sep 2009 18:53:41 +0800 (CST)
+Subject: [Pinot-discuss] Pinot-discuss Digest, Vol 30, Issue 1
+In-Reply-To: <mailman.95.1252058538.4224.pinot-discuss@lists.berlios.de>
+References: <mailman.95.1252058538.4224.pinot-discuss@lists.berlios.de>
+Message-ID: <8403460.378291252061621376.JavaMail.coremail@bj126app33.126.com>
+
+Oh,That's right!
+ I have meet this problem too,so i reduced the number of background threads,this is a method.
+But i believe there are better ways!
+
+regards,
+Omego
+
+
+
+
+
+
+
+?2009-09-04?18:02:18?pinot-discuss-request at lists.berlios.de????
+>Send?Pinot-discuss?mailing?list?submissions?to
+>	pinot-discuss at lists.berlios.de
+>
+>To?subscribe?or?unsubscribe?via?the?World?Wide?Web,?visit
+>	https://lists.berlios.de/mailman/listinfo/pinot-discuss
+>or,?via?email,?send?a?message?with?subject?or?body?'help'?to
+>	pinot-discuss-request at lists.berlios.de
+>
+>You?can?reach?the?person?managing?the?list?at
+>	pinot-discuss-owner at lists.berlios.de
+>
+>When?replying,?please?edit?your?Subject?line?so?it?is?more?specific
+>than?"Re:?Contents?of?Pinot-discuss?digest..."
+>
+>
+>Today's?Topics:
+>
+>???1.?High?Memory?consume?in?pinot?0.94?(Javier?Barroso)
+>???2.?Re:?High?Memory?consume?in?pinot?0.94?(Javier?Barroso)
+>
+>
+>----------------------------------------------------------------------
+>
+>Message:?1
+>Date:?Thu,?3?Sep?2009?17:10:54?+0200
+>From:?Javier?Barroso?<javibarroso at gmail.com>
+>Subject:?[Pinot-discuss]?High?Memory?consume?in?pinot?0.94
+>To:?pinot-discuss at lists.berlios.de
+>Message-ID:
+>	<81c921f30909030810i45e733d3o9f57bbbfdaacf08d at mail.gmail.com>
+>Content-Type:?text/plain;?charset="iso-8859-1"
+>
+>Hi,
+>
+>This?morning?I?activate?pinot?in?my?box?(debian?sid)
+>
+>Now?it?was?eating?my?memory,.?and?I?couldn't?work:
+>
+>Mem:???1554880k?total,??1520516k?used,????34364k?free,?????2152k?buffers
+>Swap:??1572856k?total,???887856k?used,???685000k?free,????36572k?cached
+>
+>??PID?USER??????PR??NI??VIRT??RES??SHR?S?%CPU?%MEM????TIME+??COMMAND
+>??194?root??????15??-5?????0????0????0?S????7??0.0???0:06.61
+>kswapd0
+>
+>?8549?javi??????35??15?2411m?1.2g?2360?S????3?81.8??87:04.05?pinot-dbus-daem
+>
+>$?du?-sh?.pinot
+>134M????.pinot
+>
+>I'm?trying?pinot?again?because?a?post?where?I?read?about?better?memory
+>consume?[1]
+>
+>Regards,
+>
+>[1]?http://pinotdev.blogspot.com/2009/04/pinot-092.html
+>--------------?next?part?--------------
+>An?HTML?attachment?was?scrubbed...
+>URL:?https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/fdb8f954/attachment-0001.html?
+>
+>------------------------------
+>
+>Message:?2
+>Date:?Thu,?3?Sep?2009?17:12:08?+0200
+>From:?Javier?Barroso?<javibarroso at gmail.com>
+>Subject:?Re:?[Pinot-discuss]?High?Memory?consume?in?pinot?0.94
+>To:?pinot-discuss at lists.berlios.de
+>Message-ID:
+>	<81c921f30909030812i575631aekf958f930caea304f at mail.gmail.com>
+>Content-Type:?text/plain;?charset="iso-8859-1"
+>
+>On?Thu,?Sep?3,?2009?at?5:10?PM,?Javier?Barroso?<javibarroso at gmail.com>wrote:
+>
+>>?Hi,
+>>
+>>?This?morning?I?activate?pinot?in?my?box?(debian?sid)
+>>
+>>?Now?it?was?eating?my?memory,.?and?I?couldn't?work:
+>>
+>>?Mem:???1554880k?total,??1520516k?used,????34364k?free,?????2152k?buffers
+>>?Swap:??1572856k?total,???887856k?used,???685000k?free,????36572k?cached
+>>
+>>???PID?USER??????PR??NI??VIRT??RES??SHR?S?%CPU?%MEM????TIME+??COMMAND
+>>???194?root??????15??-5?????0????0????0?S????7??0.0???0:06.61
+>>?kswapd0
+>>
+>>??8549?javi??????35??15?2411m?1.2g?2360?S????3?81.8??87:04.05
+>>?pinot-dbus-daem
+>>
+>>?$?du?-sh?.pinot
+>>?134M????.pinot
+>>
+>
+>>?I'm?trying?pinot?again?because?a?post?where?I?read?about?better?memory
+>>?consume?[1]
+>>
+>>?Regards,
+>>
+>>?[1]?http://pinotdev.blogspot.com/2009/04/pinot-092.html
+>>
+>>?Sorry,?I?wanted?to?say?du?-sh?directory?indexed?==?14?G
+>--------------?next?part?--------------
+>An?HTML?attachment?was?scrubbed...
+>URL:?https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090903/5bc80758/attachment-0001.html?
+>
+>------------------------------
+>
+>_______________________________________________
+>Pinot-discuss?mailing?list
+>Pinot-discuss at lists.berlios.de
+>https://lists.berlios.de/mailman/listinfo/pinot-discuss
+>
+>
+>End?of?Pinot-discuss?Digest,?Vol?30,?Issue?1
+>********************************************
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090904/d5e1df61/attachment.html>
+
+From fabrice.colin at gmail.com  Sat Sep  5 13:25:45 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 5 Sep 2009 19:25:45 +0800
+Subject: [Pinot-discuss] High Memory consume in pinot 0.94
+In-Reply-To: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+References: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+Message-ID: <6538c8c80909050425w391fd8e8j5e04ec9f444c751f@mail.gmail.com>
+
+Hi Javier,
+
+On Thu, Sep 3, 2009 at 11:10 PM, Javier Barroso<javibarroso at gmail.com> wrote:
+> This morning I activate pinot in my box (debian sid)
+>
+> Now it was eating my memory,. and I couldn't work:
+>
+> Mem:?? 1554880k total,? 1520516k used,??? 34364k free,???? 2152k buffers
+> Swap:? 1572856k total,?? 887856k used,?? 685000k free,??? 36572k cached
+>
+> ? PID USER????? PR? NI? VIRT? RES? SHR S %CPU %MEM??? TIME+? COMMAND
+> ? 194 root????? 15? -5???? 0??? 0??? 0 S??? 7? 0.0?? 0:06.61
+> kswapd0
+> ?8549 javi????? 35? 15 2411m 1.2g 2360 S??? 3 81.8? 87:04.05 pinot-dbus-daem
+>
+> $ du -sh .pinot
+> 134M    .pinot
+>
+> Sorry, I wanted to say du -sh directory indexed == 14 G
+>
+> I'm trying pinot again because a post where I read about better memory
+> consume [1]
+>
+Yes, that's right. Memory usage is lower than it used to be. I don't
+claim it's perfect though. It could certainly be enhanced.
+
+As LuJing suggested, reducing the number of background threads helps.
+This is set with the environment variable PINOT_MAXIMUM_INDEX_THREADS
+and defaults to 4.
+You may also want to increase the frequency with which memory is
+returned to the OS by setting MALLOC_TRIM_THRESHOLD_ to a value lower
+than 128kb.
+The last tunable is the size of the document buffer in Xapian, set
+with XAPIAN_FLUSH_THRESHOLD. This defaults to 10000.
+
+For instance, on my laptop, indexing 7Gb of documents with
+$ export MALLOC_TRIM_THRESHOLD_=65536
+$ export PINOT_MAXIMUM_INDEX_THREADS=1
+$ export XAPIAN_FLUSH_THRESHOLD=1000
+$ pinot-dbus-daemon --reindex
+keeps pinot-dbus-daemon's %MEM around 3%. Admittedly, I have 4Gb of
+RAM, but for comparison, Firefox with just a few tabs open is at 5%.
+Your mileage may of course vary, especially if you have large
+documents in that 14Gb corpus.
+
+I hope this helps.
+
+Fabrice
+
+
+From javibarroso at gmail.com  Mon Sep  7 14:02:07 2009
+From: javibarroso at gmail.com (Javier Barroso)
+Date: Mon, 7 Sep 2009 14:02:07 +0200
+Subject: [Pinot-discuss] High Memory consume in pinot 0.94
+In-Reply-To: <6538c8c80909050425w391fd8e8j5e04ec9f444c751f@mail.gmail.com>
+References: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com>
+	<6538c8c80909050425w391fd8e8j5e04ec9f444c751f@mail.gmail.com>
+Message-ID: <81c921f30909070502s8e4c0c1u1cc1cb1b492a63ff@mail.gmail.com>
+
+Hi Fabrice,
+
+On Sat, Sep 5, 2009 at 1:25 PM, Fabrice Colin <fabrice.colin at gmail.com>wrote:
+
+> Hi Javier,
+>
+> On Thu, Sep 3, 2009 at 11:10 PM, Javier Barroso<javibarroso at gmail.com>
+> wrote:
+> > This morning I activate pinot in my box (debian sid)
+> >
+> > Now it was eating my memory,. and I couldn't work:
+> >
+> > Mem:   1554880k total,  1520516k used,    34364k free,     2152k buffers
+> > Swap:  1572856k total,   887856k used,   685000k free,    36572k cached
+> >
+> >   PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+> >   194 root      15  -5     0    0    0 S    7  0.0   0:06.61
+> > kswapd0
+> >  8549 javi      35  15 2411m 1.2g 2360 S    3 81.8  87:04.05
+> pinot-dbus-daem
+> >
+> > $ du -sh .pinot
+> > 134M    .pinot
+> >
+> > Sorry, I wanted to say du -sh directory indexed == 14 G
+> >
+> > I'm trying pinot again because a post where I read about better memory
+> > consume [1]
+> >
+> Yes, that's right. Memory usage is lower than it used to be. I don't
+> claim it's perfect though. It could certainly be enhanced.
+>
+> As LuJing suggested, reducing the number of background threads helps.
+> This is set with the environment variable PINOT_MAXIMUM_INDEX_THREADS
+> and defaults to 4.
+> You may also want to increase the frequency with which memory is
+> returned to the OS by setting MALLOC_TRIM_THRESHOLD_ to a value lower
+> than 128kb.
+> The last tunable is the size of the document buffer in Xapian, set
+> with XAPIAN_FLUSH_THRESHOLD. This defaults to 10000.
+>
+> For instance, on my laptop, indexing 7Gb of documents with
+> $ export MALLOC_TRIM_THRESHOLD_=65536
+> $ export PINOT_MAXIMUM_INDEX_THREADS=1
+> $ export XAPIAN_FLUSH_THRESHOLD=1000
+> $ pinot-dbus-daemon --reindex
+>
+
+Thank you for tip,
+
+After that (5 hours after), it's eatting my memory again (this time both,
+pinot and VirtualBox)
+
+
+ 9996 javi      20   0  609m 545m  29m S    5 35.9   5:40.00 VirtualBox
+15545 javi      35  15 2533m 717m 1552 S    2 47.3 464:09.82 pinot-dbus-daem
+
+But I think a indexer should need less resources than a virtual machine
+emulation
+
+Thanks your efforts
+
+Regards,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090907/446e6b06/attachment.html>
+
+From fabrice.colin at gmail.com  Mon Sep  7 14:09:07 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Mon, 7 Sep 2009 19:09:07 +0700
+Subject: [Pinot-discuss] High Memory consume in pinot 0.94
+In-Reply-To: <81c921f30909070502s8e4c0c1u1cc1cb1b492a63ff@mail.gmail.com>
+References: <81c921f30909030810i45e733d3o9f57bbbfdaacf08d@mail.gmail.com> 
+	<6538c8c80909050425w391fd8e8j5e04ec9f444c751f@mail.gmail.com> 
+	<81c921f30909070502s8e4c0c1u1cc1cb1b492a63ff@mail.gmail.com>
+Message-ID: <6538c8c80909070509w1eb4ac65o1d7537354d32156c@mail.gmail.com>
+
+On Mon, Sep 7, 2009 at 7:02 PM, Javier Barroso<javibarroso at gmail.com> wrote:
+> Thank you for tip,
+>
+> After that (5 hours after), it's eatting my memory again (this time both,
+> pinot and VirtualBox)
+>
+>
+> ?9996 javi????? 20?? 0? 609m 545m? 29m S??? 5 35.9?? 5:40.00 VirtualBox
+> 15545 javi????? 35? 15 2533m 717m 1552 S??? 2 47.3 464:09.82 pinot-dbus-daem
+>
+> But I think a indexer should need less resources than a virtual machine
+> emulation
+>
+It would be good to find out why that happens. If you have compiled
+pinot in debug mode, the log at ~/.pinot/pinot-dbus-daemon.log should
+give some indication.
+Information about the documents you are trying to index would help too...
+
+Feel free to email me the log and the output of 'ls -lR' on the
+directories configured for indexing.
+
+Fabrice
+
+
+From rglujing at 126.com  Sun Sep 27 02:44:01 2009
+From: rglujing at 126.com (rglujing)
+Date: Sun, 27 Sep 2009 08:44:01 +0800 (CST)
+Subject: [Pinot-discuss] port pinot
+In-Reply-To: <33174216.174651253853182872.JavaMail.coremail@bj126app16.126.com>
+References: <33174216.174651253853182872.JavaMail.coremail@bj126app16.126.com>
+	<6538c8c80908210024j6e428074kddf1542855d25131@mail.gmail.com>
+	<28317681.203071250836657862.JavaMail.coremail@bj126app55.126.com>
+Message-ID: <30971652.22531254012241988.JavaMail.coremail@bj126app33.126.com>
+
+Oh,attachment is too large,so i put them on this page:
+http://code.google.com/p/pinot-clutter/source/browse/#svn/trunk/UI/GTK2/src
+If you have interest,you can visit this.
+
+Regards,
+LuJing
+
+
+
+
+Oh,Maybe i am wrong,because i just rewrite the UI for some functions,and code is not so readable,Just for fun.
+So this is not a true port.
+attachment is the source,May be you will disappoint to it.If so,do not tell me about this.
+
+Regards,
+LuJing
+
+
+
+
+
+
+
+
+"????",????60???
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090927/a92bf884/attachment.html>
+
+From fabrice.colin at gmail.com  Sun Sep 27 08:51:44 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 27 Sep 2009 14:51:44 +0800
+Subject: [Pinot-discuss] port pinot
+In-Reply-To: <30971652.22531254012241988.JavaMail.coremail@bj126app33.126.com>
+References: <6538c8c80908210024j6e428074kddf1542855d25131@mail.gmail.com> 
+	<28317681.203071250836657862.JavaMail.coremail@bj126app55.126.com> 
+	<33174216.174651253853182872.JavaMail.coremail@bj126app16.126.com> 
+	<30971652.22531254012241988.JavaMail.coremail@bj126app33.126.com>
+Message-ID: <6538c8c80909262351t26bfed46i68a8c2dd34cbb7b2@mail.gmail.com>
+
+2009/9/27 rglujing <rglujing at 126.com>:
+> Oh,attachment is too large,so i put them on this page:
+> http://code.google.com/p/pinot-clutter/source/browse/#svn/trunk/UI/GTK2/src
+> If you have interest,you can visit this.
+>
+Okay I will take a look. My distro of choice only has Clutter 0.8 and
+no nbtk so it may be a while before I get to play with this.
+
+Fabrice
+
+

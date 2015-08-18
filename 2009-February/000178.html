@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] high memory usage while indexing
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090207215612.5f670166%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000177.html">
+   <LINK REL="Next"  HREF="000179.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] high memory usage while indexing</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20high%20memory%20usage%20while%20indexing&In-Reply-To=%3C20090207215612.5f670166%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] high memory usage while indexing">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Feb  7 21:56:12 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000177.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+        <LI>Next message: <A HREF="000179.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice!
+
+I tried to index my documents but pinot eats so much memory my system
+starts trashing after some time and becomes unusable several seconds
+later until I restart the system. I used top to find out how much pinot
+used at one time and it showed me several gigabyte usage for both
+virtual and res (No data, my system was thrashing and I was happy that
+I could get top to work).
+
+I wanted to find out why it was thrashing and thought first that it's
+maybe because of a high XAPIAN_FLUSH_THRESHOLD (I have a lot of large
+directories). I set the variable to 100, but it still eats all of my
+memory over time. I deactivated the swap to stop the thrashing and to
+get oom to kill pinot if it eats too much, but that is not a real
+solution.
+
+I ran a test to find out how much memory pinot uses over time with a
+freshly created and configured .pinot/ directory. The results are in the
+attachment. The data was retrieved in 1 second intervals. It starts out
+with innocent 259m/17m and climbs to whopping 807m/473m in roughly 3
+hours. SVN was 1538 compiled with --debug-on.
+
+Made a backup of the test if you need more information or want me to
+do other tests.
+
+John
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: pinot-res2.log.bz2
+Type: application/x-bzip
+Size: 7558 bytes
+Desc: not available
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090207/3817684a/attachment.bin">https://lists.berlios.de/pipermail/pinot-discuss/attachments/20090207/3817684a/attachment.bin</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000177.html">[Pinot-discuss] first test pinot 0.90 beta7
+</A></li>
+	<LI>Next message: <A HREF="000179.html">[Pinot-discuss] high memory usage while indexing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#178">[ date ]</a>
+              <a href="thread.html#178">[ thread ]</a>
+              <a href="subject.html#178">[ subject ]</a>
+              <a href="author.html#178">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

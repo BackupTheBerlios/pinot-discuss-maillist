@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.88 problems and suggestions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081012113254.2C30D47808F%40ws1-5.us4.outblaze.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000115.html">
+   <LINK REL="Next"  HREF="000119.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.88 problems and suggestions</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C20081012113254.2C30D47808F%40ws1-5.us4.outblaze.com%3E"
+       TITLE="[Pinot-discuss] pinot 0.88 problems and suggestions">johnny666 at email.com
+       </A><BR>
+    <I>Sun Oct 12 13:32:54 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000115.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+        <LI>Next message: <A HREF="000119.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice
+
+&gt;<i> As you say, it's not entirely comparable because the daemon has to
+</I>&gt;<i> check its history database. No doubt it could be made faster though...
+</I>&gt;<i> On top of that, it may perform some additional checks and cleanup, a
+</I>&gt;<i> &quot;full scan&quot;. This is activated at startup randomly. The log in
+</I>&gt;<i> ~/.pinot will have something like &quot;&quot;Doing a full scan on /a/b/c&quot;.
+</I>
+The log with 3.5 hours got overwritten, so I can't say anything about that.
+The newer logs don't contain a 'full scan' or similar line. If the machine is
+more or less idle, it takes around 30-35 minutes to check everything, under
+full load 2+ hours.
+
+&gt;<i> Do full text searches return the documents you expect ? I am concerned
+</I>&gt;<i> you may have hit the bug I mentioned earlier and your text/XML
+</I>&gt;<i> documents are not fully indexed.
+</I>
+I checked the problem and it appears the content of textfiles didn't get
+indexed. Tried with several commen and not common words from selected textfiles
+and all searches failed.
+
+&gt;<i> Should that option open the directory the selected file lives in, in
+</I>&gt;<i> your file manager ?
+</I>
+Yes, it should open the directory where the files live in with the default file
+manager (or the directory itself, if you use the option on a directory.)
+
+&gt;<i> Actually, trying to index a result that's already been indexed will
+</I>&gt;<i> not update it. I can't remember what the thinking behind this was, but
+</I>&gt;<i> the TODO file has had a note about this for a while.
+</I>
+Yes, read that. Maybe something about internet searches?
+
+John
+
+-- 
+Be Yourself @ mail.com!
+Choose From 200+ Email Addresses
+Get a Free Account at www.mail.com
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000115.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+	<LI>Next message: <A HREF="000119.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

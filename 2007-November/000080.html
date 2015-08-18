@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot running and indexing but not search
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2007-November/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20running%20and%20indexing%20but%20not%20search&In-Reply-To=%3C6538c8c80711150453s23f6f1f9o1a5599917adcb470%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000079.html">
+   <LINK REL="Next"  HREF="000081.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot running and indexing but not search</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20running%20and%20indexing%20but%20not%20search&In-Reply-To=%3C6538c8c80711150453s23f6f1f9o1a5599917adcb470%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] pinot running and indexing but not search">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Thu Nov 15 13:53:17 CET 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000079.html">[Pinot-discuss] pinot running and indexing but not search
+</A></li>
+        <LI>Next message: <A HREF="000081.html">[Pinot-discuss] [Fwd: Re: pinot running and indexing but not search]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#80">[ date ]</a>
+              <a href="thread.html#80">[ thread ]</a>
+              <a href="subject.html#80">[ subject ]</a>
+              <a href="author.html#80">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My reply to the previous message.
+
+---------- Forwarded message ----------
+From: Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt;
+Date: Nov 14, 2007 9:40 AM
+Subject: Re: [Pinot-discuss] pinot running and indexing but not search
+To: Cam Bazz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">cambazz at gmail.com</A>&gt;
+
+Hi !
+
+On Nov 14, 2007 5:31 AM, Cam Bazz &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">cambazz at gmail.com</A>&gt; wrote:
+&gt;<i> I managed to get it working. Appearanly, I installed the filters after I
+</I>&gt;<i> added the index dir. What I have done was to delete .pinot and let it
+</I>&gt;<i> index once more. This time It worked.
+</I>&gt;<i>
+</I>Great !
+
+
+&gt;<i> I have few other questions:
+</I>&gt;<i>
+</I>&gt;<i> - what is the my web pages search? which directory does it search?
+</I>&gt;<i>
+</I>It's the index that holds results from Web engines you have indexed.
+See section 4 in the README.
+
+&gt;<i> - what does `index` do. (when you right click on a document?)
+</I>&gt;<i>
+</I>It indexes the selected results and adds them to My Web Pages.
+
+&gt;<i> - when I search on my documents and results are displayed, there is:
+</I>&gt;<i>
+</I>&gt;<i>     a green circle (if you had opened the document before)
+</I>&gt;<i>     a document icon with a hand on it
+</I>&gt;<i>     and arrows (either up or down)
+</I>&gt;<i>
+</I>&gt;<i>    What do those mean?
+</I>&gt;<i>
+</I>The document+hand icon shows the document is in one of the indexes.
+I ought to go and design a better icon, instead of borrowing GTK's
+stock &quot;Index&quot; icon.
+Arrows shows changes to ranking compared to the last time you ran
+the same search. That's only really meaningful for Stored Queries,
+and cases where the user changes Live Query bit by bit to drill down
+to a document.
+
+&gt;<i> - I could not find a way to label documents.
+</I>&gt;<i>
+</I>Labels are applied as properties. Use the Index, List Contents Of menu
+to browse your My Documents index. Get to the documents you want
+to label (possibly using a Stored Query as filter, instead of &quot;All&quot;
+documents), select them in the list and open the Index, Properties
+menu. This will show a new dialog window where you can set labels,
+or edit metadata. Labels defined in Preferences will show in that
+dialog.
+
+&gt;<i> - Also when a query is executed, a tab opens. (live query)
+</I>&gt;<i>   and when you issue another query, it will just use this tab. should
+</I>&gt;<i> not it open another tab instead. (possibly) with the name of the query.
+</I>&gt;<i>
+</I>Actually this is the mode of operation, except that the name of
+the query you create by entering stuff in the Query field is always
+&quot;Live Query&quot;. Stored Queries can have any name.
+
+There are elements of the UI that could do with some clarifications,
+and are possibly confusing. All suggestions are welcome.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000079.html">[Pinot-discuss] pinot running and indexing but not search
+</A></li>
+	<LI>Next message: <A HREF="000081.html">[Pinot-discuss] [Fwd: Re: pinot running and indexing but not search]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#80">[ date ]</a>
+              <a href="thread.html#80">[ thread ]</a>
+              <a href="subject.html#80">[ subject ]</a>
+              <a href="author.html#80">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

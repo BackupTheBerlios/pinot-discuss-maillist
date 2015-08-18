@@ -1,0 +1,29 @@
+From fabrice.colin at gmail.com  Sat Jun 27 06:20:33 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sat, 27 Jun 2009 12:20:33 +0800
+Subject: [Pinot-discuss] Pinot 0.94
+Message-ID: <6538c8c80906262120i425fc51cl5bf6f8b6d469ad41@mail.gmail.com>
+
+Dear all,
+
+A new release is out :
+http://pinotdev.blogspot.com/2009/06/pinot-094.html
+
+Fabrice
+
+
+From fabrice.colin at gmail.com  Sun Jun 28 03:31:25 2009
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Sun, 28 Jun 2009 09:31:25 +0800
+Subject: [Pinot-discuss] Pinot 0.94
+In-Reply-To: <6538c8c80906262120i425fc51cl5bf6f8b6d469ad41@mail.gmail.com>
+References: <6538c8c80906262120i425fc51cl5bf6f8b6d469ad41@mail.gmail.com>
+Message-ID: <6538c8c80906271831i6e5baf8i739beb4c0b7e4a53@mail.gmail.com>
+
+It looks like the downloads at BerliOS are down. Get the tarball from
+http://colinf.chez.com/pinot/pinot-0.94.tar.gz for the time being.
+Thanks !
+
+Fabrice
+
+

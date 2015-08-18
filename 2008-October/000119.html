@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot 0.88 problems and suggestions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2008-October/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C6538c8c80810130602qdd8fbd0j566dabf50eb43d94%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000118.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot 0.88 problems and suggestions</H1>
+    <B>Fabrice Colin</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%200.88%20problems%20and%20suggestions&In-Reply-To=%3C6538c8c80810130602qdd8fbd0j566dabf50eb43d94%40mail.gmail.com%3E"
+       TITLE="[Pinot-discuss] pinot 0.88 problems and suggestions">fabrice.colin at gmail.com
+       </A><BR>
+    <I>Mon Oct 13 15:02:46 CEST 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000118.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#119">[ date ]</a>
+              <a href="thread.html#119">[ thread ]</a>
+              <a href="subject.html#119">[ subject ]</a>
+              <a href="author.html#119">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi John,
+
+On Sun, Oct 12, 2008 at 7:32 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">johnny666 at email.com</A>&gt; wrote:
+&gt;&gt;<i> Do full text searches return the documents you expect ? I am concerned
+</I>&gt;&gt;<i> you may have hit the bug I mentioned earlier and your text/XML
+</I>&gt;&gt;<i> documents are not fully indexed.
+</I>&gt;<i>
+</I>&gt;<i> I checked the problem and it appears the content of textfiles didn't get
+</I>&gt;<i> indexed. Tried with several commen and not common words from selected textfiles
+</I>&gt;<i> and all searches failed.
+</I>&gt;<i>
+</I>OK. That's the bug. If you upgrade to 0.89, it should reindex those
+documents as expected and hopefully not take much longer than 0.88 did
+initially.
+
+&gt;&gt;<i> Should that option open the directory the selected file lives in, in
+</I>&gt;&gt;<i> your file manager ?
+</I>&gt;<i>
+</I>&gt;<i> Yes, it should open the directory where the files live in with the default file
+</I>&gt;<i> manager (or the directory itself, if you use the option on a directory.)
+</I>&gt;<i>
+</I>That shouldn't be too difficult. I will add that to my TODO list.
+
+&gt;&gt;<i> Actually, trying to index a result that's already been indexed will
+</I>&gt;&gt;<i> not update it. I can't remember what the thinking behind this was, but
+</I>&gt;&gt;<i> the TODO file has had a note about this for a while.
+</I>&gt;<i>
+</I>&gt;<i> Yes, read that. Maybe something about internet searches?
+</I>&gt;<i>
+</I>I didn't have time to look into this over the weekend, but will add
+this to my ever-growing list for 0.90 :-)
+
+Cheers.
+
+Fabrice
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000118.html">[Pinot-discuss] pinot 0.88 problems and suggestions
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#119">[ date ]</a>
+              <a href="thread.html#119">[ thread ]</a>
+              <a href="subject.html#119">[ subject ]</a>
+              <a href="author.html#119">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

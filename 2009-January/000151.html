@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] first test pinot 0.90 beta5
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C20090117022404.2c198c4a%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000150.html">
+   <LINK REL="Next"  HREF="000152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] first test pinot 0.90 beta5</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20first%20test%20pinot%200.90%20beta5&In-Reply-To=%3C20090117022404.2c198c4a%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] first test pinot 0.90 beta5">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Jan 17 02:24:04 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000150.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+        <LI>Next message: <A HREF="000152.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#151">[ date ]</a>
+              <a href="thread.html#151">[ thread ]</a>
+              <a href="subject.html#151">[ subject ]</a>
+              <a href="author.html#151">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 16 Jan 2009 22:54:34 +0800
+Fabrice Colin &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">fabrice.colin at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi John,
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Jan 15, 2009 at 6:50 PM, John Werden &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/pinot-discuss">jwerden at hotpop.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; Did it 4 times. The first time I rm'd .pinot and started from
+</I>&gt;<i> &gt; scratch, the other 3 times I used --reindex. The last file
+</I>&gt;<i> &gt; mentioned wasn't the same in any case, but the /include directory
+</I>&gt;<i> &gt; had a lot of entries at the end of the logfile. Problem is that
+</I>&gt;<i> &gt; the /include directory has 1400 files, so it would be surprising if
+</I>&gt;<i> &gt; it didn't.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; What is weird is that the daemon stopped sometimes adding new lines
+</I>&gt;<i> &gt; to the logfile without any reason. Using the script you provided in
+</I>&gt;<i> &gt; <A HREF="https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html">https://lists.berlios.de/pipermail/pinot-discuss/2009-January/000140.html</A>
+</I>&gt;<i> &gt; didn't show any untracked files. There was also no change of
+</I>&gt;<i> &gt; directory after the daemon resumed to log files.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Sorry, wrong wording. I meant that the daemon stopped writing
+</I>&gt;<i> &gt; output to the logfile for several seconds without any reason.
+</I>&gt;<i> &gt;
+</I>&gt;<i> Beta 5 indexes files as they are found by default, and the daemon may
+</I>&gt;<i> therefore stop writing anything to the log if busy indexing a large
+</I>&gt;<i> file. I wasn't happy with this, so I reverted to the previous
+</I>&gt;<i> functioning in revision 1477. I have uploaded beta 6 (r1495) to the
+</I>&gt;<i> usual address if you want to give it a try.
+</I>
+Thank you, I will give it a try.
+
+&gt;<i> &gt; Did you change anything or was the reason that pinot only showed
+</I>&gt;<i> &gt; ~1400 files (always the same number of lines except for garbled
+</I>&gt;<i> &gt; output) in its logfile part of a bug?
+</I>&gt;<i> &gt;
+</I>&gt;<i> Sorry John, I am not sure I understand.
+</I>&gt;<i> 
+</I>&gt;<i> Did you find that all files were indexed as expected ? Or are some of
+</I>&gt;<i> them missing ?
+</I>
+Everything got indexed, but only ~1400 of 3540 files are mentioned in
+the logfile, thats why I'm confused.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000150.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+	<LI>Next message: <A HREF="000152.html">[Pinot-discuss] first test pinot 0.90 beta5
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#151">[ date ]</a>
+              <a href="thread.html#151">[ thread ]</a>
+              <a href="subject.html#151">[ subject ]</a>
+              <a href="author.html#151">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>

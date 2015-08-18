@@ -1,0 +1,46 @@
+From fabrice.colin at gmail.com  Thu Aug 23 16:51:40 2007
+From: fabrice.colin at gmail.com (Fabrice Colin)
+Date: Thu, 23 Aug 2007 22:51:40 +0800
+Subject: [Pinot-discuss] Pinot 0.76
+Message-ID: <6538c8c80708230751o75d343fcj7b2480d3fe0c8f5a@mail.gmail.com>
+
+Version 0.76 is available. The tarball can be found at :
+http://prdownload.berlios.de/pinot/pinot-0.76.tar.gz
+
+As usual, the NEWS file has the juicy details :
+http://svn.berlios.de/wsvn/pinot/tags/version_0_7_6/NEWS?op=file&rev=0&sc=0
+
+Fabrice
+
+
+From cms0009 at gmail.com  Thu Aug 23 17:17:13 2007
+From: cms0009 at gmail.com (Rick)
+Date: Thu, 23 Aug 2007 11:17:13 -0400
+Subject: [Pinot-discuss] Pinot 0.76
+In-Reply-To: <6538c8c80708230751o75d343fcj7b2480d3fe0c8f5a@mail.gmail.com>
+References: <6538c8c80708230751o75d343fcj7b2480d3fe0c8f5a@mail.gmail.com>
+Message-ID: <200708231117.13255.cms0009@gmail.com>
+
+On Thursday 23 August 2007 10:51:40 am Fabrice Colin wrote:
+> Version 0.76 is available. The tarball can be found at :
+> http://prdownload.berlios.de/pinot/pinot-0.76.tar.gz
+>
+> As usual, the NEWS file has the juicy details :
+> http://svn.berlios.de/wsvn/pinot/tags/version_0_7_6/NEWS?op=file&rev=0&sc=0
+>
+> Fabrice
+> _______________________________________________
+> Pinot-discuss mailing list
+> Pinot-discuss at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/pinot-discuss
+
+Well, I guess I've got to wait for ubuntu 7.10 to come out,
+before using .76 version, since .75 will not work as of yet on feisty 7.04 either
+
+Regards -
+Richard
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/pinot-discuss/attachments/20070823/0b1d9c48/attachment.html>
+

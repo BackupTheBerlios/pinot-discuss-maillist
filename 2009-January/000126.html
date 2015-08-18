@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pinot-discuss] pinot follows selfreferencing directory links
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pinot-discuss/2009-January/index.html" >
+   <LINK REL="made" HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20follows%20selfreferencing%20directory%20links&In-Reply-To=%3C20090103024940.16dcb0c4%40desktop.workplace%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000127.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pinot-discuss] pinot follows selfreferencing directory links</H1>
+    <B>John Werden</B> 
+    <A HREF="mailto:pinot-discuss%40lists.berlios.de?Subject=Re%3A%20%5BPinot-discuss%5D%20pinot%20follows%20selfreferencing%20directory%20links&In-Reply-To=%3C20090103024940.16dcb0c4%40desktop.workplace%3E"
+       TITLE="[Pinot-discuss] pinot follows selfreferencing directory links">jwerden at hotpop.com
+       </A><BR>
+    <I>Sat Jan  3 02:49:40 CET 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000127.html">[Pinot-discuss] pinot follows selfreferencing directory links
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#126">[ date ]</a>
+              <a href="thread.html#126">[ thread ]</a>
+              <a href="subject.html#126">[ subject ]</a>
+              <a href="author.html#126">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fabrice,
+
+today I came across the problem that pinot follows directory links
+which point to the directory they reside in. Pinot does not recognize
+that it already was there and starts to go down all directories to
+scan their file content, follows the directories, finds the link, goes
+down all directories to scan all files in the directory again and...
+
+It does so for some 20 times until it is done.
+
+Worse - if the selfreferencing directory contains another
+selfreferencing directory, it will recurse that link down, too.
+
+Example:
+
+Retrieved
+<A HREF="file:///xxx/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/uclibc/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/gcc/uclibc/4.2.1/include/linux/a.out.h">file:///xxx/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/uclibc/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/lib/gcc/uclibc/4.2.1/include/linux/a.out.h</A>
+in 0 ms
+
+I didn't notice the bug until now, because I decided only yesterday to
+reindex everything but this time everything except the system files
+(which is a lot more than last time).
+
+It looks like it scanned the whole day only the same directory.
+Right now it scanned it 10 times and everytime the subdirectory another
+10-20 times. The log is ~180k lines long for maybe 200-500 files.
+history-daemon is around 200 MB large and daemon/ around 2.1 GB.
+
+But the really bad thing will happen if pinot stumbles across the
+several kernels I unpacked and all the build environnments. It will
+take weeks and hundreds of gigabyte to index a few files. I have these
+kinds of links scattered across my whole filesystem and it's too
+time-consuming to find them all and tell pinot only to search 'save'
+file directories. It's also ineffective because I would have to recheck
+everything if I change something and another directory link appears.
+
+Do you have any patch to fix the problem? I will gladly take, apply
+and retest.
+
+John
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000127.html">[Pinot-discuss] pinot follows selfreferencing directory links
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#126">[ date ]</a>
+              <a href="thread.html#126">[ thread ]</a>
+              <a href="subject.html#126">[ subject ]</a>
+              <a href="author.html#126">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pinot-discuss">More information about the Pinot-discuss
+mailing list</a><br>
+</body></html>
